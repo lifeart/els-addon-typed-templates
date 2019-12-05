@@ -31,11 +31,15 @@
   },
   "homepage": "https://github.com/lifeart/els-addon-typed-templates#readme",
   "devDependencies": {
+    "@glimmer/component": "^0.13.0",
     "@types/node": "^12.12.14",
     "eslint": "4.17.0",
     "jest": "^24.9.0"
   },
   "dependencies": {
+    "@glimmer/interfaces": "^0.44.0",
+    "@glimmer/opcode-compiler": "^0.44.0",
+    "@simple-dom/interface": "^1.4.0",
     "typescript": "^3.7.3",
     "vscode-uri": "^2.1.1"
   }

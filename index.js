@@ -65,13 +65,21 @@ function serviceForRoot(uri) {
         var registry = ts.createDocumentRegistry(false, uri);
         var host = {
             getCompilationSettings: function () {
-                return {};
+                return {
+                    "baseUrl": ".",
+                    "allowJs": true,
+                    "allowSyntheticDefaultImports": true,
+                    "skipLibCheck": true,
+                    "moduleResolution": ts.ModuleResolutionKind.NodeJs,
+                    "module": ts.ModuleKind.ES2015
+                };
             },
             getScriptFileNames: function () {
-                var els = __spreadArrays(["ts-test.ts", "component.ts"], Object.keys(componentsMap).map(function (el) { return path.basename(el); })).map(function (name) {
+                var els = __spreadArrays(["component.ts"], Object.keys(componentsMap).map(function (el) { return path.basename(el); })).map(function (name) {
                     return path.resolve(path.join(uri, name));
                 });
-                return els;
+                console.log('els', els);
+                return __spreadArrays(els);
             },
             getScriptVersion: function (_fileName) {
                 return "";
@@ -81,8 +89,9 @@ function serviceForRoot(uri) {
                 if (maybeVirtualFile) {
                     return ts.ScriptSnapshot.fromString(maybeVirtualFile);
                 }
-                else
+                else {
                     return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+                }
             },
             getCurrentDirectory: function () { return uri; },
             getDefaultLibFileName: function (opts) {
@@ -125,7 +134,7 @@ function onComplete(root, _a) {
                     })];
             }
             catch (e) {
-                // console.error(e, e.ProgramFiles);
+                console.error(e, e.ProgramFiles);
             }
             return [2 /*return*/, results];
         });

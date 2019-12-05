@@ -23,13 +23,21 @@ function serviceForRoot(uri): ts.LanguageService {
     const registry: ts.DocumentRegistry = ts.createDocumentRegistry(false, uri);
     const host: ts.LanguageServiceHost = {
       getCompilationSettings() {
-        return {};
+        return {
+          "baseUrl": ".",
+          "allowJs": true,
+          "allowSyntheticDefaultImports": true,
+          "skipLibCheck": true,
+          "moduleResolution": ts.ModuleResolutionKind.NodeJs,
+          "module": ts.ModuleKind.ES2015,
+        };
       },
       getScriptFileNames() {
-        let els = ["ts-test.ts", "component.ts", ...Object.keys(componentsMap).map((el)=>path.basename(el))].map(name =>
+        let els = ["component.ts", ...Object.keys(componentsMap).map((el)=>path.basename(el))].map(name =>
           path.resolve(path.join(uri, name))
         );
-        return els;
+        console.log('els', els);
+        return [...els];
       },
       getScriptVersion(_fileName) {
         return "";
@@ -38,10 +46,13 @@ function serviceForRoot(uri): ts.LanguageService {
         const maybeVirtualFile = componentsMap[path.resolve(fileName)];
         if (maybeVirtualFile) {
           return ts.ScriptSnapshot.fromString(maybeVirtualFile);
-        } else
+        } else {
           return ts.ScriptSnapshot.fromString(
             fs.readFileSync(fileName).toString()
           );
+        }
+
+
       },
       getCurrentDirectory: () => uri,
       getDefaultLibFileName(opts) {
@@ -86,7 +97,7 @@ export async function onComplete(root, { results, focusPath, type, textDocument 
       };
     })
   } catch (e) {
-    // console.error(e, e.ProgramFiles);
+    console.error(e, e.ProgramFiles);
   }
   return results;
 }
