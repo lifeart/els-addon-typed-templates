@@ -1,0 +1,42 @@
+{
+  "name": "els-addon-typed-templates",
+  "version": "1.0.0",
+  "description": "Ember Language Server Typed Templates",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "compile": "tsc -p ./index.ts",
+    "watch": "tsc -watch -p ./index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lifeart/els-addon-docs.git"
+  },
+  "keywords": [
+    "els",
+    "completion",
+    "ember"
+  ],
+  "ember-language-server": {
+    "entry": "./index",
+    "debug": true,
+    "capabilities": {
+      "completionProvider": true
+    }
+  },
+  "author": "Aleksandr Kanunnikov <lifeart92@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lifeart/els-addon-typed-templates/issues"
+  },
+  "homepage": "https://github.com/lifeart/els-addon-typed-templates#readme",
+  "devDependencies": {
+    "@types/node": "^12.12.14",
+    "eslint": "4.17.0",
+    "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "typescript": "^3.7.3",
+    "vscode-uri": "^2.1.1"
+  }
+}
