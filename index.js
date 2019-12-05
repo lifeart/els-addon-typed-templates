@@ -35,12 +35,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 exports.__esModule = true;
 var vscode_uri_1 = require("vscode-uri");
 var ts = require("typescript");
 var path = require("path");
 var fs = require("fs");
 var services = {};
+var PLACEHOLDER = "ELSCompletionDummy";
+function getBasicComponent(pathExp) {
+    if (pathExp === void 0) { pathExp = PLACEHOLDER; }
+    return [
+        'import Component from "./component";',
+        "export default class Template extends Component {",
+        "_template_PathExpresion() {",
+        "return " + pathExp,
+        "}",
+        "}"
+    ].join('');
+}
 function serviceForRoot(uri) {
     if (!services[uri]) {
         var registry = ts.createDocumentRegistry(false, uri);
@@ -49,25 +68,17 @@ function serviceForRoot(uri) {
                 return {};
             },
             getScriptFileNames: function () {
-                console.log("getScriptFileNames");
-                return ["ts-test.ts", "application.ts", "component.ts"].map(function (name) {
+                var els = __spreadArrays(["ts-test.ts", "component.ts"], Object.keys(componentsMap).map(function (el) { return path.basename(el); })).map(function (name) {
                     return path.join("c:", uri, name);
                 });
+                return els;
             },
             getScriptVersion: function (_fileName) {
                 return "";
             },
             getScriptSnapshot: function (fileName) {
-                console.log("getScriptSnapshot", fileName);
                 if (fileName.endsWith("application.ts")) {
-                    return ts.ScriptSnapshot.fromString([
-                        'import Component from "./component";',
-                        "export default class Template extends Component {",
-                        "_template_pathExpresion() {",
-                        "return this.",
-                        "}",
-                        "}"
-                    ].join(''));
+                    return ts.ScriptSnapshot.fromString(componentsMap[fileName.split('\\').join('/')]);
                 }
                 else
                     return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
@@ -81,31 +92,41 @@ function serviceForRoot(uri) {
     }
     return services[uri];
 }
+var componentsMap = {};
 function onComplete(root, _a) {
-    var results = _a.results, type = _a.type, textDocument = _a.textDocument;
+    var results = _a.results, focusPath = _a.focusPath, type = _a.type, textDocument = _a.textDocument;
     return __awaiter(this, void 0, void 0, function () {
-        var projectRoot, service;
+        var projectRoot, service, fileName, realPath_1, pos;
         return __generator(this, function (_b) {
+            if (type !== "template") {
+                return [2 /*return*/, results];
+            }
+            if (focusPath.node.type !== 'PathExpression') {
+                return [2 /*return*/, results];
+            }
             projectRoot = vscode_uri_1.URI.parse(root).fsPath;
             service = serviceForRoot(projectRoot);
             try {
-                results = service.getCompletionsAtPosition(vscode_uri_1.URI.parse(textDocument.uri)
+                fileName = vscode_uri_1.URI.parse(textDocument.uri)
                     .fsPath.split("\\")
-                    .join("/").replace('.hbs', '.ts'), 124, { includeInsertTextCompletions: true });
+                    .join("/").replace('.hbs', '.ts');
+                realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, '');
+                componentsMap[fileName] = getBasicComponent(realPath_1);
+                pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath_1.length;
+                results = service.getCompletionsAtPosition(fileName, pos, { includeInsertTextCompletions: true });
                 return [2 /*return*/, results.entries.filter(function (_a) {
                         var name = _a.name;
                         return !name.startsWith('_t');
                     }).map(function (el) {
-                        console.log('el', el);
+                        // console.log(el);
                         return {
-                            label: 'this.' + el.name
+                            label: realPath_1 + el.name
                         };
                     })];
             }
             catch (e) {
                 // console.error(e, e.ProgramFiles);
             }
-            console.log("results", results);
             return [2 /*return*/, results];
         });
     });
