@@ -69,7 +69,7 @@ function serviceForRoot(uri) {
             },
             getScriptFileNames: function () {
                 var els = __spreadArrays(["ts-test.ts", "component.ts"], Object.keys(componentsMap).map(function (el) { return path.basename(el); })).map(function (name) {
-                    return path.join("c:", uri, name);
+                    return path.resolve(path.join(uri, name));
                 });
                 return els;
             },
@@ -77,8 +77,9 @@ function serviceForRoot(uri) {
                 return "";
             },
             getScriptSnapshot: function (fileName) {
-                if (fileName.endsWith("application.ts")) {
-                    return ts.ScriptSnapshot.fromString(componentsMap[fileName.split('\\').join('/')]);
+                var maybeVirtualFile = componentsMap[path.resolve(fileName)];
+                if (maybeVirtualFile) {
+                    return ts.ScriptSnapshot.fromString(maybeVirtualFile);
                 }
                 else
                     return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
@@ -107,9 +108,8 @@ function onComplete(root, _a) {
             projectRoot = vscode_uri_1.URI.parse(root).fsPath;
             service = serviceForRoot(projectRoot);
             try {
-                fileName = vscode_uri_1.URI.parse(textDocument.uri)
-                    .fsPath.split("\\")
-                    .join("/").replace('.hbs', '.ts');
+                fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
+                    .fsPath).replace('.hbs', '.ts');
                 realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, '');
                 componentsMap[fileName] = getBasicComponent(realPath_1);
                 pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath_1.length;

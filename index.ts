@@ -27,7 +27,7 @@ function serviceForRoot(uri): ts.LanguageService {
       },
       getScriptFileNames() {
         let els = ["ts-test.ts", "component.ts", ...Object.keys(componentsMap).map((el)=>path.basename(el))].map(name =>
-          path.join("c:", uri, name)
+          path.resolve(path.join(uri, name))
         );
         return els;
       },
@@ -35,8 +35,9 @@ function serviceForRoot(uri): ts.LanguageService {
         return "";
       },
       getScriptSnapshot(fileName) {
-        if (fileName.endsWith("application.ts")) {
-          return ts.ScriptSnapshot.fromString(componentsMap[fileName.split('\\').join('/')]);
+        const maybeVirtualFile = componentsMap[path.resolve(fileName)];
+        if (maybeVirtualFile) {
+          return ts.ScriptSnapshot.fromString(maybeVirtualFile);
         } else
           return ts.ScriptSnapshot.fromString(
             fs.readFileSync(fileName).toString()
@@ -66,9 +67,8 @@ export async function onComplete(root, { results, focusPath, type, textDocument 
   const projectRoot = URI.parse(root).fsPath;
   const service = serviceForRoot(projectRoot);
   try {
-    let fileName = URI.parse(textDocument.uri)
-    .fsPath.split("\\")
-    .join("/").replace('.hbs','.ts');
+    let fileName = path.resolve(URI.parse(textDocument.uri)
+    .fsPath).replace('.hbs','.ts');
 
     let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '');
     componentsMap[fileName] = getBasicComponent(realPath);
