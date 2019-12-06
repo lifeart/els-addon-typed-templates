@@ -9,11 +9,12 @@ const PLACEHOLDER = "ELSCompletionDummy";
 
 function getBasicComponent(pathExp = PLACEHOLDER, flags : any = {}) {
   let outputType = 'string | number | void';
+  let relImport = flags.relComponentImport || './component';
   if (flags.isArrayCase) {
     outputType = 'any[]';
   }
   return [
-    'import Component from "./component";',
+    `import Component from "${relImport}";`,
     "export default class Template extends Component {",
     `_template_PathExpresion(): ${outputType} {`,
     "return " + pathExp,
@@ -37,10 +38,10 @@ function serviceForRoot(uri): ts.LanguageService {
         };
       },
       getScriptFileNames() {
-        let els = ["component.ts", ...Object.keys(componentsMap).map((el)=>path.basename(el))].map(name =>
+        let els = [...Object.keys(componentsMap).map((el)=>path.basename(el))].map(name =>
           path.resolve(path.join(uri, name))
         );
-        return [...els];
+        return [...Array.from(new Set(els))];
       },
       getScriptVersion(_fileName) {
         return "";
@@ -96,6 +97,14 @@ function tsDefinitionToLocation(el) {
   return Location.create(URI.file(el.fileName).toString(), offsetToRange(scope.start, scope.length, file));
 }
 
+function findComponentForTemplate(uri) {
+  const absPath = path.resolve(URI.parse(uri).fsPath);
+  const fileName = path.basename(absPath, '.hbs');
+  const dir = path.dirname(absPath);
+  const posibleNames = [fileName + '.ts', fileName + '.js'].map(name=>path.join(dir, name));
+  return posibleNames.filter(fileLocation=>fs.existsSync(fileLocation))[0]
+}
+
 export async function onDefinition(root, { results, focusPath, type, textDocument }) {
   if (type !== "template") {
     return results;
@@ -107,11 +116,15 @@ export async function onDefinition(root, { results, focusPath, type, textDocumen
   const service = serviceForRoot(projectRoot);
   try {
     let fileName = path.resolve(URI.parse(textDocument.uri)
-    .fsPath).replace('.hbs','.ts');
+    .fsPath).replace('.hbs','_template.ts');
 
+    const scriptForComponent = findComponentForTemplate(textDocument.uri);
+    const relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
+
+    componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
     let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '').replace('@','this.args.');
-    componentsMap[fileName] = getBasicComponent(realPath);
-    let pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath.length;
+    componentsMap[fileName] = getBasicComponent(realPath, { relComponentImport });
+    let pos = getBasicComponent(PLACEHOLDER, { relComponentImport }).indexOf(PLACEHOLDER) + realPath.length;
     results = service.getDefinitionAtPosition(fileName, pos);
     return (results||[]).filter(({name})=>!name.startsWith('_t')).map((el)=>{
       return  tsDefinitionToLocation(el);
@@ -164,7 +177,12 @@ export async function onComplete(root, { results, focusPath, server, type, textD
   // console.log(focusPath.parent.type);
   try {
     let fileName = path.resolve(URI.parse(textDocument.uri)
-    .fsPath).replace('.hbs','.ts');
+    .fsPath).replace('.hbs','_template.ts');
+
+    const scriptForComponent = findComponentForTemplate(textDocument.uri);
+    componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
+
+    const relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
 
     let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '');
     if (realPath.startsWith('@')) {
@@ -172,8 +190,8 @@ export async function onComplete(root, { results, focusPath, server, type, textD
       realPath = realPath.replace('@','this.args.');
     }
     
-    componentsMap[fileName] = getBasicComponent(realPath, { isArrayCase });
-    let posStart = getBasicComponent(PLACEHOLDER, { isArrayCase }).indexOf(PLACEHOLDER);
+    componentsMap[fileName] = getBasicComponent(realPath, { isArrayCase, relComponentImport });
+    let posStart = getBasicComponent(PLACEHOLDER, { isArrayCase, relComponentImport }).indexOf(PLACEHOLDER);
     let pos = posStart + realPath.length;
   //   console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
   //     console.log('getSyntacticDiagnostics', el.messageText, el.start, el.length);
@@ -202,7 +220,7 @@ export async function onComplete(root, { results, focusPath, server, type, textD
       pos,
       { includeInsertTextCompletions: true }
     );
-    return results.entries.filter(({name})=>!name.startsWith('_t')).map((el)=>{
+    return (results ? results.entries : []).filter(({name})=>!name.startsWith('_t')).map((el)=>{
       return {
         label: isArg ? realPath.replace('this.args.', '@') + el.name : realPath + el.name
       };

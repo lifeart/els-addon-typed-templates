@@ -54,11 +54,12 @@ function getBasicComponent(pathExp, flags) {
     if (pathExp === void 0) { pathExp = PLACEHOLDER; }
     if (flags === void 0) { flags = {}; }
     var outputType = 'string | number | void';
+    var relImport = flags.relComponentImport || './component';
     if (flags.isArrayCase) {
         outputType = 'any[]';
     }
     return [
-        'import Component from "./component";',
+        "import Component from \"" + relImport + "\";",
         "export default class Template extends Component {",
         "_template_PathExpresion(): " + outputType + " {",
         "return " + pathExp,
@@ -81,10 +82,10 @@ function serviceForRoot(uri) {
                 };
             },
             getScriptFileNames: function () {
-                var els = __spreadArrays(["component.ts"], Object.keys(componentsMap).map(function (el) { return path.basename(el); })).map(function (name) {
+                var els = __spreadArrays(Object.keys(componentsMap).map(function (el) { return path.basename(el); })).map(function (name) {
                     return path.resolve(path.join(uri, name));
                 });
-                return __spreadArrays(els);
+                return __spreadArrays(Array.from(new Set(els)));
             },
             getScriptVersion: function (_fileName) {
                 return "";
@@ -133,10 +134,17 @@ function tsDefinitionToLocation(el) {
     var file = fs.readFileSync(el.fileName, 'utf8');
     return vscode_languageserver_1.Location.create(vscode_uri_1.URI.file(el.fileName).toString(), offsetToRange(scope.start, scope.length, file));
 }
+function findComponentForTemplate(uri) {
+    var absPath = path.resolve(vscode_uri_1.URI.parse(uri).fsPath);
+    var fileName = path.basename(absPath, '.hbs');
+    var dir = path.dirname(absPath);
+    var posibleNames = [fileName + '.ts', fileName + '.js'].map(function (name) { return path.join(dir, name); });
+    return posibleNames.filter(function (fileLocation) { return fs.existsSync(fileLocation); })[0];
+}
 function onDefinition(root, _a) {
     var results = _a.results, focusPath = _a.focusPath, type = _a.type, textDocument = _a.textDocument;
     return __awaiter(this, void 0, void 0, function () {
-        var projectRoot, service, fileName, realPath, pos;
+        var projectRoot, service, fileName, scriptForComponent, relComponentImport, realPath, pos;
         return __generator(this, function (_b) {
             if (type !== "template") {
                 return [2 /*return*/, results];
@@ -148,10 +156,13 @@ function onDefinition(root, _a) {
             service = serviceForRoot(projectRoot);
             try {
                 fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
-                    .fsPath).replace('.hbs', '.ts');
+                    .fsPath).replace('.hbs', '_template.ts');
+                scriptForComponent = findComponentForTemplate(textDocument.uri);
+                relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
+                componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
                 realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '').replace('@', 'this.args.');
-                componentsMap[fileName] = getBasicComponent(realPath);
-                pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath.length;
+                componentsMap[fileName] = getBasicComponent(realPath, { relComponentImport: relComponentImport });
+                pos = getBasicComponent(PLACEHOLDER, { relComponentImport: relComponentImport }).indexOf(PLACEHOLDER) + realPath.length;
                 results = service.getDefinitionAtPosition(fileName, pos);
                 return [2 /*return*/, (results || []).filter(function (_a) {
                         var name = _a.name;
@@ -193,7 +204,7 @@ exports.toDiagnostic = toDiagnostic;
 function onComplete(root, _a) {
     var results = _a.results, focusPath = _a.focusPath, server = _a.server, type = _a.type, textDocument = _a.textDocument;
     return __awaiter(this, void 0, void 0, function () {
-        var projectRoot, service, isArg, isArrayCase, fileName, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics;
+        var projectRoot, service, isArg, isArrayCase, fileName, scriptForComponent, relComponentImport, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics;
         return __generator(this, function (_b) {
             if (type !== "template") {
                 return [2 /*return*/, results];
@@ -213,14 +224,17 @@ function onComplete(root, _a) {
             // console.log(focusPath.parent.type);
             try {
                 fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
-                    .fsPath).replace('.hbs', '.ts');
+                    .fsPath).replace('.hbs', '_template.ts');
+                scriptForComponent = findComponentForTemplate(textDocument.uri);
+                componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
+                relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
                 realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, '');
                 if (realPath_1.startsWith('@')) {
                     isArg = true;
                     realPath_1 = realPath_1.replace('@', 'this.args.');
                 }
-                componentsMap[fileName] = getBasicComponent(realPath_1, { isArrayCase: isArrayCase });
-                posStart = getBasicComponent(PLACEHOLDER, { isArrayCase: isArrayCase }).indexOf(PLACEHOLDER);
+                componentsMap[fileName] = getBasicComponent(realPath_1, { isArrayCase: isArrayCase, relComponentImport: relComponentImport });
+                posStart = getBasicComponent(PLACEHOLDER, { isArrayCase: isArrayCase, relComponentImport: relComponentImport }).indexOf(PLACEHOLDER);
                 pos = posStart + realPath_1.length;
                 templateRange_1 = [posStart, pos];
                 tsDiagnostics = service.getSemanticDiagnostics(fileName);
@@ -236,7 +250,7 @@ function onComplete(root, _a) {
                 // }));
                 // console.log('getCompilerOptionsDiagnostics', service.getCompilerOptionsDiagnostics());
                 results = service.getCompletionsAtPosition(fileName, pos, { includeInsertTextCompletions: true });
-                return [2 /*return*/, results.entries.filter(function (_a) {
+                return [2 /*return*/, (results ? results.entries : []).filter(function (_a) {
                         var name = _a.name;
                         return !name.startsWith('_t');
                     }).map(function (el) {
