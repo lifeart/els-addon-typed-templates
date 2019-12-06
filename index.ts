@@ -7,6 +7,14 @@ import * as fs from "fs";
 const services: any = {};
 const PLACEHOLDER = "ELSCompletionDummy";
 
+// function yieldedContext() {
+//   return `
+//   _template_BlockStatement_Each_FirstBlock() {
+//     return this._template_PathExpresion()[0];
+//   }
+//   `;
+// }
+
 function getBasicComponent(pathExp = PLACEHOLDER, flags : any = {}) {
   let outputType = 'string | number | void';
   let relImport = flags.relComponentImport || './component';

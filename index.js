@@ -50,6 +50,13 @@ var path = require("path");
 var fs = require("fs");
 var services = {};
 var PLACEHOLDER = "ELSCompletionDummy";
+// function yieldedContext() {
+//   return `
+//   _template_BlockStatement_Each_FirstBlock() {
+//     return this._template_PathExpresion()[0];
+//   }
+//   `;
+// }
 function getBasicComponent(pathExp, flags) {
     if (pathExp === void 0) { pathExp = PLACEHOLDER; }
     if (flags === void 0) { flags = {}; }
