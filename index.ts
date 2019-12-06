@@ -173,13 +173,30 @@ function tsDefinitionToLocation(el) {
   );
 }
 
-function findComponentForTemplate(uri) {
+function findComponentForTemplate(uri, projectRoot) {
   const absPath = path.resolve(URI.parse(uri).fsPath);
   const fileName = path.basename(absPath, ".hbs");
   const dir = path.dirname(absPath);
-  const posibleNames = [fileName + ".ts", fileName + ".js"].map(name =>
+  const classicComponentTemplatesLocation = 'app/templates/components';
+  const normalizedDirname = dir.split(path.sep).join('/');
+  const fileNames = [
+    fileName + ".ts", "component.ts", fileName + ".js", "component.js"
+  ];
+  const posibleNames = fileNames.map(name =>
     path.join(dir, name)
   );
+  const relativePath = path.relative(projectRoot, dir).split(path.sep).join('/');
+  if (relativePath.startsWith(classicComponentTemplatesLocation)) {
+    const pureName = normalizedDirname.split(classicComponentTemplatesLocation).pop() + fileName;
+    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName + '.ts')));
+    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'component.ts')));
+    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'index.ts')));
+
+    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName + '.js')));
+    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'component.js')));
+    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'index.js')));
+  }
+
   return posibleNames.filter(fileLocation => fs.existsSync(fileLocation))[0];
 }
 
@@ -203,7 +220,7 @@ export async function onDefinition(
       .resolve(URI.parse(textDocument.uri).fsPath)
       .replace(".hbs", "_template.ts");
 
-    const scriptForComponent = findComponentForTemplate(textDocument.uri);
+    const scriptForComponent = findComponentForTemplate(textDocument.uri, projectRoot);
     const relComponentImport = path
       .relative(fileName, scriptForComponent)
       .replace(path.sep, "/")
@@ -303,15 +320,14 @@ export async function onComplete(
       .resolve(URI.parse(textDocument.uri).fsPath)
       .replace(".hbs", "_template.ts");
 
-    const scriptForComponent = findComponentForTemplate(textDocument.uri);
+    const scriptForComponent = findComponentForTemplate(textDocument.uri, projectRoot);
     componentsMap[scriptForComponent] = fs.readFileSync(
       scriptForComponent,
       "utf8"
     );
-
     const relComponentImport = path
       .relative(fileName, scriptForComponent)
-      .replace(path.sep, "/")
+      .split(path.sep).join('/')
       .replace("..", ".")
       .replace(".ts", "")
       .replace(".js", "");

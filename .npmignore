@@ -1,0 +1,5 @@
+app
+node_modules
+.git
+ember-cli-build.js
+index.ts

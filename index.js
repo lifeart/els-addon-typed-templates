@@ -188,13 +188,28 @@ function tsDefinitionToLocation(el) {
     var file = fs.readFileSync(el.fileName, "utf8");
     return vscode_languageserver_1.Location.create(vscode_uri_1.URI.file(el.fileName).toString(), offsetToRange(scope.start, scope.length, file));
 }
-function findComponentForTemplate(uri) {
+function findComponentForTemplate(uri, projectRoot) {
     var absPath = path.resolve(vscode_uri_1.URI.parse(uri).fsPath);
     var fileName = path.basename(absPath, ".hbs");
     var dir = path.dirname(absPath);
-    var posibleNames = [fileName + ".ts", fileName + ".js"].map(function (name) {
+    var classicComponentTemplatesLocation = 'app/templates/components';
+    var normalizedDirname = dir.split(path.sep).join('/');
+    var fileNames = [
+        fileName + ".ts", "component.ts", fileName + ".js", "component.js"
+    ];
+    var posibleNames = fileNames.map(function (name) {
         return path.join(dir, name);
     });
+    var relativePath = path.relative(projectRoot, dir).split(path.sep).join('/');
+    if (relativePath.startsWith(classicComponentTemplatesLocation)) {
+        var pureName = normalizedDirname.split(classicComponentTemplatesLocation).pop() + fileName;
+        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName + '.ts')));
+        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'component.ts')));
+        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'index.ts')));
+        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName + '.js')));
+        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'component.js')));
+        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'index.js')));
+    }
     return posibleNames.filter(function (fileLocation) { return fs.existsSync(fileLocation); })[0];
 }
 function onDefinition(root, _a) {
@@ -217,7 +232,7 @@ function onDefinition(root, _a) {
                 fileName = path
                     .resolve(vscode_uri_1.URI.parse(textDocument.uri).fsPath)
                     .replace(".hbs", "_template.ts");
-                scriptForComponent = findComponentForTemplate(textDocument.uri);
+                scriptForComponent = findComponentForTemplate(textDocument.uri, projectRoot);
                 relComponentImport = path
                     .relative(fileName, scriptForComponent)
                     .replace(path.sep, "/")
@@ -303,14 +318,16 @@ function onComplete(root, _a) {
                 fileName = path
                     .resolve(vscode_uri_1.URI.parse(textDocument.uri).fsPath)
                     .replace(".hbs", "_template.ts");
-                scriptForComponent = findComponentForTemplate(textDocument.uri);
+                scriptForComponent = findComponentForTemplate(textDocument.uri, projectRoot);
                 componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, "utf8");
                 relComponentImport = path
                     .relative(fileName, scriptForComponent)
-                    .replace(path.sep, "/")
+                    .split(path.sep).join('/')
                     .replace("..", ".")
                     .replace(".ts", "")
                     .replace(".js", "");
+                console.log('relComponentImport', relComponentImport);
+                console.log('scriptForComponent', scriptForComponent);
                 realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, "");
                 if (realPath_1.startsWith("@")) {
                     isArg = true;

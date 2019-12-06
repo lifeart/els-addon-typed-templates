@@ -1,1 +1,0 @@
-type El = "a" | "b" | "c"; const a: El = ''
