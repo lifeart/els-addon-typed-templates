@@ -113,7 +113,7 @@ export async function onDefinition(root, { results, focusPath, type, textDocumen
     componentsMap[fileName] = getBasicComponent(realPath);
     let pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath.length;
     results = service.getDefinitionAtPosition(fileName, pos);
-    return results.filter(({name})=>!name.startsWith('_t')).map((el)=>{
+    return (results||[]).filter(({name})=>!name.startsWith('_t')).map((el)=>{
       return  tsDefinitionToLocation(el);
     })
   } catch (e) {

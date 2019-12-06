@@ -153,7 +153,7 @@ function onDefinition(root, _a) {
                 componentsMap[fileName] = getBasicComponent(realPath);
                 pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath.length;
                 results = service.getDefinitionAtPosition(fileName, pos);
-                return [2 /*return*/, results.filter(function (_a) {
+                return [2 /*return*/, (results || []).filter(function (_a) {
                         var name = _a.name;
                         return !name.startsWith('_t');
                     }).map(function (el) {
