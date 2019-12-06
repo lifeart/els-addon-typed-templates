@@ -1,4 +1,4 @@
-# els-addon-docs
+# els-addon-typed-templates
 Ember Language Server Typed Templates Addon
 
 
@@ -6,6 +6,18 @@ How to use?
 
 Install this addon as `dev-dependency` inside your ember project.
 
+
+### Autocomplete
+
+![autocomplete preview](previews/autocomplete.png)
+
+### Warn Each
+
+
+![warn each](previews/warn-each.png)
+
+### Unknown Property
+![warn unknown](previews/warn-unknown.png)
 
 ### Features
 
