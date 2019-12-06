@@ -48,8 +48,18 @@ var vscode_languageserver_1 = require("vscode-languageserver");
 var ts = require("typescript");
 var path = require("path");
 var fs = require("fs");
+var walkSync = require("walk-sync");
 var services = {};
 var PLACEHOLDER = "ELSCompletionDummy";
+function safeWalkSync(filePath, opts) {
+    if (!filePath) {
+        return [];
+    }
+    if (!fs.existsSync(filePath)) {
+        return [];
+    }
+    return walkSync(filePath, opts);
+}
 // function yieldedContext() {
 //   return `
 //   _template_BlockStatement_Each_FirstBlock() {
@@ -57,13 +67,42 @@ var PLACEHOLDER = "ELSCompletionDummy";
 //   }
 //   `;
 // }
+function itemKind(tsName) {
+    var kinds = {
+        method: vscode_languageserver_1.CompletionItemKind.Method,
+        "function": vscode_languageserver_1.CompletionItemKind.Function,
+        constructor: vscode_languageserver_1.CompletionItemKind.Constructor,
+        field: vscode_languageserver_1.CompletionItemKind.Field,
+        variable: vscode_languageserver_1.CompletionItemKind.Variable,
+        "class": vscode_languageserver_1.CompletionItemKind.Class,
+        struct: vscode_languageserver_1.CompletionItemKind.Struct,
+        interface: vscode_languageserver_1.CompletionItemKind.Interface,
+        module: vscode_languageserver_1.CompletionItemKind.Module,
+        property: vscode_languageserver_1.CompletionItemKind.Property,
+        event: vscode_languageserver_1.CompletionItemKind.Event,
+        operator: vscode_languageserver_1.CompletionItemKind.Operator,
+        unit: vscode_languageserver_1.CompletionItemKind.Unit,
+        value: vscode_languageserver_1.CompletionItemKind.Value,
+        constant: vscode_languageserver_1.CompletionItemKind.Constant,
+        "enum": vscode_languageserver_1.CompletionItemKind.Enum,
+        "enum-member": vscode_languageserver_1.CompletionItemKind.EnumMember,
+        keyword: vscode_languageserver_1.CompletionItemKind.Keyword,
+        snippet: vscode_languageserver_1.CompletionItemKind.Snippet,
+        text: vscode_languageserver_1.CompletionItemKind.Text,
+        file: vscode_languageserver_1.CompletionItemKind.File,
+        reference: vscode_languageserver_1.CompletionItemKind.Reference,
+        folder: vscode_languageserver_1.CompletionItemKind.Folder,
+        "type-parameter": vscode_languageserver_1.CompletionItemKind.TypeParameter
+    };
+    return kinds[tsName] || vscode_languageserver_1.CompletionItemKind.Property;
+}
 function getBasicComponent(pathExp, flags) {
     if (pathExp === void 0) { pathExp = PLACEHOLDER; }
     if (flags === void 0) { flags = {}; }
-    var outputType = 'string | number | void';
-    var relImport = flags.relComponentImport || './component';
+    var outputType = "string | number | void";
+    var relImport = flags.relComponentImport || "./component";
     if (flags.isArrayCase) {
-        outputType = 'any[]';
+        outputType = "any[]";
     }
     return [
         "import Component from \"" + relImport + "\";",
@@ -72,7 +111,7 @@ function getBasicComponent(pathExp, flags) {
         "return " + pathExp,
         "}",
         "}"
-    ].join('');
+    ].join("");
 }
 function serviceForRoot(uri) {
     if (!services[uri]) {
@@ -80,17 +119,27 @@ function serviceForRoot(uri) {
         var host = {
             getCompilationSettings: function () {
                 return {
-                    "baseUrl": ".",
-                    "allowJs": true,
-                    "allowSyntheticDefaultImports": true,
-                    "skipLibCheck": true,
-                    "moduleResolution": ts.ModuleResolutionKind.NodeJs,
-                    "module": ts.ModuleKind.ES2015
+                    baseUrl: ".",
+                    allowJs: true,
+                    allowSyntheticDefaultImports: true,
+                    skipLibCheck: true,
+                    moduleResolution: ts.ModuleResolutionKind.NodeJs,
+                    module: ts.ModuleKind.ES2015
                 };
             },
             getScriptFileNames: function () {
-                var els = __spreadArrays(Object.keys(componentsMap), [path.resolve(path.join(__dirname, 'common-types.d.ts'))]);
-                return __spreadArrays(Array.from(new Set(els)));
+                var els = __spreadArrays(Object.keys(componentsMap), [
+                    path.resolve(path.join(__dirname, "common-types.d.ts"))
+                ]);
+                var walkParams = {
+                    directories: true,
+                    globs: ["**/*.{js,ts,d.ts}"]
+                };
+                var appEntry = path.join(uri, "app");
+                var addonEntry = path.join(uri, "addon");
+                var projectAppFiles = safeWalkSync(path.join(uri, "app"), walkParams).map(function (el) { return path.resolve(path.join(appEntry, el)); });
+                var projectAddonFiles = safeWalkSync(path.join(uri, "addon"), walkParams).map(function (el) { return path.resolve(path.join(addonEntry, el)); });
+                return __spreadArrays(Array.from(new Set(__spreadArrays(els, projectAppFiles, projectAddonFiles))));
             },
             getScriptVersion: function (_fileName) {
                 return "";
@@ -136,14 +185,16 @@ function offsetToRange(start, limit, source) {
 }
 function tsDefinitionToLocation(el) {
     var scope = el.textSpan;
-    var file = fs.readFileSync(el.fileName, 'utf8');
+    var file = fs.readFileSync(el.fileName, "utf8");
     return vscode_languageserver_1.Location.create(vscode_uri_1.URI.file(el.fileName).toString(), offsetToRange(scope.start, scope.length, file));
 }
 function findComponentForTemplate(uri) {
     var absPath = path.resolve(vscode_uri_1.URI.parse(uri).fsPath);
-    var fileName = path.basename(absPath, '.hbs');
+    var fileName = path.basename(absPath, ".hbs");
     var dir = path.dirname(absPath);
-    var posibleNames = [fileName + '.ts', fileName + '.js'].map(function (name) { return path.join(dir, name); });
+    var posibleNames = [fileName + ".ts", fileName + ".js"].map(function (name) {
+        return path.join(dir, name);
+    });
     return posibleNames.filter(function (fileLocation) { return fs.existsSync(fileLocation); })[0];
 }
 function onDefinition(root, _a) {
@@ -154,25 +205,41 @@ function onDefinition(root, _a) {
             if (type !== "template") {
                 return [2 /*return*/, results];
             }
-            if (focusPath.node.type !== 'PathExpression') {
+            if (focusPath.node.type !== "PathExpression") {
+                return [2 /*return*/, results];
+            }
+            if (focusPath.node["this"] === false && focusPath.node.data === false) {
                 return [2 /*return*/, results];
             }
             projectRoot = vscode_uri_1.URI.parse(root).fsPath;
             service = serviceForRoot(projectRoot);
             try {
-                fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
-                    .fsPath).replace('.hbs', '_template.ts');
+                fileName = path
+                    .resolve(vscode_uri_1.URI.parse(textDocument.uri).fsPath)
+                    .replace(".hbs", "_template.ts");
                 scriptForComponent = findComponentForTemplate(textDocument.uri);
-                relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
-                componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
-                realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '').replace('@', 'this.args.');
-                componentsMap[fileName] = getBasicComponent(realPath, { relComponentImport: relComponentImport });
+                relComponentImport = path
+                    .relative(fileName, scriptForComponent)
+                    .replace(path.sep, "/")
+                    .replace("..", ".")
+                    .replace(".ts", "")
+                    .replace(".js", "");
+                componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, "utf8");
+                realPath = focusPath
+                    .sourceForNode()
+                    .replace(PLACEHOLDER, "")
+                    .replace("@", "this.args.");
+                componentsMap[fileName] = getBasicComponent(realPath, {
+                    relComponentImport: relComponentImport
+                });
                 pos = getBasicComponent(PLACEHOLDER, { relComponentImport: relComponentImport }).indexOf(PLACEHOLDER) + realPath.length;
                 results = service.getDefinitionAtPosition(fileName, pos);
-                return [2 /*return*/, (results || []).filter(function (_a) {
+                return [2 /*return*/, (results || [])
+                        .filter(function (_a) {
                         var name = _a.name;
-                        return !name.startsWith('_t');
-                    }).map(function (el) {
+                        return !name.startsWith("_t");
+                    })
+                        .map(function (el) {
                         return tsDefinitionToLocation(el);
                     })];
             }
@@ -187,21 +254,24 @@ exports.onDefinition = onDefinition;
 function toDiagnostic(err, _a, focusPath) {
     var startIndex = _a[0], endIndex = _a[1];
     var errText = err.file.text.slice(err.start, err.start + err.length);
-    if (err.start >= startIndex && (err.length + err.start) <= endIndex || errText.startsWith('return ')) {
+    if ((err.start >= startIndex && err.length + err.start <= endIndex) ||
+        errText.startsWith("return ")) {
         var loc = focusPath.node.loc;
         return {
             severity: vscode_languageserver_1.DiagnosticSeverity.Error,
-            range: loc ? vscode_languageserver_1.Range.create(loc.start.line - 1, loc.start.column, loc.end.line - 1, loc.end.column) : vscode_languageserver_1.Range.create(0, 0, 0, 0),
+            range: loc
+                ? vscode_languageserver_1.Range.create(loc.start.line - 1, loc.start.column, loc.end.line - 1, loc.end.column)
+                : vscode_languageserver_1.Range.create(0, 0, 0, 0),
             message: err.messageText,
-            source: 'typed-templates'
+            source: "typed-templates"
         };
     }
     else {
         return {
             severity: vscode_languageserver_1.DiagnosticSeverity.Error,
-            range: offsetToRange(0, 0, ''),
+            range: offsetToRange(0, 0, ""),
             message: err.messageText,
-            source: 'typed-templates'
+            source: "typed-templates"
         };
     }
 }
@@ -209,69 +279,78 @@ exports.toDiagnostic = toDiagnostic;
 function onComplete(root, _a) {
     var results = _a.results, focusPath = _a.focusPath, server = _a.server, type = _a.type, textDocument = _a.textDocument;
     return __awaiter(this, void 0, void 0, function () {
-        var projectRoot, service, isArg, isArrayCase, fileName, scriptForComponent, relComponentImport, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics, data;
+        var projectRoot, service, isArg, isArrayCase, fileName, scriptForComponent, relComponentImport, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics, tsResults, data;
         return __generator(this, function (_b) {
-            console.log('als-addon-typed', 'onComplete');
+            // console.log('als-addon-typed', 'onComplete');
             if (type !== "template") {
                 return [2 /*return*/, results];
             }
-            if (focusPath.node.type !== 'PathExpression') {
+            if (focusPath.node.type !== "PathExpression") {
                 return [2 /*return*/, results];
             }
             projectRoot = vscode_uri_1.URI.parse(root).fsPath;
             service = serviceForRoot(projectRoot);
             isArg = false;
             isArrayCase = false;
-            if (focusPath.parent.type === 'BlockStatement') {
-                if (focusPath.parent.path.original === 'each' && focusPath.parent.params[0] === focusPath.node) {
+            if (focusPath.parent.type === "BlockStatement") {
+                if (focusPath.parent.path.original === "each" &&
+                    focusPath.parent.params[0] === focusPath.node) {
                     isArrayCase = true;
                 }
             }
             // console.log(focusPath.parent.type);
             try {
-                fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
-                    .fsPath).replace('.hbs', '_template.ts');
+                fileName = path
+                    .resolve(vscode_uri_1.URI.parse(textDocument.uri).fsPath)
+                    .replace(".hbs", "_template.ts");
                 scriptForComponent = findComponentForTemplate(textDocument.uri);
-                componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
-                relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
-                realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, '');
-                if (realPath_1.startsWith('@')) {
+                componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, "utf8");
+                relComponentImport = path
+                    .relative(fileName, scriptForComponent)
+                    .replace(path.sep, "/")
+                    .replace("..", ".")
+                    .replace(".ts", "")
+                    .replace(".js", "");
+                realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, "");
+                if (realPath_1.startsWith("@")) {
                     isArg = true;
-                    realPath_1 = realPath_1.replace('@', 'this.args.');
+                    realPath_1 = realPath_1.replace("@", "this.args.");
                 }
-                componentsMap[fileName] = getBasicComponent(realPath_1, { isArrayCase: isArrayCase, relComponentImport: relComponentImport });
-                // console.log('componentsMap[fileName]', componentsMap[fileName]);
-                console.log(Object.keys(componentsMap));
-                posStart = getBasicComponent(PLACEHOLDER, { isArrayCase: isArrayCase, relComponentImport: relComponentImport }).indexOf(PLACEHOLDER);
+                componentsMap[fileName] = getBasicComponent(realPath_1, {
+                    isArrayCase: isArrayCase,
+                    relComponentImport: relComponentImport
+                });
+                posStart = getBasicComponent(PLACEHOLDER, {
+                    isArrayCase: isArrayCase,
+                    relComponentImport: relComponentImport
+                }).indexOf(PLACEHOLDER);
                 pos = posStart + realPath_1.length;
                 templateRange_1 = [posStart, pos];
                 tsDiagnostics = service.getSemanticDiagnostics(fileName);
-                diagnostics = tsDiagnostics.map(function (error) { return toDiagnostic(error, templateRange_1, focusPath); });
+                diagnostics = tsDiagnostics.map(function (error) {
+                    return toDiagnostic(error, templateRange_1, focusPath);
+                });
                 server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics: diagnostics });
-                // console.log(service.getSemanticDiagnostics(fileName).map((el)=>{
-                // const diagnostics: Diagnostic[] = errors.map((error: any) => toDiagnostic(el));
-                // server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-                // console.log('getSemanticDiagnostics', el.messageText, el.start, el.length);
-                // }));
-                // console.log(service.getSuggestionDiagnostics(fileName).map((el)=>{
-                //     console.log('getSuggestionDiagnostics', el.messageText, el.start, el.length);
-                // }));
-                // console.log('getCompilerOptionsDiagnostics', service.getCompilerOptionsDiagnostics());
-                results = service.getCompletionsAtPosition(fileName, pos, { includeInsertTextCompletions: true });
-                data = (results ? results.entries : []).filter(function (_a) {
+                tsResults = service.getCompletionsAtPosition(fileName, pos, {
+                    includeInsertTextCompletions: true
+                });
+                data = (tsResults ? tsResults.entries : [])
+                    .filter(function (_a) {
                     var name = _a.name;
-                    return !name.startsWith('_t');
-                }).map(function (el) {
+                    return !name.startsWith("_t");
+                })
+                    .map(function (el) {
                     return {
-                        label: isArg ? realPath_1.replace('this.args.', '@') + el.name : realPath_1 + el.name,
-                        kind: 6
+                        label: isArg
+                            ? realPath_1.replace("this.args.", "@") + el.name
+                            : realPath_1 + el.name,
+                        kind: itemKind(el.kind)
                     };
                 });
-                console.log('results', data);
-                return [2 /*return*/, data];
+                return [2 /*return*/, __spreadArrays(data, results)];
             }
             catch (e) {
-                console.error(e, e.ProgramFiles);
+                // console.error(e, e.ProgramFiles);
             }
             return [2 /*return*/, results];
         });

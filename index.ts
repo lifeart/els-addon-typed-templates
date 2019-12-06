@@ -1,11 +1,28 @@
 import { URI } from "vscode-uri";
-import { Location, Range, Diagnostic, DiagnosticSeverity } from 'vscode-languageserver';
+import {
+  Location,
+  Range,
+  Diagnostic,
+  DiagnosticSeverity,
+  CompletionItemKind
+} from "vscode-languageserver";
 import * as ts from "typescript";
 import * as path from "path";
 import * as fs from "fs";
+import * as walkSync from "walk-sync";
 
 const services: any = {};
 const PLACEHOLDER = "ELSCompletionDummy";
+
+function safeWalkSync(filePath, opts) {
+  if (!filePath) {
+    return [];
+  }
+  if (!fs.existsSync(filePath)) {
+    return [];
+  }
+  return walkSync(filePath, opts);
+}
 
 // function yieldedContext() {
 //   return `
@@ -15,11 +32,42 @@ const PLACEHOLDER = "ELSCompletionDummy";
 //   `;
 // }
 
-function getBasicComponent(pathExp = PLACEHOLDER, flags : any = {}) {
-  let outputType = 'string | number | void';
-  let relImport = flags.relComponentImport || './component';
+function itemKind(tsName) {
+  const kinds = {
+    method: CompletionItemKind.Method,
+    function: CompletionItemKind.Function,
+    constructor: CompletionItemKind.Constructor,
+    field: CompletionItemKind.Field,
+    variable: CompletionItemKind.Variable,
+    class: CompletionItemKind.Class,
+    struct: CompletionItemKind.Struct,
+    interface: CompletionItemKind.Interface,
+    module: CompletionItemKind.Module,
+    property: CompletionItemKind.Property,
+    event: CompletionItemKind.Event,
+    operator: CompletionItemKind.Operator,
+    unit: CompletionItemKind.Unit,
+    value: CompletionItemKind.Value,
+    constant: CompletionItemKind.Constant,
+    enum: CompletionItemKind.Enum,
+    "enum-member": CompletionItemKind.EnumMember,
+    keyword: CompletionItemKind.Keyword,
+    snippet: CompletionItemKind.Snippet,
+    text: CompletionItemKind.Text,
+    file: CompletionItemKind.File,
+    reference: CompletionItemKind.Reference,
+    folder: CompletionItemKind.Folder,
+    "type-parameter": CompletionItemKind.TypeParameter
+  };
+
+  return kinds[tsName] || CompletionItemKind.Property;
+}
+
+function getBasicComponent(pathExp = PLACEHOLDER, flags: any = {}) {
+  let outputType = "string | number | void";
+  let relImport = flags.relComponentImport || "./component";
   if (flags.isArrayCase) {
-    outputType = 'any[]';
+    outputType = "any[]";
   }
   return [
     `import Component from "${relImport}";`,
@@ -28,7 +76,7 @@ function getBasicComponent(pathExp = PLACEHOLDER, flags : any = {}) {
     "return " + pathExp,
     "}",
     "}"
-  ].join('')
+  ].join("");
 }
 
 function serviceForRoot(uri): ts.LanguageService {
@@ -37,17 +85,38 @@ function serviceForRoot(uri): ts.LanguageService {
     const host: ts.LanguageServiceHost = {
       getCompilationSettings() {
         return {
-          "baseUrl": ".",
-          "allowJs": true,
-          "allowSyntheticDefaultImports": true,
-          "skipLibCheck": true,
-          "moduleResolution": ts.ModuleResolutionKind.NodeJs,
-          "module": ts.ModuleKind.ES2015,
+          baseUrl: ".",
+          allowJs: true,
+          allowSyntheticDefaultImports: true,
+          skipLibCheck: true,
+          moduleResolution: ts.ModuleResolutionKind.NodeJs,
+          module: ts.ModuleKind.ES2015
         };
       },
       getScriptFileNames() {
-        let els = [...Object.keys(componentsMap), path.resolve(path.join(__dirname,'common-types.d.ts'))];
-        return [...Array.from(new Set(els))];
+        let els = [
+          ...Object.keys(componentsMap),
+          path.resolve(path.join(__dirname, "common-types.d.ts"))
+        ];
+        let walkParams = {
+          directories: true,
+          globs: ["**/*.{js,ts,d.ts}"]
+        };
+        let appEntry = path.join(uri, "app");
+        let addonEntry = path.join(uri, "addon");
+        let projectAppFiles = safeWalkSync(
+          path.join(uri, "app"),
+          walkParams
+        ).map(el => path.resolve(path.join(appEntry, el)));
+        let projectAddonFiles = safeWalkSync(
+          path.join(uri, "addon"),
+          walkParams
+        ).map(el => path.resolve(path.join(addonEntry, el)));
+        return [
+          ...Array.from(
+            new Set([...els, ...projectAppFiles, ...projectAddonFiles])
+          )
+        ];
       },
       getScriptVersion(_fileName) {
         return "";
@@ -61,8 +130,6 @@ function serviceForRoot(uri): ts.LanguageService {
             fs.readFileSync(fileName).toString()
           );
         }
-
-
       },
       getCurrentDirectory: () => uri,
       getDefaultLibFileName(opts) {
@@ -84,7 +151,7 @@ function offsetToRange(start, limit, source) {
     return Range.create(0, 0, 0, 0);
   }
   let line = startLine.length - 2;
-  let col = startLine[ startLine.length - 2].length;
+  let col = startLine[startLine.length - 2].length;
   let endLine = source.slice(start, limit).match(rLines) || [];
   let endCol = col;
   let endLineNumber = line;
@@ -99,75 +166,121 @@ function offsetToRange(start, limit, source) {
 
 function tsDefinitionToLocation(el) {
   let scope = el.textSpan;
-  let file = fs.readFileSync(el.fileName, 'utf8');
-  return Location.create(URI.file(el.fileName).toString(), offsetToRange(scope.start, scope.length, file));
+  let file = fs.readFileSync(el.fileName, "utf8");
+  return Location.create(
+    URI.file(el.fileName).toString(),
+    offsetToRange(scope.start, scope.length, file)
+  );
 }
 
 function findComponentForTemplate(uri) {
   const absPath = path.resolve(URI.parse(uri).fsPath);
-  const fileName = path.basename(absPath, '.hbs');
+  const fileName = path.basename(absPath, ".hbs");
   const dir = path.dirname(absPath);
-  const posibleNames = [fileName + '.ts', fileName + '.js'].map(name=>path.join(dir, name));
-  return posibleNames.filter(fileLocation=>fs.existsSync(fileLocation))[0]
+  const posibleNames = [fileName + ".ts", fileName + ".js"].map(name =>
+    path.join(dir, name)
+  );
+  return posibleNames.filter(fileLocation => fs.existsSync(fileLocation))[0];
 }
 
-export async function onDefinition(root, { results, focusPath, type, textDocument }) {
+export async function onDefinition(
+  root,
+  { results, focusPath, type, textDocument }
+) {
   if (type !== "template") {
     return results;
   }
-  if (focusPath.node.type !== 'PathExpression') {
+  if (focusPath.node.type !== "PathExpression") {
+    return results;
+  }
+  if (focusPath.node.this === false && focusPath.node.data === false) {
     return results;
   }
   const projectRoot = URI.parse(root).fsPath;
   const service = serviceForRoot(projectRoot);
   try {
-    let fileName = path.resolve(URI.parse(textDocument.uri)
-    .fsPath).replace('.hbs','_template.ts');
+    let fileName = path
+      .resolve(URI.parse(textDocument.uri).fsPath)
+      .replace(".hbs", "_template.ts");
 
     const scriptForComponent = findComponentForTemplate(textDocument.uri);
-    const relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
+    const relComponentImport = path
+      .relative(fileName, scriptForComponent)
+      .replace(path.sep, "/")
+      .replace("..", ".")
+      .replace(".ts", "")
+      .replace(".js", "");
 
-    componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
-    let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '').replace('@','this.args.');
-    componentsMap[fileName] = getBasicComponent(realPath, { relComponentImport });
-    let pos = getBasicComponent(PLACEHOLDER, { relComponentImport }).indexOf(PLACEHOLDER) + realPath.length;
+    componentsMap[scriptForComponent] = fs.readFileSync(
+      scriptForComponent,
+      "utf8"
+    );
+    let realPath = focusPath
+      .sourceForNode()
+      .replace(PLACEHOLDER, "")
+      .replace("@", "this.args.");
+    componentsMap[fileName] = getBasicComponent(realPath, {
+      relComponentImport
+    });
+    let pos =
+      getBasicComponent(PLACEHOLDER, { relComponentImport }).indexOf(
+        PLACEHOLDER
+      ) + realPath.length;
     results = service.getDefinitionAtPosition(fileName, pos);
-    return (results||[]).filter(({name})=>!name.startsWith('_t')).map((el)=>{
-      return  tsDefinitionToLocation(el);
-    })
+    return (results || [])
+      .filter(({ name }) => !name.startsWith("_t"))
+      .map(el => {
+        return tsDefinitionToLocation(el);
+      });
   } catch (e) {
     console.error(e, e.ProgramFiles);
   }
   return results;
 }
 
-export function toDiagnostic(err, [startIndex, endIndex], focusPath): Diagnostic {
+export function toDiagnostic(
+  err,
+  [startIndex, endIndex],
+  focusPath
+): Diagnostic {
   let errText = err.file.text.slice(err.start, err.start + err.length);
-  if (err.start>=startIndex && (err.length + err.start ) <= endIndex || errText.startsWith('return ')) {
+  if (
+    (err.start >= startIndex && err.length + err.start <= endIndex) ||
+    errText.startsWith("return ")
+  ) {
     let loc = focusPath.node.loc;
     return {
       severity: DiagnosticSeverity.Error,
-      range:  loc ? Range.create(loc.start.line - 1, loc.start.column, loc.end.line - 1, loc.end.column) : Range.create(0, 0, 0, 0),
+      range: loc
+        ? Range.create(
+            loc.start.line - 1,
+            loc.start.column,
+            loc.end.line - 1,
+            loc.end.column
+          )
+        : Range.create(0, 0, 0, 0),
       message: err.messageText,
-      source: 'typed-templates'
+      source: "typed-templates"
     };
   } else {
     return {
       severity: DiagnosticSeverity.Error,
-      range: offsetToRange(0, 0, ''),
+      range: offsetToRange(0, 0, ""),
       message: err.messageText,
-      source: 'typed-templates'
+      source: "typed-templates"
     };
   }
 }
 
-export async function onComplete(root, { results, focusPath, server, type, textDocument }) {
-  console.log('als-addon-typed', 'onComplete');
+export async function onComplete(
+  root,
+  { results, focusPath, server, type, textDocument }
+) {
+  // console.log('als-addon-typed', 'onComplete');
   if (type !== "template") {
     return results;
   }
-  if (focusPath.node.type !== 'PathExpression') {
-
+  if (focusPath.node.type !== "PathExpression") {
     return results;
   }
 
@@ -176,70 +289,87 @@ export async function onComplete(root, { results, focusPath, server, type, textD
   let isArg = false;
   let isArrayCase = false;
 
-  if (focusPath.parent.type === 'BlockStatement') {
-    if (focusPath.parent.path.original === 'each' && focusPath.parent.params[0] === focusPath.node) {
+  if (focusPath.parent.type === "BlockStatement") {
+    if (
+      focusPath.parent.path.original === "each" &&
+      focusPath.parent.params[0] === focusPath.node
+    ) {
       isArrayCase = true;
     }
   }
   // console.log(focusPath.parent.type);
   try {
-    let fileName = path.resolve(URI.parse(textDocument.uri)
-    .fsPath).replace('.hbs','_template.ts');
+    let fileName = path
+      .resolve(URI.parse(textDocument.uri).fsPath)
+      .replace(".hbs", "_template.ts");
 
     const scriptForComponent = findComponentForTemplate(textDocument.uri);
-    componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
+    componentsMap[scriptForComponent] = fs.readFileSync(
+      scriptForComponent,
+      "utf8"
+    );
 
-    const relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
+    const relComponentImport = path
+      .relative(fileName, scriptForComponent)
+      .replace(path.sep, "/")
+      .replace("..", ".")
+      .replace(".ts", "")
+      .replace(".js", "");
     // console.log('relComponentImport', relComponentImport);
     // console.log('scriptForComponent', scriptForComponent);
-    let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '');
-    if (realPath.startsWith('@')) {
+    let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, "");
+    if (realPath.startsWith("@")) {
       isArg = true;
-      realPath = realPath.replace('@','this.args.');
+      realPath = realPath.replace("@", "this.args.");
     }
-    
-    componentsMap[fileName] = getBasicComponent(realPath, { isArrayCase, relComponentImport });
+
+    componentsMap[fileName] = getBasicComponent(realPath, {
+      isArrayCase,
+      relComponentImport
+    });
     // console.log('componentsMap[fileName]', componentsMap[fileName]);
-    console.log(Object.keys(componentsMap));
-    let posStart = getBasicComponent(PLACEHOLDER, { isArrayCase, relComponentImport }).indexOf(PLACEHOLDER);
+    // console.log(Object.keys(componentsMap));
+    let posStart = getBasicComponent(PLACEHOLDER, {
+      isArrayCase,
+      relComponentImport
+    }).indexOf(PLACEHOLDER);
     let pos = posStart + realPath.length;
-  //   console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
-  //     console.log('getSyntacticDiagnostics', el.messageText, el.start, el.length);
-  // }));
+    //   console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
+    //     console.log('getSyntacticDiagnostics', el.messageText, el.start, el.length);
+    // }));
     const templateRange: [number, number] = [posStart, pos];
     const tsDiagnostics = service.getSemanticDiagnostics(fileName);
-    const diagnostics: Diagnostic[] = tsDiagnostics.map((error: any) => toDiagnostic(error, templateRange, focusPath));
+    const diagnostics: Diagnostic[] = tsDiagnostics.map((error: any) =>
+      toDiagnostic(error, templateRange, focusPath)
+    );
     server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 
-
     // console.log(service.getSemanticDiagnostics(fileName).map((el)=>{
-      // const diagnostics: Diagnostic[] = errors.map((error: any) => toDiagnostic(el));
-
-      // server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-
-
-      // console.log('getSemanticDiagnostics', el.messageText, el.start, el.length);
-  // }));
+    // const diagnostics: Diagnostic[] = errors.map((error: any) => toDiagnostic(el));
+    // server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+    // console.log('getSemanticDiagnostics', el.messageText, el.start, el.length);
+    // }));
     // console.log(service.getSuggestionDiagnostics(fileName).map((el)=>{
     //     console.log('getSuggestionDiagnostics', el.messageText, el.start, el.length);
     // }));
     // console.log('getCompilerOptionsDiagnostics', service.getCompilerOptionsDiagnostics());
 
-    results = service.getCompletionsAtPosition(
-      fileName,
-      pos,
-      { includeInsertTextCompletions: true }
-    );
-    let data =  (results ? results.entries : []).filter(({name})=>!name.startsWith('_t')).map((el)=>{
-      return {
-        label: isArg ? realPath.replace('this.args.', '@') + el.name : realPath + el.name,
-        kind: 6
-      };
-    })
-    console.log('results', data);
-    return data;
+    let tsResults = service.getCompletionsAtPosition(fileName, pos, {
+      includeInsertTextCompletions: true
+    });
+    let data = (tsResults ? tsResults.entries : [])
+      .filter(({ name }) => !name.startsWith("_t"))
+      .map(el => {
+        return {
+          label: isArg
+            ? realPath.replace("this.args.", "@") + el.name
+            : realPath + el.name,
+          kind: itemKind(el.kind)
+        };
+      });
+    return [...data, ...results];
   } catch (e) {
-    console.error(e, e.ProgramFiles);
+    // console.error(e, e.ProgramFiles);
   }
   return results;
 }
