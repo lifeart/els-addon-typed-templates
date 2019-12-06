@@ -1,5 +1,5 @@
 # els-addon-docs
-Ember Language Server Addon Docs Completion Provider
+Ember Language Server Typed Templates Addon
 
 
 How to use?
@@ -12,10 +12,10 @@ Install this addon as `dev-dependency` inside your ember project.
 ...
 
 ### NPM
-`npm install els-addon-docs --save-dev`
+`npm install els-addon-typed-templates --save-dev`
 
 ### Yarn
-`yarn add els-addon-docs --dev`
+`yarn add els-addon-typed-templates --dev`
 
 ### VSCode
 
@@ -23,5 +23,6 @@ Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/i
 
 * Restart `VSCode`.
 
-## Usage 
-Try ...
+## Usage
+
+Try type `{{this.}}` inside component template.
