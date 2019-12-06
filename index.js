@@ -44,6 +44,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 exports.__esModule = true;
 var vscode_uri_1 = require("vscode-uri");
+var vscode_languageserver_1 = require("vscode-languageserver");
 var ts = require("typescript");
 var path = require("path");
 var fs = require("fs");
@@ -54,7 +55,7 @@ function getBasicComponent(pathExp) {
     return [
         'import Component from "./component";',
         "export default class Template extends Component {",
-        "_template_PathExpresion() {",
+        "_template_PathExpresion(): string | number | void {",
         "return " + pathExp,
         "}",
         "}"
@@ -103,10 +104,87 @@ function serviceForRoot(uri) {
     return services[uri];
 }
 var componentsMap = {};
-function onComplete(root, _a) {
+function offsetToRange(start, limit, source) {
+    var rLines = /(.*?(?:\r\n?|\n|$))/gm;
+    var startLine = source.slice(0, start).match(rLines) || [];
+    var line = startLine.length - 2;
+    var col = startLine[startLine.length - 2].length;
+    var endLine = source.slice(start, limit).match(rLines) || [];
+    var endCol = col;
+    var endLineNumber = line;
+    if (endLine.length === 1) {
+        endCol = col + limit;
+        endLineNumber = line + endLine.length - 1;
+    }
+    else {
+        endCol = endLine[endLine.length - 1].length;
+    }
+    return vscode_languageserver_1.Range.create(line, col, endLineNumber, endCol);
+}
+function tsDefinitionToLocation(el) {
+    var scope = el.textSpan;
+    var file = fs.readFileSync(el.fileName, 'utf8');
+    return vscode_languageserver_1.Location.create(vscode_uri_1.URI.file(el.fileName).toString(), offsetToRange(scope.start, scope.length, file));
+}
+function onDefinition(root, _a) {
     var results = _a.results, focusPath = _a.focusPath, type = _a.type, textDocument = _a.textDocument;
     return __awaiter(this, void 0, void 0, function () {
-        var projectRoot, service, fileName, realPath_1, pos;
+        var projectRoot, service, fileName, realPath, pos;
+        return __generator(this, function (_b) {
+            if (type !== "template") {
+                return [2 /*return*/, results];
+            }
+            if (focusPath.node.type !== 'PathExpression') {
+                return [2 /*return*/, results];
+            }
+            projectRoot = vscode_uri_1.URI.parse(root).fsPath;
+            service = serviceForRoot(projectRoot);
+            try {
+                fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
+                    .fsPath).replace('.hbs', '.ts');
+                realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '');
+                componentsMap[fileName] = getBasicComponent(realPath);
+                pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath.length;
+                results = service.getDefinitionAtPosition(fileName, pos);
+                return [2 /*return*/, results.filter(function (_a) {
+                        var name = _a.name;
+                        return !name.startsWith('_t');
+                    }).map(function (el) {
+                        return tsDefinitionToLocation(el);
+                    })];
+            }
+            catch (e) {
+                console.error(e, e.ProgramFiles);
+            }
+            return [2 /*return*/, results];
+        });
+    });
+}
+exports.onDefinition = onDefinition;
+function toDiagnostic(err, _a, focusPath) {
+    var startIndex = _a[0], endIndex = _a[1];
+    if (err.start >= startIndex && (err.length + err.start) <= endIndex) {
+        var loc = focusPath.node.loc;
+        return {
+            severity: vscode_languageserver_1.DiagnosticSeverity.Error,
+            range: loc ? vscode_languageserver_1.Range.create(loc.start.line - 1, loc.start.column, loc.end.line - 1, loc.end.column) : vscode_languageserver_1.Range.create(0, 0, 0, 0),
+            message: err.messageText,
+            source: 'typed-templates'
+        };
+    }
+    else
+        return {
+            severity: vscode_languageserver_1.DiagnosticSeverity.Error,
+            range: offsetToRange(0, 0, ''),
+            message: err.messageText,
+            source: 'typed-templates'
+        };
+}
+exports.toDiagnostic = toDiagnostic;
+function onComplete(root, _a) {
+    var results = _a.results, focusPath = _a.focusPath, server = _a.server, type = _a.type, textDocument = _a.textDocument;
+    return __awaiter(this, void 0, void 0, function () {
+        var projectRoot, service, fileName, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics;
         return __generator(this, function (_b) {
             if (type !== "template") {
                 return [2 /*return*/, results];
@@ -121,7 +199,21 @@ function onComplete(root, _a) {
                     .fsPath).replace('.hbs', '.ts');
                 realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, '');
                 componentsMap[fileName] = getBasicComponent(realPath_1);
-                pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath_1.length;
+                posStart = getBasicComponent().indexOf(PLACEHOLDER);
+                pos = posStart + realPath_1.length;
+                templateRange_1 = [posStart, pos];
+                tsDiagnostics = service.getSemanticDiagnostics(fileName);
+                diagnostics = tsDiagnostics.map(function (error) { return toDiagnostic(error, templateRange_1, focusPath); });
+                server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics: diagnostics });
+                // console.log(service.getSemanticDiagnostics(fileName).map((el)=>{
+                // const diagnostics: Diagnostic[] = errors.map((error: any) => toDiagnostic(el));
+                // server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+                // console.log('getSemanticDiagnostics', el.messageText, el.start, el.length);
+                // }));
+                // console.log(service.getSuggestionDiagnostics(fileName).map((el)=>{
+                //     console.log('getSuggestionDiagnostics', el.messageText, el.start, el.length);
+                // }));
+                // console.log('getCompilerOptionsDiagnostics', service.getCompilerOptionsDiagnostics());
                 results = service.getCompletionsAtPosition(fileName, pos, { includeInsertTextCompletions: true });
                 return [2 /*return*/, results.entries.filter(function (_a) {
                         var name = _a.name;

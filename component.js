@@ -20,6 +20,7 @@ var MyComponent = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.name = 1;
         _this.noob = 2;
+        _this.userName = 3;
         _this.item = {
             name: 'boo',
             age: 42
@@ -27,7 +28,6 @@ var MyComponent = /** @class */ (function (_super) {
         return _this;
     }
     MyComponent.prototype.names = function () {
-        return 1;
     };
     return MyComponent;
 }(component_1["default"]));
