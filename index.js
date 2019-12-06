@@ -82,9 +82,7 @@ function serviceForRoot(uri) {
                 };
             },
             getScriptFileNames: function () {
-                var els = __spreadArrays(Object.keys(componentsMap).map(function (el) { return path.basename(el); })).map(function (name) {
-                    return path.resolve(path.join(uri, name));
-                });
+                var els = __spreadArrays(Object.keys(componentsMap), [path.resolve(path.join(__dirname, 'common-types.d.ts'))]);
                 return __spreadArrays(Array.from(new Set(els)));
             },
             getScriptVersion: function (_fileName) {
@@ -204,8 +202,9 @@ exports.toDiagnostic = toDiagnostic;
 function onComplete(root, _a) {
     var results = _a.results, focusPath = _a.focusPath, server = _a.server, type = _a.type, textDocument = _a.textDocument;
     return __awaiter(this, void 0, void 0, function () {
-        var projectRoot, service, isArg, isArrayCase, fileName, scriptForComponent, relComponentImport, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics;
+        var projectRoot, service, isArg, isArrayCase, fileName, scriptForComponent, relComponentImport, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics, data;
         return __generator(this, function (_b) {
+            console.log('als-addon-typed', 'onComplete');
             if (type !== "template") {
                 return [2 /*return*/, results];
             }
@@ -234,6 +233,8 @@ function onComplete(root, _a) {
                     realPath_1 = realPath_1.replace('@', 'this.args.');
                 }
                 componentsMap[fileName] = getBasicComponent(realPath_1, { isArrayCase: isArrayCase, relComponentImport: relComponentImport });
+                // console.log('componentsMap[fileName]', componentsMap[fileName]);
+                console.log(Object.keys(componentsMap));
                 posStart = getBasicComponent(PLACEHOLDER, { isArrayCase: isArrayCase, relComponentImport: relComponentImport }).indexOf(PLACEHOLDER);
                 pos = posStart + realPath_1.length;
                 templateRange_1 = [posStart, pos];
@@ -250,14 +251,17 @@ function onComplete(root, _a) {
                 // }));
                 // console.log('getCompilerOptionsDiagnostics', service.getCompilerOptionsDiagnostics());
                 results = service.getCompletionsAtPosition(fileName, pos, { includeInsertTextCompletions: true });
-                return [2 /*return*/, (results ? results.entries : []).filter(function (_a) {
-                        var name = _a.name;
-                        return !name.startsWith('_t');
-                    }).map(function (el) {
-                        return {
-                            label: isArg ? realPath_1.replace('this.args.', '@') + el.name : realPath_1 + el.name
-                        };
-                    })];
+                data = (results ? results.entries : []).filter(function (_a) {
+                    var name = _a.name;
+                    return !name.startsWith('_t');
+                }).map(function (el) {
+                    return {
+                        label: isArg ? realPath_1.replace('this.args.', '@') + el.name : realPath_1 + el.name,
+                        kind: 6
+                    };
+                });
+                console.log('results', data);
+                return [2 /*return*/, data];
             }
             catch (e) {
                 console.error(e, e.ProgramFiles);

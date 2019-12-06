@@ -38,9 +38,7 @@ function serviceForRoot(uri): ts.LanguageService {
         };
       },
       getScriptFileNames() {
-        let els = [...Object.keys(componentsMap).map((el)=>path.basename(el))].map(name =>
-          path.resolve(path.join(uri, name))
-        );
+        let els = [...Object.keys(componentsMap), path.resolve(path.join(__dirname,'common-types.d.ts'))];
         return [...Array.from(new Set(els))];
       },
       getScriptVersion(_fileName) {
@@ -156,6 +154,7 @@ export function toDiagnostic(err, [startIndex, endIndex], focusPath): Diagnostic
 }
 
 export async function onComplete(root, { results, focusPath, server, type, textDocument }) {
+  console.log('als-addon-typed', 'onComplete');
   if (type !== "template") {
     return results;
   }
@@ -183,7 +182,8 @@ export async function onComplete(root, { results, focusPath, server, type, textD
     componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, 'utf8');
 
     const relComponentImport = path.relative(fileName, scriptForComponent).replace(path.sep, '/').replace('..', '.').replace('.ts', '').replace('.js', '');
-
+    // console.log('relComponentImport', relComponentImport);
+    // console.log('scriptForComponent', scriptForComponent);
     let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '');
     if (realPath.startsWith('@')) {
       isArg = true;
@@ -191,6 +191,8 @@ export async function onComplete(root, { results, focusPath, server, type, textD
     }
     
     componentsMap[fileName] = getBasicComponent(realPath, { isArrayCase, relComponentImport });
+    // console.log('componentsMap[fileName]', componentsMap[fileName]);
+    console.log(Object.keys(componentsMap));
     let posStart = getBasicComponent(PLACEHOLDER, { isArrayCase, relComponentImport }).indexOf(PLACEHOLDER);
     let pos = posStart + realPath.length;
   //   console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
@@ -220,11 +222,14 @@ export async function onComplete(root, { results, focusPath, server, type, textD
       pos,
       { includeInsertTextCompletions: true }
     );
-    return (results ? results.entries : []).filter(({name})=>!name.startsWith('_t')).map((el)=>{
+    let data =  (results ? results.entries : []).filter(({name})=>!name.startsWith('_t')).map((el)=>{
       return {
-        label: isArg ? realPath.replace('this.args.', '@') + el.name : realPath + el.name
+        label: isArg ? realPath.replace('this.args.', '@') + el.name : realPath + el.name,
+        kind: 6
       };
     })
+    console.log('results', data);
+    return data;
   } catch (e) {
     console.error(e, e.ProgramFiles);
   }
