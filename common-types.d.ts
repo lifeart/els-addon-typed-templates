@@ -3,3 +3,5 @@ declare module '@glimmer/component' {
         willDestroy: () => void
     }
 }
+
+type helperFn = ([...any], any) => any
