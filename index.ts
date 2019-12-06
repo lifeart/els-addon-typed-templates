@@ -198,7 +198,7 @@ export async function onComplete(root, { results, focusPath, server, type, textD
   //   console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
   //     console.log('getSyntacticDiagnostics', el.messageText, el.start, el.length);
   // }));
-    const templateRange = [posStart, pos];
+    const templateRange: [number, number] = [posStart, pos];
     const tsDiagnostics = service.getSemanticDiagnostics(fileName);
     const diagnostics: Diagnostic[] = tsDiagnostics.map((error: any) => toDiagnostic(error, templateRange, focusPath));
     server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
