@@ -326,8 +326,6 @@ function onComplete(root, _a) {
                     .replace("..", ".")
                     .replace(".ts", "")
                     .replace(".js", "");
-                console.log('relComponentImport', relComponentImport);
-                console.log('scriptForComponent', scriptForComponent);
                 realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, "");
                 if (realPath_1.startsWith("@")) {
                     isArg = true;
