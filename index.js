@@ -50,12 +50,17 @@ var path = require("path");
 var fs = require("fs");
 var services = {};
 var PLACEHOLDER = "ELSCompletionDummy";
-function getBasicComponent(pathExp) {
+function getBasicComponent(pathExp, flags) {
     if (pathExp === void 0) { pathExp = PLACEHOLDER; }
+    if (flags === void 0) { flags = {}; }
+    var outputType = 'string | number | void';
+    if (flags.isArrayCase) {
+        outputType = 'any[]';
+    }
     return [
         'import Component from "./component";',
         "export default class Template extends Component {",
-        "_template_PathExpresion(): string | number | void {",
+        "_template_PathExpresion(): " + outputType + " {",
         "return " + pathExp,
         "}",
         "}"
@@ -106,6 +111,9 @@ var componentsMap = {};
 function offsetToRange(start, limit, source) {
     var rLines = /(.*?(?:\r\n?|\n|$))/gm;
     var startLine = source.slice(0, start).match(rLines) || [];
+    if (!source || startLine.length < 2) {
+        return vscode_languageserver_1.Range.create(0, 0, 0, 0);
+    }
     var line = startLine.length - 2;
     var col = startLine[startLine.length - 2].length;
     var endLine = source.slice(start, limit).match(rLines) || [];
@@ -162,7 +170,8 @@ function onDefinition(root, _a) {
 exports.onDefinition = onDefinition;
 function toDiagnostic(err, _a, focusPath) {
     var startIndex = _a[0], endIndex = _a[1];
-    if (err.start >= startIndex && (err.length + err.start) <= endIndex) {
+    var errText = err.file.text.slice(err.start, err.start + err.length);
+    if (err.start >= startIndex && (err.length + err.start) <= endIndex || errText.startsWith('return ')) {
         var loc = focusPath.node.loc;
         return {
             severity: vscode_languageserver_1.DiagnosticSeverity.Error,
@@ -171,19 +180,20 @@ function toDiagnostic(err, _a, focusPath) {
             source: 'typed-templates'
         };
     }
-    else
+    else {
         return {
             severity: vscode_languageserver_1.DiagnosticSeverity.Error,
             range: offsetToRange(0, 0, ''),
             message: err.messageText,
             source: 'typed-templates'
         };
+    }
 }
 exports.toDiagnostic = toDiagnostic;
 function onComplete(root, _a) {
     var results = _a.results, focusPath = _a.focusPath, server = _a.server, type = _a.type, textDocument = _a.textDocument;
     return __awaiter(this, void 0, void 0, function () {
-        var projectRoot, service, isArg, fileName, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics;
+        var projectRoot, service, isArg, isArrayCase, fileName, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics;
         return __generator(this, function (_b) {
             if (type !== "template") {
                 return [2 /*return*/, results];
@@ -194,6 +204,13 @@ function onComplete(root, _a) {
             projectRoot = vscode_uri_1.URI.parse(root).fsPath;
             service = serviceForRoot(projectRoot);
             isArg = false;
+            isArrayCase = false;
+            if (focusPath.parent.type === 'BlockStatement') {
+                if (focusPath.parent.path.original === 'each' && focusPath.parent.params[0] === focusPath.node) {
+                    isArrayCase = true;
+                }
+            }
+            // console.log(focusPath.parent.type);
             try {
                 fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
                     .fsPath).replace('.hbs', '.ts');
@@ -202,8 +219,8 @@ function onComplete(root, _a) {
                     isArg = true;
                     realPath_1 = realPath_1.replace('@', 'this.args.');
                 }
-                componentsMap[fileName] = getBasicComponent(realPath_1);
-                posStart = getBasicComponent().indexOf(PLACEHOLDER);
+                componentsMap[fileName] = getBasicComponent(realPath_1, { isArrayCase: isArrayCase });
+                posStart = getBasicComponent(PLACEHOLDER, { isArrayCase: isArrayCase }).indexOf(PLACEHOLDER);
                 pos = posStart + realPath_1.length;
                 templateRange_1 = [posStart, pos];
                 tsDiagnostics = service.getSemanticDiagnostics(fileName);

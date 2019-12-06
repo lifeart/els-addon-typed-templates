@@ -20,6 +20,7 @@ var MyComponent = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.name = 1;
         _this.noob = 2;
+        _this.items = [1, 2, 3];
         _this.userName = 3;
         _this.item = {
             name: 'boo',

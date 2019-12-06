@@ -7,11 +7,15 @@ import * as fs from "fs";
 const services: any = {};
 const PLACEHOLDER = "ELSCompletionDummy";
 
-function getBasicComponent(pathExp = PLACEHOLDER) {
+function getBasicComponent(pathExp = PLACEHOLDER, flags : any = {}) {
+  let outputType = 'string | number | void';
+  if (flags.isArrayCase) {
+    outputType = 'any[]';
+  }
   return [
     'import Component from "./component";',
     "export default class Template extends Component {",
-    "_template_PathExpresion(): string | number | void {",
+    `_template_PathExpresion(): ${outputType} {`,
     "return " + pathExp,
     "}",
     "}"
@@ -69,6 +73,9 @@ const componentsMap = {};
 function offsetToRange(start, limit, source) {
   let rLines = /(.*?(?:\r\n?|\n|$))/gm;
   let startLine = source.slice(0, start).match(rLines) || [];
+  if (!source || startLine.length < 2) {
+    return Range.create(0, 0, 0, 0);
+  }
   let line = startLine.length - 2;
   let col = startLine[ startLine.length - 2].length;
   let endLine = source.slice(start, limit).match(rLines) || [];
@@ -116,7 +123,8 @@ export async function onDefinition(root, { results, focusPath, type, textDocumen
 }
 
 export function toDiagnostic(err, [startIndex, endIndex], focusPath): Diagnostic {
-  if (err.start>=startIndex && (err.length + err.start ) <= endIndex) {
+  let errText = err.file.text.slice(err.start, err.start + err.length);
+  if (err.start>=startIndex && (err.length + err.start ) <= endIndex || errText.startsWith('return ')) {
     let loc = focusPath.node.loc;
     return {
       severity: DiagnosticSeverity.Error,
@@ -124,12 +132,14 @@ export function toDiagnostic(err, [startIndex, endIndex], focusPath): Diagnostic
       message: err.messageText,
       source: 'typed-templates'
     };
-  } else return {
-    severity: DiagnosticSeverity.Error,
-    range: offsetToRange(0, 0, ''),
-    message: err.messageText,
-    source: 'typed-templates'
-  };
+  } else {
+    return {
+      severity: DiagnosticSeverity.Error,
+      range: offsetToRange(0, 0, ''),
+      message: err.messageText,
+      source: 'typed-templates'
+    };
+  }
 }
 
 export async function onComplete(root, { results, focusPath, server, type, textDocument }) {
@@ -137,12 +147,21 @@ export async function onComplete(root, { results, focusPath, server, type, textD
     return results;
   }
   if (focusPath.node.type !== 'PathExpression') {
+
     return results;
   }
 
   const projectRoot = URI.parse(root).fsPath;
   const service = serviceForRoot(projectRoot);
   let isArg = false;
+  let isArrayCase = false;
+
+  if (focusPath.parent.type === 'BlockStatement') {
+    if (focusPath.parent.path.original === 'each' && focusPath.parent.params[0] === focusPath.node) {
+      isArrayCase = true;
+    }
+  }
+  // console.log(focusPath.parent.type);
   try {
     let fileName = path.resolve(URI.parse(textDocument.uri)
     .fsPath).replace('.hbs','.ts');
@@ -153,8 +172,8 @@ export async function onComplete(root, { results, focusPath, server, type, textD
       realPath = realPath.replace('@','this.args.');
     }
     
-    componentsMap[fileName] = getBasicComponent(realPath);
-    let posStart = getBasicComponent().indexOf(PLACEHOLDER);
+    componentsMap[fileName] = getBasicComponent(realPath, { isArrayCase });
+    let posStart = getBasicComponent(PLACEHOLDER, { isArrayCase }).indexOf(PLACEHOLDER);
     let pos = posStart + realPath.length;
   //   console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
   //     console.log('getSyntacticDiagnostics', el.messageText, el.start, el.length);
