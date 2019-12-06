@@ -102,7 +102,7 @@ export async function onDefinition(root, { results, focusPath, type, textDocumen
     let fileName = path.resolve(URI.parse(textDocument.uri)
     .fsPath).replace('.hbs','.ts');
 
-    let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '');
+    let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '').replace('@','this.args.');
     componentsMap[fileName] = getBasicComponent(realPath);
     let pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath.length;
     results = service.getDefinitionAtPosition(fileName, pos);
@@ -142,11 +142,17 @@ export async function onComplete(root, { results, focusPath, server, type, textD
 
   const projectRoot = URI.parse(root).fsPath;
   const service = serviceForRoot(projectRoot);
+  let isArg = false;
   try {
     let fileName = path.resolve(URI.parse(textDocument.uri)
     .fsPath).replace('.hbs','.ts');
 
     let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '');
+    if (realPath.startsWith('@')) {
+      isArg = true;
+      realPath = realPath.replace('@','this.args.');
+    }
+    
     componentsMap[fileName] = getBasicComponent(realPath);
     let posStart = getBasicComponent().indexOf(PLACEHOLDER);
     let pos = posStart + realPath.length;
@@ -178,9 +184,8 @@ export async function onComplete(root, { results, focusPath, server, type, textD
       { includeInsertTextCompletions: true }
     );
     return results.entries.filter(({name})=>!name.startsWith('_t')).map((el)=>{
-      // console.log(el);
       return {
-        label: realPath + el.name
+        label: isArg ? realPath.replace('this.args.', '@') + el.name : realPath + el.name
       };
     })
   } catch (e) {

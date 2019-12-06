@@ -141,7 +141,7 @@ function onDefinition(root, _a) {
             try {
                 fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
                     .fsPath).replace('.hbs', '.ts');
-                realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '');
+                realPath = focusPath.sourceForNode().replace(PLACEHOLDER, '').replace('@', 'this.args.');
                 componentsMap[fileName] = getBasicComponent(realPath);
                 pos = getBasicComponent().indexOf(PLACEHOLDER) + realPath.length;
                 results = service.getDefinitionAtPosition(fileName, pos);
@@ -183,7 +183,7 @@ exports.toDiagnostic = toDiagnostic;
 function onComplete(root, _a) {
     var results = _a.results, focusPath = _a.focusPath, server = _a.server, type = _a.type, textDocument = _a.textDocument;
     return __awaiter(this, void 0, void 0, function () {
-        var projectRoot, service, fileName, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics;
+        var projectRoot, service, isArg, fileName, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics;
         return __generator(this, function (_b) {
             if (type !== "template") {
                 return [2 /*return*/, results];
@@ -193,10 +193,15 @@ function onComplete(root, _a) {
             }
             projectRoot = vscode_uri_1.URI.parse(root).fsPath;
             service = serviceForRoot(projectRoot);
+            isArg = false;
             try {
                 fileName = path.resolve(vscode_uri_1.URI.parse(textDocument.uri)
                     .fsPath).replace('.hbs', '.ts');
                 realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, '');
+                if (realPath_1.startsWith('@')) {
+                    isArg = true;
+                    realPath_1 = realPath_1.replace('@', 'this.args.');
+                }
                 componentsMap[fileName] = getBasicComponent(realPath_1);
                 posStart = getBasicComponent().indexOf(PLACEHOLDER);
                 pos = posStart + realPath_1.length;
@@ -218,9 +223,8 @@ function onComplete(root, _a) {
                         var name = _a.name;
                         return !name.startsWith('_t');
                     }).map(function (el) {
-                        // console.log(el);
                         return {
-                            label: realPath_1 + el.name
+                            label: isArg ? realPath_1.replace('this.args.', '@') + el.name : realPath_1 + el.name
                         };
                     })];
             }
