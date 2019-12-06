@@ -79,7 +79,6 @@ function serviceForRoot(uri) {
                 var els = __spreadArrays(["component.ts"], Object.keys(componentsMap).map(function (el) { return path.basename(el); })).map(function (name) {
                     return path.resolve(path.join(uri, name));
                 });
-                console.log('els', els);
                 return __spreadArrays(els);
             },
             getScriptVersion: function (_fileName) {

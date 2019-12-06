@@ -36,7 +36,6 @@ function serviceForRoot(uri): ts.LanguageService {
         let els = ["component.ts", ...Object.keys(componentsMap).map((el)=>path.basename(el))].map(name =>
           path.resolve(path.join(uri, name))
         );
-        console.log('els', els);
         return [...els];
       },
       getScriptVersion(_fileName) {
