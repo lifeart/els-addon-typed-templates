@@ -15,6 +15,9 @@ export default class MyComponent extends Component {
     }
     item = {
         name: 'boo',
+        user: {
+            pets: 12
+        },
         age: 42
     }
 }

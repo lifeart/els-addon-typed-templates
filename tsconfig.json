@@ -4,8 +4,10 @@
         "lib": ["ES2019", "DOM"],
         "target": "es6",
         "module": "commonjs",
+        "moduleResolution": "node",
         "declaration": true,
         "declarationMap": true,
+        "outDir": "dist",
         "sourceMap": true,
         "composite": true,
         "noEmitOnError": true,
@@ -24,5 +26,7 @@
         "newLine": "crlf",
 
         "types": []
-    }
+    },
+    "exclude": ["node_modules", "app", "dist"],
+    "include": ["./src/**/*"],
 }
