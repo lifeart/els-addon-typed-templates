@@ -2,7 +2,7 @@ import * as path from "path";
 import * as fs from "fs";
 
 export function virtualTemplateFileName(fsPath) {
-  return path.resolve(fsPath).replace(".hbs", "_template.ts");
+  return path.resolve(fsPath).replace(".hbs", '_' + Date.now() + "_template.ts");
 }
 
 export function relativeComponentImport(templateFileName, scriptForComponent) {
@@ -23,8 +23,8 @@ export function findComponentForTemplate(fsPath, projectRoot) {
   const normalizedDirname = dir.split(path.sep).join("/");
   const fileNames = [
     fileName + ".ts",
-    "component.ts",
     fileName + ".js",
+    "component.ts",
     "component.js"
   ];
   const posibleNames = fileNames.map(name => path.join(dir, name));
@@ -43,7 +43,7 @@ export function findComponentForTemplate(fsPath, projectRoot) {
     );
     posibleNames.push(
       path.resolve(
-        path.join(projectRoot, "app", "components", pureName, "component.ts")
+        path.join(projectRoot, "app", "components", pureName + ".js")
       )
     );
     posibleNames.push(
@@ -54,17 +54,18 @@ export function findComponentForTemplate(fsPath, projectRoot) {
 
     posibleNames.push(
       path.resolve(
-        path.join(projectRoot, "app", "components", pureName + ".js")
+        path.join(projectRoot, "app", "components", pureName, "index.js")
       )
     );
+    posibleNames.push(
+      path.resolve(
+        path.join(projectRoot, "app", "components", pureName, "component.ts")
+      )
+    );
+
     posibleNames.push(
       path.resolve(
         path.join(projectRoot, "app", "components", pureName, "component.js")
-      )
-    );
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "app", "components", pureName, "index.js")
       )
     );
   }

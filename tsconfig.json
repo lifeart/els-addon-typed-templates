@@ -8,7 +8,6 @@
         "declaration": true,
         "declarationMap": true,
         "outDir": "dist",
-        "rootDir": "src",
         "sourceMap": true,
         "composite": true,
         "noEmitOnError": true,
@@ -27,5 +26,7 @@
         "newLine": "crlf",
 
         "types": []
-    }
+    },
+    "exclude": ["node_modules", "app", "dist"],
+    "include": ["./src/**/*"],
 }

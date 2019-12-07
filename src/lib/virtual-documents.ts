@@ -1,5 +1,5 @@
 import { PLACEHOLDER } from './utils';
-import * as fs from "fs";
+// import * as fs from "fs";
 import {
   findComponentForTemplate,
   relativeComponentImport
@@ -14,24 +14,25 @@ import {
 
 export function createVirtualTemplate(projectRoot, componentsMap, fileName, { templatePath, realPath, isArg, isArrayCase, isParam }: any) {
 
-  console.log('createVirtualTemplate')
+  // console.log('createVirtualTemplate')
   const scriptForComponent = findComponentForTemplate(
     templatePath,
     projectRoot
   );
-  console.log('scriptForComponent', scriptForComponent)
+  // console.log('scriptForComponent', scriptForComponent)
 
   const relComponentImport = relativeComponentImport(
     fileName,
     scriptForComponent
   );
-  console.log('relComponentImport', relComponentImport)
+  // console.log('relComponentImport', relComponentImport)
 
-  componentsMap[scriptForComponent] = fs.readFileSync(
-    scriptForComponent,
-    "utf8"
-  );
-  
+  // componentsMap[scriptForComponent] = fs.readFileSync(
+  //   scriptForComponent,
+  //   "utf8"
+  // );
+  // console.log('fileName', fileName)
+
   componentsMap[fileName] = getBasicComponent(realPath, {
     relComponentImport,
     isArg,

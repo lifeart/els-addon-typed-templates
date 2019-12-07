@@ -26,9 +26,19 @@ export function normalizeCompletions(tsResults, realPath, isArg) {
       label: isArg
         ? serializeArgumentName(realPath) + el.name
         : realPath + el.name,
+      data: el.name,
       kind: itemKind(el.kind)
     };
   });
+
+  // .map(el => {
+  //   let fixedLabelParts = el.label.split('.');
+  //   fixedLabelParts[fixedLabelParts.length - 1] = el.data;
+  //   return {
+  //     kind: el.kind,
+  //     label: fixedLabelParts.join('.')
+  //   }
+  // });
 }
 
 export function offsetToRange(start, limit, source) {
@@ -64,7 +74,8 @@ export function getSemanticDiagnostics(server, service, templateRange, fileName 
   //  console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
       //     console.log('getSyntacticDiagnostics', el.messageText, el.start, el.length);
       // }));
-  
+      // console.log('getSemanticDiagnostics', fileName);
+
       const tsDiagnostics = service.getSemanticDiagnostics(fileName);
       const diagnostics: Diagnostic[] = tsDiagnostics.map((error: any) =>
         toDiagnostic(error, templateRange, focusPath)

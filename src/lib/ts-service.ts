@@ -5,8 +5,16 @@ import * as fs from "fs";
 import { safeWalkSync } from "./utils";
 
 const services: any = {};
+const components = new WeakMap();
 
-export function serviceForRoot(uri, componentsMap): ts.LanguageService {
+export function componentsForService(service, clean = false) {
+  if (clean) {
+    components.set(service, {});
+  }
+  return components.get(service);
+}
+
+export function serviceForRoot(uri): ts.LanguageService {
   if (!services[uri]) {
     const registry: ts.DocumentRegistry = ts.createDocumentRegistry(false, uri);
     let tsConfig: any = {};
@@ -36,9 +44,9 @@ export function serviceForRoot(uri, componentsMap): ts.LanguageService {
       },
       getScriptFileNames() {
         let els = [
-          ...Object.keys(componentsMap),
-          path.resolve(path.join(__dirname, "common-types.d.ts"))
+          ...Object.keys(componentsForService(services[uri]))
         ];
+        // console.log('els', els);
         let walkParams = {
           directories: true,
           globs: ["**/*.{js,ts,d.ts}"]
@@ -70,15 +78,14 @@ export function serviceForRoot(uri, componentsMap): ts.LanguageService {
         ];
       },
       getScriptVersion(_fileName) {
-        if (fs.existsSync(_fileName)) {
-          let stats = fs.statSync(_fileName);
-          return stats.mtime.getTime().toString();
-        }
+        // if (fs.existsSync(_fileName)) {
+        //   let stats = fs.statSync(_fileName);
+        //   return stats.mtime.getTime().toString();
+        // }
         return "";
       },
       getScriptSnapshot(fileName) {
-        console.log('getScriptSnapshot', fileName);
-        const maybeVirtualFile = componentsMap[path.resolve(fileName)];
+        const maybeVirtualFile = componentsForService(services[uri])[path.resolve(fileName)];
         if (maybeVirtualFile) {
           return ts.ScriptSnapshot.fromString(maybeVirtualFile);
         } else {
@@ -96,7 +103,7 @@ export function serviceForRoot(uri, componentsMap): ts.LanguageService {
               );
             }
           }
-          console.log("getScriptSnapshot:unknownFileName", fileName);
+          // console.log("getScriptSnapshot:unknownFileName", fileName);
           return ts.ScriptSnapshot.fromString("");
         }
       },
@@ -108,6 +115,7 @@ export function serviceForRoot(uri, componentsMap): ts.LanguageService {
       }
     };
     services[uri] = ts.createLanguageService(host, registry);
+    components.set(services[uri], {});
   }
 
   return services[uri];

@@ -1,9 +1,9 @@
 "use strict";
-exports.__esModule = true;
-var utils_1 = require("./utils");
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("./utils");
 function isParamPath(astPath) {
-    var parentType = astPath.parent && astPath.parent.type;
-    var itemsWithBlock = [
+    const parentType = astPath.parent && astPath.parent.type;
+    const itemsWithBlock = [
         "BlockStatement",
         "SubExpression",
         "MustacheStatement",
@@ -38,7 +38,7 @@ function canHandle(type, focusPath) {
     if (focusPath.node.type !== "PathExpression") {
         return false;
     }
-    if (focusPath.node["this"] === false && focusPath.node.data === false) {
+    if (focusPath.node.this === false && focusPath.node.data === false) {
         return false;
     }
     return true;
@@ -53,3 +53,4 @@ function isEachArgument(focusPath) {
     }
 }
 exports.isEachArgument = isEachArgument;
+//# sourceMappingURL=ast-helpers.js.map

@@ -2,11 +2,11 @@
   "name": "els-addon-typed-templates",
   "version": "1.0.6",
   "description": "Ember Language Server Typed Templates",
-  "main": "src/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "test": "jest",
-    "compile": "tsc -p ./src/index.ts",
-    "watch": "tsc -watch -p ./src/index.ts"
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
   },
   "repository": {
     "type": "git",
@@ -18,8 +18,8 @@
     "ember"
   ],
   "ember-language-server": {
-    "entry": "./src/index",
-    "debug": true,
+    "entry": "./dist/src/index",
+    "debug": false,
     "capabilities": {
       "completionProvider": true,
       "definitionProvider": true

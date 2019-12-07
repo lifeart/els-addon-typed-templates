@@ -9,15 +9,13 @@ import {
   normalizeArgumentName
 } from "./lib/ast-helpers";
 import { virtualTemplateFileName } from "./lib/resolvers";
-import { serviceForRoot } from "./lib/ts-service";
+import { serviceForRoot, componentsForService } from "./lib/ts-service";
 import { createVirtualTemplate } from "./lib/virtual-documents";
 import {
   normalizeDefinitions,
   getSemanticDiagnostics,
   normalizeCompletions
 } from "./lib/ls-utils";
-
-const componentsMap = {};
 
 export async function onDefinition(
   root,
@@ -31,7 +29,8 @@ export async function onDefinition(
   try {
     const isParam = isParamPath(focusPath);
     const projectRoot = URI.parse(root).fsPath;
-    const service = serviceForRoot(projectRoot, componentsMap);
+    const service = serviceForRoot(projectRoot);
+    const componentsMap = componentsForService(service, true);
     const templatePath = URI.parse(textDocument.uri).fsPath;
     let isArg = false;
     let realPath = realPathName(focusPath);
@@ -39,6 +38,7 @@ export async function onDefinition(
       isArg = true;
       realPath = normalizeArgumentName(realPath);
     }
+    // console.log('realPath', realPath);
 
     const fileName = virtualTemplateFileName(templatePath);
     const { pos } = createVirtualTemplate(
@@ -53,7 +53,9 @@ export async function onDefinition(
       }
     );
     results = service.getDefinitionAtPosition(fileName, pos);
-    return normalizeDefinitions(results);
+    // console.log('definitions', results);
+    const data = normalizeDefinitions(results);
+    return data;
   } catch (e) {
     console.error(e, e.ProgramFiles);
   }
@@ -71,7 +73,8 @@ export async function onComplete(
   try {
     const isParam = isParamPath(focusPath);
     const projectRoot = URI.parse(root).fsPath;
-    const service = serviceForRoot(projectRoot, componentsMap);
+    const service = serviceForRoot(projectRoot);
+    const componentsMap = componentsForService(service, true);
     const templatePath = URI.parse(textDocument.uri).fsPath;
 
     let isArg = false;
@@ -81,6 +84,7 @@ export async function onComplete(
       isArg = true;
       realPath = normalizeArgumentName(realPath);
     }
+    // console.log('realPath', realPath);
 
     const fileName = virtualTemplateFileName(templatePath);
 
@@ -97,6 +101,8 @@ export async function onComplete(
       }
     );
 
+    // console.log('slice','`'+componentsMap[fileName].slice(pos,pos+2)+'`');
+
     const templateRange: [number, number] = [posStart, pos];
     getSemanticDiagnostics(
       server,
@@ -109,8 +115,13 @@ export async function onComplete(
     let tsResults = service.getCompletionsAtPosition(fileName, pos, {
       includeInsertTextCompletions: true
     });
+    if (tsResults && tsResults.entries.length > 100) {
+      // console.log('too match results', componentsMap[fileName], pos, componentsMap[fileName].length);
+      return results;
+    }
+    // console.log('tsResults',  tsResults && tsResults.entries);
     let data = normalizeCompletions(tsResults, realPath, isArg);
-    // console.log('data', tsResults);
+    // console.log('data', data);
     // console.log('mergeResults(results, data);', mergeResults(results, data));
     return mergeResults(results, data);
   } catch (e) {
