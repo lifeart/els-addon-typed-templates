@@ -139,22 +139,22 @@ function serviceForRoot(uri) {
     if (!services[uri]) {
         var registry = ts.createDocumentRegistry(false, uri);
         var tsConfig_1 = {};
-        if (fs.existsSync(path.join(uri, 'tsconfig.json'))) {
+        if (fs.existsSync(path.join(uri, "tsconfig.json"))) {
             try {
-                tsConfig_1 = JSON.parse(fs.readFileSync(path.join(uri, 'tsconfig.json'), 'utf8'));
+                tsConfig_1 = JSON.parse(fs.readFileSync(path.join(uri, "tsconfig.json"), "utf8"));
                 if (tsConfig_1 && tsConfig_1.compilerOptions) {
                     tsConfig_1 = tsConfig_1.compilerOptions;
                 }
             }
             catch (e) {
-                // 
+                //
             }
         }
         // console.log('tsConfig', tsConfig);
         var host = {
             getCompilationSettings: function () {
                 return Object.assign({}, tsConfig_1, {
-                    baseUrl: '.',
+                    baseUrl: ".",
                     allowJs: true,
                     allowSyntheticDefaultImports: true,
                     skipLibCheck: true,
@@ -196,14 +196,14 @@ function serviceForRoot(uri) {
                         return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
                     }
                     else {
-                        var libName = 'lib.' + name_1.toLowerCase() + '.d.ts';
+                        var libName = "lib." + name_1.toLowerCase() + ".d.ts";
                         var libFileNmae = path.join(path.dirname(fileName), libName);
                         if (fs.existsSync(libFileNmae)) {
                             return ts.ScriptSnapshot.fromString(fs.readFileSync(libFileNmae).toString());
                         }
                     }
-                    console.log('getScriptSnapshot:unknownFileName', fileName);
-                    return ts.ScriptSnapshot.fromString('');
+                    console.log("getScriptSnapshot:unknownFileName", fileName);
+                    return ts.ScriptSnapshot.fromString("");
                 }
             },
             getCurrentDirectory: function () {
@@ -247,23 +247,28 @@ function findComponentForTemplate(uri, projectRoot) {
     var absPath = path.resolve(vscode_uri_1.URI.parse(uri).fsPath);
     var fileName = path.basename(absPath, ".hbs");
     var dir = path.dirname(absPath);
-    var classicComponentTemplatesLocation = 'app/templates/components';
-    var normalizedDirname = dir.split(path.sep).join('/');
+    var classicComponentTemplatesLocation = "app/templates/components";
+    var normalizedDirname = dir.split(path.sep).join("/");
     var fileNames = [
-        fileName + ".ts", "component.ts", fileName + ".js", "component.js"
+        fileName + ".ts",
+        "component.ts",
+        fileName + ".js",
+        "component.js"
     ];
-    var posibleNames = fileNames.map(function (name) {
-        return path.join(dir, name);
-    });
-    var relativePath = path.relative(projectRoot, dir).split(path.sep).join('/');
+    var posibleNames = fileNames.map(function (name) { return path.join(dir, name); });
+    var relativePath = path
+        .relative(projectRoot, dir)
+        .split(path.sep)
+        .join("/");
     if (relativePath.startsWith(classicComponentTemplatesLocation)) {
-        var pureName = normalizedDirname.split(classicComponentTemplatesLocation).pop() + fileName;
-        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName + '.ts')));
-        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'component.ts')));
-        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'index.ts')));
-        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName + '.js')));
-        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'component.js')));
-        posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'index.js')));
+        var pureName = normalizedDirname.split(classicComponentTemplatesLocation).pop() +
+            fileName;
+        posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName + ".ts")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "component.ts")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "index.ts")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName + ".js")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "component.js")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "index.js")));
     }
     return posibleNames.filter(function (fileLocation) { return fs.existsSync(fileLocation); })[0];
 }
@@ -288,12 +293,7 @@ function onDefinition(root, _a) {
                     .resolve(vscode_uri_1.URI.parse(textDocument.uri).fsPath)
                     .replace(".hbs", "_template.ts");
                 scriptForComponent = findComponentForTemplate(textDocument.uri, projectRoot);
-                relComponentImport = path
-                    .relative(fileName, scriptForComponent)
-                    .replace(path.sep, "/")
-                    .replace("..", ".")
-                    .replace(".ts", "")
-                    .replace(".js", "");
+                relComponentImport = relativeComponentImport(fileName, scriptForComponent);
                 componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, "utf8");
                 realPath = focusPath
                     .sourceForNode()
@@ -321,6 +321,15 @@ function onDefinition(root, _a) {
     });
 }
 exports.onDefinition = onDefinition;
+function relativeComponentImport(templateFileName, scriptForComponent) {
+    return path
+        .relative(templateFileName, scriptForComponent)
+        .split(path.sep)
+        .join("/")
+        .replace("..", ".")
+        .replace(".ts", "")
+        .replace(".js", "");
+}
 function toDiagnostic(err, _a, focusPath) {
     var startIndex = _a[0], endIndex = _a[1];
     var errText = err.file.text.slice(err.start, err.start + err.length);
@@ -377,12 +386,7 @@ function onComplete(root, _a) {
                     .replace(".hbs", "_template.ts");
                 scriptForComponent = findComponentForTemplate(textDocument.uri, projectRoot);
                 componentsMap[scriptForComponent] = fs.readFileSync(scriptForComponent, "utf8");
-                relComponentImport = path
-                    .relative(fileName, scriptForComponent)
-                    .split(path.sep).join('/')
-                    .replace("..", ".")
-                    .replace(".ts", "")
-                    .replace(".js", "");
+                relComponentImport = relativeComponentImport(fileName, scriptForComponent);
                 realPath_1 = focusPath.sourceForNode().replace(PLACEHOLDER, "");
                 if (realPath_1.startsWith("@")) {
                     isArg = true;
@@ -419,6 +423,8 @@ function onComplete(root, _a) {
                         kind: itemKind(el.kind)
                     };
                 });
+                // console.log('data', tsResults);
+                // console.log('mergeResults(results, data);', mergeResults(results, data));
                 return [2 /*return*/, mergeResults(results, data)];
             }
             catch (e) {

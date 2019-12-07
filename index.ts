@@ -26,14 +26,14 @@ function safeWalkSync(filePath, opts) {
 
 function mergeResults(existingResults, newResults) {
   let indexes = new Set();
-  let existingResultsMap: any = existingResults.reduce((hash, item)=>{
+  let existingResultsMap: any = existingResults.reduce((hash, item) => {
     hash[item.label] = item;
     indexes.add(item.label);
     return hash;
-  },{});
-  newResults.forEach((el)=>{
+  }, {});
+  newResults.forEach(el => {
     if (el.label in existingResultsMap) {
-      Object.keys(el).forEach((key)=>{
+      Object.keys(el).forEach(key => {
         existingResultsMap[el.label][key] = el[key];
       });
     } else {
@@ -41,7 +41,7 @@ function mergeResults(existingResults, newResults) {
       indexes.add(el.label);
     }
   });
-  return Array.from(indexes).map((key)=>{
+  return Array.from(indexes).map(key => {
     return existingResultsMap[key as string];
   });
 }
@@ -105,21 +105,23 @@ function serviceForRoot(uri): ts.LanguageService {
   if (!services[uri]) {
     const registry: ts.DocumentRegistry = ts.createDocumentRegistry(false, uri);
     let tsConfig: any = {};
-    if (fs.existsSync(path.join(uri, 'tsconfig.json'))) {
+    if (fs.existsSync(path.join(uri, "tsconfig.json"))) {
       try {
-        tsConfig = JSON.parse(fs.readFileSync(path.join(uri, 'tsconfig.json'),'utf8'));
+        tsConfig = JSON.parse(
+          fs.readFileSync(path.join(uri, "tsconfig.json"), "utf8")
+        );
         if (tsConfig && tsConfig.compilerOptions) {
           tsConfig = tsConfig.compilerOptions;
         }
       } catch (e) {
-        // 
+        //
       }
     }
     // console.log('tsConfig', tsConfig);
     const host: ts.LanguageServiceHost = {
       getCompilationSettings() {
         return Object.assign({}, tsConfig, {
-          baseUrl: '.',
+          baseUrl: ".",
           allowJs: true,
           allowSyntheticDefaultImports: true,
           skipLibCheck: true,
@@ -153,7 +155,12 @@ function serviceForRoot(uri): ts.LanguageService {
         ).map(el => path.resolve(path.join(addonEntry, el)));
         return [
           ...Array.from(
-            new Set([...els, ...projectAppFiles, ...projectAddonFiles, ...projectTypes])
+            new Set([
+              ...els,
+              ...projectAppFiles,
+              ...projectAddonFiles,
+              ...projectTypes
+            ])
           )
         ];
       },
@@ -171,16 +178,20 @@ function serviceForRoot(uri): ts.LanguageService {
         } else {
           let name = path.basename(fileName, path.extname(fileName));
           if (fs.existsSync(fileName)) {
-              return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+            return ts.ScriptSnapshot.fromString(
+              fs.readFileSync(fileName).toString()
+            );
           } else {
-              let libName = 'lib.' + name.toLowerCase() + '.d.ts';
-              let libFileNmae = path.join(path.dirname(fileName), libName);
-              if (fs.existsSync(libFileNmae)) {
-                return ts.ScriptSnapshot.fromString(fs.readFileSync(libFileNmae).toString());
-              }
+            let libName = "lib." + name.toLowerCase() + ".d.ts";
+            let libFileNmae = path.join(path.dirname(fileName), libName);
+            if (fs.existsSync(libFileNmae)) {
+              return ts.ScriptSnapshot.fromString(
+                fs.readFileSync(libFileNmae).toString()
+              );
+            }
           }
-          console.log('getScriptSnapshot:unknownFileName', fileName);
-          return ts.ScriptSnapshot.fromString('');
+          console.log("getScriptSnapshot:unknownFileName", fileName);
+          return ts.ScriptSnapshot.fromString("");
         }
       },
       getCurrentDirectory: () => {
@@ -231,24 +242,54 @@ function findComponentForTemplate(uri, projectRoot) {
   const absPath = path.resolve(URI.parse(uri).fsPath);
   const fileName = path.basename(absPath, ".hbs");
   const dir = path.dirname(absPath);
-  const classicComponentTemplatesLocation = 'app/templates/components';
-  const normalizedDirname = dir.split(path.sep).join('/');
+  const classicComponentTemplatesLocation = "app/templates/components";
+  const normalizedDirname = dir.split(path.sep).join("/");
   const fileNames = [
-    fileName + ".ts", "component.ts", fileName + ".js", "component.js"
+    fileName + ".ts",
+    "component.ts",
+    fileName + ".js",
+    "component.js"
   ];
-  const posibleNames = fileNames.map(name =>
-    path.join(dir, name)
-  );
-  const relativePath = path.relative(projectRoot, dir).split(path.sep).join('/');
+  const posibleNames = fileNames.map(name => path.join(dir, name));
+  const relativePath = path
+    .relative(projectRoot, dir)
+    .split(path.sep)
+    .join("/");
   if (relativePath.startsWith(classicComponentTemplatesLocation)) {
-    const pureName = normalizedDirname.split(classicComponentTemplatesLocation).pop() + fileName;
-    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName + '.ts')));
-    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'component.ts')));
-    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'index.ts')));
+    const pureName =
+      normalizedDirname.split(classicComponentTemplatesLocation).pop() +
+      fileName;
+    posibleNames.push(
+      path.resolve(
+        path.join(projectRoot, "app", "components", pureName + ".ts")
+      )
+    );
+    posibleNames.push(
+      path.resolve(
+        path.join(projectRoot, "app", "components", pureName, "component.ts")
+      )
+    );
+    posibleNames.push(
+      path.resolve(
+        path.join(projectRoot, "app", "components", pureName, "index.ts")
+      )
+    );
 
-    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName + '.js')));
-    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'component.js')));
-    posibleNames.push(path.resolve(path.join(projectRoot, 'app', 'components', pureName, 'index.js')));
+    posibleNames.push(
+      path.resolve(
+        path.join(projectRoot, "app", "components", pureName + ".js")
+      )
+    );
+    posibleNames.push(
+      path.resolve(
+        path.join(projectRoot, "app", "components", pureName, "component.js")
+      )
+    );
+    posibleNames.push(
+      path.resolve(
+        path.join(projectRoot, "app", "components", pureName, "index.js")
+      )
+    );
   }
 
   return posibleNames.filter(fileLocation => fs.existsSync(fileLocation))[0];
@@ -274,13 +315,14 @@ export async function onDefinition(
       .resolve(URI.parse(textDocument.uri).fsPath)
       .replace(".hbs", "_template.ts");
 
-    const scriptForComponent = findComponentForTemplate(textDocument.uri, projectRoot);
-    const relComponentImport = path
-      .relative(fileName, scriptForComponent)
-      .replace(path.sep, "/")
-      .replace("..", ".")
-      .replace(".ts", "")
-      .replace(".js", "");
+    const scriptForComponent = findComponentForTemplate(
+      textDocument.uri,
+      projectRoot
+    );
+    const relComponentImport = relativeComponentImport(
+      fileName,
+      scriptForComponent
+    );
 
     componentsMap[scriptForComponent] = fs.readFileSync(
       scriptForComponent,
@@ -307,6 +349,16 @@ export async function onDefinition(
     console.error(e, e.ProgramFiles);
   }
   return results;
+}
+
+function relativeComponentImport(templateFileName, scriptForComponent) {
+  return path
+    .relative(templateFileName, scriptForComponent)
+    .split(path.sep)
+    .join("/")
+    .replace("..", ".")
+    .replace(".ts", "")
+    .replace(".js", "");
 }
 
 export function toDiagnostic(
@@ -376,19 +428,20 @@ export async function onComplete(
       .resolve(URI.parse(textDocument.uri).fsPath)
       .replace(".hbs", "_template.ts");
 
-    const scriptForComponent = findComponentForTemplate(textDocument.uri, projectRoot);
+    const scriptForComponent = findComponentForTemplate(
+      textDocument.uri,
+      projectRoot
+    );
     componentsMap[scriptForComponent] = fs.readFileSync(
       scriptForComponent,
       "utf8"
     );
-    const relComponentImport = path
-      .relative(fileName, scriptForComponent)
-      .split(path.sep).join('/')
-      .replace("..", ".")
-      .replace(".ts", "")
-      .replace(".js", "");
-    // console.log('relComponentImport', relComponentImport);
-    // console.log('scriptForComponent', scriptForComponent);
+    const relComponentImport = relativeComponentImport(
+      fileName,
+      scriptForComponent
+    );
+    // console.log("relComponentImport", relComponentImport);
+    // console.log("scriptForComponent", scriptForComponent);
     let realPath = focusPath.sourceForNode().replace(PLACEHOLDER, "");
     if (realPath.startsWith("@")) {
       isArg = true;
@@ -439,6 +492,8 @@ export async function onComplete(
           kind: itemKind(el.kind)
         };
       });
+    // console.log('data', tsResults);
+    // console.log('mergeResults(results, data);', mergeResults(results, data));
     return mergeResults(results, data);
   } catch (e) {
     console.error(e, e.ProgramFiles);
