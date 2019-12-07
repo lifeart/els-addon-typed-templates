@@ -24,6 +24,28 @@ function safeWalkSync(filePath, opts) {
   return walkSync(filePath, opts);
 }
 
+function mergeResults(existingResults, newResults) {
+  let indexes = new Set();
+  let existingResultsMap: any = existingResults.reduce((hash, item)=>{
+    hash[item.label] = item;
+    indexes.add(item.label);
+    return hash;
+  },{});
+  newResults.forEach((el)=>{
+    if (el.label in existingResultsMap) {
+      Object.keys(el).forEach((key)=>{
+        existingResultsMap[el.label][key] = el[key];
+      });
+    } else {
+      existingResultsMap[el.label] = el;
+      indexes.add(el.label);
+    }
+  });
+  return Array.from(indexes).map((key)=>{
+    return existingResultsMap[key as string];
+  });
+}
+
 // function yieldedContext() {
 //   return `
 //   _template_BlockStatement_Each_FirstBlock() {
@@ -82,16 +104,28 @@ function getBasicComponent(pathExp = PLACEHOLDER, flags: any = {}) {
 function serviceForRoot(uri): ts.LanguageService {
   if (!services[uri]) {
     const registry: ts.DocumentRegistry = ts.createDocumentRegistry(false, uri);
+    let tsConfig: any = {};
+    if (fs.existsSync(path.join(uri, 'tsconfig.json'))) {
+      try {
+        tsConfig = JSON.parse(fs.readFileSync(path.join(uri, 'tsconfig.json'),'utf8'));
+        if (tsConfig && tsConfig.compilerOptions) {
+          tsConfig = tsConfig.compilerOptions;
+        }
+      } catch (e) {
+        // 
+      }
+    }
+    // console.log('tsConfig', tsConfig);
     const host: ts.LanguageServiceHost = {
       getCompilationSettings() {
-        return {
-          baseUrl: ".",
+        return Object.assign({}, tsConfig, {
+          baseUrl: '.',
           allowJs: true,
           allowSyntheticDefaultImports: true,
           skipLibCheck: true,
           moduleResolution: ts.ModuleResolutionKind.NodeJs,
           module: ts.ModuleKind.ES2015
-        };
+        });
       },
       getScriptFileNames() {
         let els = [
@@ -104,6 +138,11 @@ function serviceForRoot(uri): ts.LanguageService {
         };
         let appEntry = path.join(uri, "app");
         let addonEntry = path.join(uri, "addon");
+        let typesEntry = path.join(uri, "types");
+        let projectTypes = safeWalkSync(
+          path.join(uri, "types"),
+          walkParams
+        ).map(el => path.resolve(path.join(typesEntry, el)));
         let projectAppFiles = safeWalkSync(
           path.join(uri, "app"),
           walkParams
@@ -114,11 +153,15 @@ function serviceForRoot(uri): ts.LanguageService {
         ).map(el => path.resolve(path.join(addonEntry, el)));
         return [
           ...Array.from(
-            new Set([...els, ...projectAppFiles, ...projectAddonFiles])
+            new Set([...els, ...projectAppFiles, ...projectAddonFiles, ...projectTypes])
           )
         ];
       },
       getScriptVersion(_fileName) {
+        if (fs.existsSync(_fileName)) {
+          let stats = fs.statSync(_fileName);
+          return stats.mtime.getTime().toString();
+        }
         return "";
       },
       getScriptSnapshot(fileName) {
@@ -126,14 +169,25 @@ function serviceForRoot(uri): ts.LanguageService {
         if (maybeVirtualFile) {
           return ts.ScriptSnapshot.fromString(maybeVirtualFile);
         } else {
-          return ts.ScriptSnapshot.fromString(
-            fs.readFileSync(fileName).toString()
-          );
+          let name = path.basename(fileName, path.extname(fileName));
+          if (fs.existsSync(fileName)) {
+              return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+          } else {
+              let libName = 'lib.' + name.toLowerCase() + '.d.ts';
+              let libFileNmae = path.join(path.dirname(fileName), libName);
+              if (fs.existsSync(libFileNmae)) {
+                return ts.ScriptSnapshot.fromString(fs.readFileSync(libFileNmae).toString());
+              }
+          }
+          console.log('getScriptSnapshot:unknownFileName', fileName);
+          return ts.ScriptSnapshot.fromString('');
         }
       },
-      getCurrentDirectory: () => uri,
+      getCurrentDirectory: () => {
+        return path.resolve(uri);
+      },
       getDefaultLibFileName(opts) {
-        return ts.getDefaultLibFilePath(opts);
+        return path.resolve(ts.getDefaultLibFilePath(opts));
       }
     };
     services[uri] = ts.createLanguageService(host, registry);
@@ -293,11 +347,13 @@ export async function onComplete(
   root,
   { results, focusPath, server, type, textDocument }
 ) {
-  // console.log('als-addon-typed', 'onComplete');
   if (type !== "template") {
     return results;
   }
   if (focusPath.node.type !== "PathExpression") {
+    return results;
+  }
+  if (focusPath.node.this === false && focusPath.node.data === false) {
     return results;
   }
 
@@ -383,9 +439,9 @@ export async function onComplete(
           kind: itemKind(el.kind)
         };
       });
-    return [...data, ...results];
+    return mergeResults(results, data);
   } catch (e) {
-    // console.error(e, e.ProgramFiles);
+    console.error(e, e.ProgramFiles);
   }
   return results;
 }

@@ -60,6 +60,28 @@ function safeWalkSync(filePath, opts) {
     }
     return walkSync(filePath, opts);
 }
+function mergeResults(existingResults, newResults) {
+    var indexes = new Set();
+    var existingResultsMap = existingResults.reduce(function (hash, item) {
+        hash[item.label] = item;
+        indexes.add(item.label);
+        return hash;
+    }, {});
+    newResults.forEach(function (el) {
+        if (el.label in existingResultsMap) {
+            Object.keys(el).forEach(function (key) {
+                existingResultsMap[el.label][key] = el[key];
+            });
+        }
+        else {
+            existingResultsMap[el.label] = el;
+            indexes.add(el.label);
+        }
+    });
+    return Array.from(indexes).map(function (key) {
+        return existingResultsMap[key];
+    });
+}
 // function yieldedContext() {
 //   return `
 //   _template_BlockStatement_Each_FirstBlock() {
@@ -116,16 +138,29 @@ function getBasicComponent(pathExp, flags) {
 function serviceForRoot(uri) {
     if (!services[uri]) {
         var registry = ts.createDocumentRegistry(false, uri);
+        var tsConfig_1 = {};
+        if (fs.existsSync(path.join(uri, 'tsconfig.json'))) {
+            try {
+                tsConfig_1 = JSON.parse(fs.readFileSync(path.join(uri, 'tsconfig.json'), 'utf8'));
+                if (tsConfig_1 && tsConfig_1.compilerOptions) {
+                    tsConfig_1 = tsConfig_1.compilerOptions;
+                }
+            }
+            catch (e) {
+                // 
+            }
+        }
+        // console.log('tsConfig', tsConfig);
         var host = {
             getCompilationSettings: function () {
-                return {
-                    baseUrl: ".",
+                return Object.assign({}, tsConfig_1, {
+                    baseUrl: '.',
                     allowJs: true,
                     allowSyntheticDefaultImports: true,
                     skipLibCheck: true,
                     moduleResolution: ts.ModuleResolutionKind.NodeJs,
                     module: ts.ModuleKind.ES2015
-                };
+                });
             },
             getScriptFileNames: function () {
                 var els = __spreadArrays(Object.keys(componentsMap), [
@@ -137,11 +172,17 @@ function serviceForRoot(uri) {
                 };
                 var appEntry = path.join(uri, "app");
                 var addonEntry = path.join(uri, "addon");
+                var typesEntry = path.join(uri, "types");
+                var projectTypes = safeWalkSync(path.join(uri, "types"), walkParams).map(function (el) { return path.resolve(path.join(typesEntry, el)); });
                 var projectAppFiles = safeWalkSync(path.join(uri, "app"), walkParams).map(function (el) { return path.resolve(path.join(appEntry, el)); });
                 var projectAddonFiles = safeWalkSync(path.join(uri, "addon"), walkParams).map(function (el) { return path.resolve(path.join(addonEntry, el)); });
-                return __spreadArrays(Array.from(new Set(__spreadArrays(els, projectAppFiles, projectAddonFiles))));
+                return __spreadArrays(Array.from(new Set(__spreadArrays(els, projectAppFiles, projectAddonFiles, projectTypes))));
             },
             getScriptVersion: function (_fileName) {
+                if (fs.existsSync(_fileName)) {
+                    var stats = fs.statSync(_fileName);
+                    return stats.mtime.getTime().toString();
+                }
                 return "";
             },
             getScriptSnapshot: function (fileName) {
@@ -150,12 +191,26 @@ function serviceForRoot(uri) {
                     return ts.ScriptSnapshot.fromString(maybeVirtualFile);
                 }
                 else {
-                    return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+                    var name_1 = path.basename(fileName, path.extname(fileName));
+                    if (fs.existsSync(fileName)) {
+                        return ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
+                    }
+                    else {
+                        var libName = 'lib.' + name_1.toLowerCase() + '.d.ts';
+                        var libFileNmae = path.join(path.dirname(fileName), libName);
+                        if (fs.existsSync(libFileNmae)) {
+                            return ts.ScriptSnapshot.fromString(fs.readFileSync(libFileNmae).toString());
+                        }
+                    }
+                    console.log('getScriptSnapshot:unknownFileName', fileName);
+                    return ts.ScriptSnapshot.fromString('');
                 }
             },
-            getCurrentDirectory: function () { return uri; },
+            getCurrentDirectory: function () {
+                return path.resolve(uri);
+            },
             getDefaultLibFileName: function (opts) {
-                return ts.getDefaultLibFilePath(opts);
+                return path.resolve(ts.getDefaultLibFilePath(opts));
             }
         };
         services[uri] = ts.createLanguageService(host, registry);
@@ -296,11 +351,13 @@ function onComplete(root, _a) {
     return __awaiter(this, void 0, void 0, function () {
         var projectRoot, service, isArg, isArrayCase, fileName, scriptForComponent, relComponentImport, realPath_1, posStart, pos, templateRange_1, tsDiagnostics, diagnostics, tsResults, data;
         return __generator(this, function (_b) {
-            // console.log('als-addon-typed', 'onComplete');
             if (type !== "template") {
                 return [2 /*return*/, results];
             }
             if (focusPath.node.type !== "PathExpression") {
+                return [2 /*return*/, results];
+            }
+            if (focusPath.node["this"] === false && focusPath.node.data === false) {
                 return [2 /*return*/, results];
             }
             projectRoot = vscode_uri_1.URI.parse(root).fsPath;
@@ -362,10 +419,10 @@ function onComplete(root, _a) {
                         kind: itemKind(el.kind)
                     };
                 });
-                return [2 /*return*/, __spreadArrays(data, results)];
+                return [2 /*return*/, mergeResults(results, data)];
             }
             catch (e) {
-                // console.error(e, e.ProgramFiles);
+                console.error(e, e.ProgramFiles);
             }
             return [2 /*return*/, results];
         });
