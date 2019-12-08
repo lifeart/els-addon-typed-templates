@@ -14,7 +14,7 @@ function normalizeDefinitions(results) {
 exports.normalizeDefinitions = normalizeDefinitions;
 function normalizeCompletions(tsResults, realPath, isArg) {
     return (tsResults ? tsResults.entries : [])
-        .filter(({ name }) => !name.startsWith("_t"))
+        .filter(({ name }) => !name.startsWith("_t") && !name.includes(' - ') && name !== 'globalScope')
         .map(el => {
         return {
             label: isArg

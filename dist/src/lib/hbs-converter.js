@@ -18,14 +18,19 @@ function getClassMeta(source) {
     return nodes;
 }
 exports.getClassMeta = getClassMeta;
+function positionForItem(item) {
+    const { start, end } = item.loc;
+    return `${start.line},${start.column}:${end.line},${end.column}`;
+}
+exports.positionForItem = positionForItem;
+function keyForItem(item) {
+    return `${positionForItem(item)} - ${item.type}`;
+}
+exports.keyForItem = keyForItem;
 function getClass(items, componentImport) {
     const methods = {};
     const klass = {};
     const blockPaths = [];
-    function keyForItem(item) {
-        const { start, end } = item.loc;
-        return `${start.line},${start.column}:${end.line},${end.column} - ${item.type}`;
-    }
     function serializeKey(key) {
         return key.split(' - ')[0];
     }
@@ -146,13 +151,13 @@ function getClass(items, componentImport) {
         }
         else if (klass[key].type === "PathExpression") {
             if (klass[key].data === true) {
-                klass[key] = `() { return this.args.${klass[key].original}; }`;
+                klass[key] = `() { return this.args.${klass[key].original.replace('ELSCompletionDummy', '')}; /*@path-mark ${serializeKey(key)}*/}`;
             }
             else if (klass[key].this === true) {
-                klass[key] = `() { return ${klass[key].original}; }`;
+                klass[key] = `() { return ${klass[key].original.replace('ELSCompletionDummy', '')}; /*@path-mark ${serializeKey(key)}*/}`;
             }
             else {
-                const scopeChain = klass[key].original.split('.');
+                const scopeChain = klass[key].original.replace('ELSCompletionDummy', '').split('.');
                 const scopeKey = scopeChain.shift();
                 const itemScopes = getItemScopes(key);
                 let foundKey = "globalScope";
@@ -173,18 +178,18 @@ function getClass(items, componentImport) {
                         }
                     }
                     if (pathsForGlobalScope[scopeKey]) {
-                        klass[key] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"]${tailForGlobalScope[scopeKey] ? tailForGlobalScope[scopeKey] : "(params, hash)"}; }`;
+                        klass[key] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"]${tailForGlobalScope[scopeKey] ? tailForGlobalScope[scopeKey] : "(params, hash)"}; /*@path-mark ${serializeKey(key)}*/}`;
                     }
                     else {
-                        klass[key] = `(params?, hash?) { return this.globalScope["${scopeKey}"](params, hash); }`;
+                        klass[key] = `(params?, hash?) { return this.globalScope["${scopeKey}"](params, hash); /*@path-mark ${serializeKey(key)}*/}`;
                     }
                 }
                 else {
                     if (scopeChain.length) {
-                        klass[key] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}].${scopeChain.join('.')}; }`;
+                        klass[key] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}].${scopeChain.join('.')}; /*@path-mark ${serializeKey(key)}*/}`;
                     }
                     else {
-                        klass[key] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}]; }`;
+                        klass[key] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}]; /*@path-mark ${serializeKey(key)}*/}`;
                     }
                 }
             }

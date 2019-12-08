@@ -11,9 +11,9 @@ const hbs_converter_1 = require("./hbs-converter");
 //   }
 //   `;
 // }
-function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri) {
+function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri, content = false) {
     const document = server.documents.get(uri);
-    const content = document.getText();
+    content = content ? content : document.getText();
     const templateTokens = hbs_converter_1.getClassMeta(content);
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
     const relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);

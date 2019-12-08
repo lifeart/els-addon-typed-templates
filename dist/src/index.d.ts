@@ -1,6 +1,7 @@
-export declare function onDefinition(root: any, { results, focusPath, type, textDocument }: {
+export declare function onDefinition(root: any, { results, focusPath, server, type, textDocument }: {
     results: any;
     focusPath: any;
+    server: any;
     type: any;
     textDocument: any;
 }): Promise<any>;

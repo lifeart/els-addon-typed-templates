@@ -1146,20 +1146,20 @@
         "signature": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "ab0c84c017b1332ac22cd49ea0e73e23ab252c20c971a8e404d1d412e6507dc6",
-        "signature": "58d30b5d342db0fbb943dc3f216d2c94bee07dec0da274c6da45e81441c1e807"
+        "version": "6ad894c784b0f99aac8dba14f49dec69fc13b9101568f0677966bee24c80d18d",
+        "signature": "e089620fc1422fbf421ccd877b6626e06692b1f117ed38e7b2a879197496e4d8"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "4b1ca94b0f5a91c13031b27b8758eb5063cbc86065a13605648e2ad5ca8cb8de",
-        "signature": "3f99779f96861547d6da9894073848fab5d0bd86eb58f1a7398d63ccaa3ebdca"
+        "version": "919d774681b9947ae75573a469d517faac38ac672825879d39d7d2673b8822d7",
+        "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "5a8b3726d473e1565b9f159f203b9849c947ab5b2ba847cbf6359edd230aded2",
+        "version": "0b2b6394080c4794577d2401d39a541495e0b68f71fc6c9f0620431fbd880628",
         "signature": "5539b3c580c896342c5ee11c66901b285fe1be3d2328b7fe967e129a0641cad7"
       },
       "../src/index.ts": {
-        "version": "2a3f74a47df987a1d790d8e585c5b932347fd7ca6a62cdd5494b5347df13532f",
-        "signature": "55a4ed829dd709cf90d6fc3a27e6cf202d2fc2ce2fab7acaf15d5bed9ad6e4a5"
+        "version": "d0daa9ebd45d7366ee15b0388e9f237a8faad70ba1ec540274bad08b77f4837f",
+        "signature": "4b6abf33a86c7d341ed53751aa526a2632cc493a20d6510366cc771ec0de760b"
       },
       "../src/lib/common-types.d.ts": {
         "version": "cf1434ee1063d86ca67753ffffe1ae17a49cf415caf8c830889655bc72f43d2a",
@@ -3631,6 +3631,7 @@
         "../src/lib/resolvers.ts",
         "../src/lib/ts-service.ts",
         "../src/lib/virtual-documents.ts",
+        "../src/lib/hbs-converter.ts",
         "../src/lib/ls-utils.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -6316,11 +6317,11 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
+      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
-      "../src/index.ts",
       "../src/lib/common-types.d.ts",
-      "../src/lib/hbs-converter.ts"
+      "../src/index.ts"
     ]
   },
   "version": "3.7.3"

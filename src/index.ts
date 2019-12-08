@@ -11,20 +11,54 @@ import {
 import { virtualTemplateFileName, virtualComponentTemplateFileName } from "./lib/resolvers";
 import { serviceForRoot, componentsForService } from "./lib/ts-service";
 import { createVirtualTemplate, createFullVirtualTemplate } from "./lib/virtual-documents";
+import { positionForItem } from './lib/hbs-converter';
 import {
   normalizeDefinitions,
   getFullSemanticDiagnostics,
   normalizeCompletions
 } from "./lib/ls-utils";
 
+let hasLinter: any = false;
+let knownFiles: any = new Set();
+
+function lintFile(root, textDocument, server) {
+  const projectRoot = URI.parse(root).fsPath;
+  const service = serviceForRoot(projectRoot);
+  const componentsMap = componentsForService(service, true);
+  const templatePath = URI.parse(textDocument.uri).fsPath;
+  const fullFileName = virtualComponentTemplateFileName(templatePath);
+  createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+  getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+}
+
+function setupLinter(root, server) {
+  if (hasLinter) {
+    return;
+  }
+
+  server.documents.onDidChangeContent((change: any)=>{
+    try {
+      lintFile(root, change.document, server)
+    } catch(e) {
+      console.log(e);
+    }
+  });
+
+
+  hasLinter = true;
+}
+
 export async function onDefinition(
   root,
-  { results, focusPath, type, textDocument }
+  { results, focusPath, server, type, textDocument }
 ) {
   
   if (!canHandle(type, focusPath)) {
     return results;
   }
+  setupLinter(root, server);
+  knownFiles.add(textDocument.uri);
+
 
   try {
     const isParam = isParamPath(focusPath);
@@ -53,7 +87,6 @@ export async function onDefinition(
       }
     );
     results = service.getDefinitionAtPosition(fileName, pos);
-    // console.log('definitions', results);
     const data = normalizeDefinitions(results);
     return data;
   } catch (e) {
@@ -62,15 +95,6 @@ export async function onDefinition(
   return results;
 }
 
-// function onDidChangeContent() {
-//   this.documents.onDidChangeContent(this.onDidChangeContent.bind(this));
-//   private onDidChangeContent(change: any) {
-//     // this.setStatusText('did-change');
-//     this.templateLinter.lint(change.document);
-//   }
-// }
-let diagnosticsTimeout: any = null;
-
 export async function onComplete(
   root,
   { results, focusPath, server, type, textDocument }
@@ -78,6 +102,8 @@ export async function onComplete(
   if (!canHandle(type, focusPath)) {
     return results;
   }
+  setupLinter(root, server);
+  knownFiles.add(textDocument.uri);
 
   try {
     const isParam = isParamPath(focusPath);
@@ -92,7 +118,6 @@ export async function onComplete(
       isArg = true;
       realPath = normalizeArgumentName(realPath);
     }
-    // console.log('realPath', realPath);
 
     const fileName = virtualTemplateFileName(templatePath);
     const fullFileName = virtualComponentTemplateFileName(templatePath);
@@ -111,43 +136,28 @@ export async function onComplete(
       }
     );
 
-    // console.log('slice','`'+componentsMap[fileName].slice(pos,pos+2)+'`');
-
-    // const templateRange: [number, number] = [posStart, pos];
-    clearTimeout(diagnosticsTimeout);
-    diagnosticsTimeout = setTimeout(function() {
-      try {
-        createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
-        getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
-      } catch(e) {
-        clearTimeout(diagnosticsTimeout);
-        diagnosticsTimeout = setTimeout(()=>{
-          createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
-          getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
-        }, 10000);
+    let tsResults: any = null;
+    try {
+      let markId = `; /*@path-mark ${positionForItem(focusPath.node)}*/`;
+      // console.log('markId', markId);
+      let tpl = createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, focusPath.content as string);
+      // console.log('tpl', tpl);
+      tsResults = service.getCompletionsAtPosition(fullFileName, tpl.indexOf(markId), {
+        includeInsertTextCompletions: true
+      });
+      if (!tsResults || tsResults && tsResults.entries  > 100) {
+        throw new Error("Too many or no results");
       }
-    }, 1000);
+    } catch(e) {
+      tsResults = service.getCompletionsAtPosition(fileName, pos, {
+        includeInsertTextCompletions: true
+      });
+    }
 
-    // getSemanticDiagnostics(
-    //   server,
-    //   service,
-    //   templateRange,
-    //   fullFileName,
-    //   focusPath,
-    //   textDocument.uri
-    // );
-    let tsResults = service.getCompletionsAtPosition(fileName, pos, {
-      includeInsertTextCompletions: true
-    });
-    console.log('tsResults', tsResults);
     if (tsResults && tsResults.entries.length > 100) {
-      // console.log('too match results', componentsMap[fileName], pos, componentsMap[fileName].length);
       return results;
     }
-    // console.log('tsResults',  tsResults && tsResults.entries);
     let data = normalizeCompletions(tsResults, realPath, isArg);
-    // console.log('data', data);
-    // console.log('mergeResults(results, data);', mergeResults(results, data));
     return mergeResults(results, data);
   } catch (e) {
     console.error(e, e.ProgramFiles);
