@@ -20,6 +20,9 @@ const ls_utils_1 = require("./lib/ls-utils");
 let hasLinter = false;
 let knownFiles = new Set();
 function lintFile(root, textDocument, server) {
+    if (!knownFiles.has(textDocument.uri)) {
+        return;
+    }
     const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
     const service = ts_service_1.serviceForRoot(projectRoot);
     const componentsMap = ts_service_1.componentsForService(service, true);

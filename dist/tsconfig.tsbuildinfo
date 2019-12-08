@@ -1150,7 +1150,7 @@
         "signature": "e089620fc1422fbf421ccd877b6626e06692b1f117ed38e7b2a879197496e4d8"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "fbdd404b2d5a4f85345e471111fdb9980678b902968d4b800d180c18fe35aeb6",
+        "version": "eecd48af0d2af9d728360ab628520567e2df861df1734db366217cfc27533b7b",
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
@@ -1158,7 +1158,7 @@
         "signature": "5539b3c580c896342c5ee11c66901b285fe1be3d2328b7fe967e129a0641cad7"
       },
       "../src/index.ts": {
-        "version": "0c57d4c08771defe9bf5b3cb86e48d1b0b8163d3f545dde715d9ba157f84e880",
+        "version": "ce46305da33e7988d0693fdb5be465423b26b8462be00e512ebd739247fd9642",
         "signature": "4b6abf33a86c7d341ed53751aa526a2632cc493a20d6510366cc771ec0de760b"
       },
       "../src/lib/common-types.d.ts": {
@@ -6139,6 +6139,7 @@
       "../node_modules/vscode-languageserver/lib/main.d.ts",
       "../src/lib/utils.ts",
       "../src/lib/ast-helpers.ts",
+      "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
       "../src/lib/ts-service.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
@@ -6320,7 +6321,6 @@
       "../src/lib/ls-utils.ts",
       "../src/index.ts",
       "../src/lib/common-types.d.ts",
-      "../src/lib/resolvers.ts",
       "../src/lib/virtual-documents.ts"
     ]
   },

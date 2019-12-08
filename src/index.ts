@@ -22,6 +22,9 @@ let hasLinter: any = false;
 let knownFiles: any = new Set();
 
 function lintFile(root, textDocument, server) {
+  if (!knownFiles.has(textDocument.uri)) {
+    return;
+  }
   const projectRoot = URI.parse(root).fsPath;
   const service = serviceForRoot(projectRoot);
   const componentsMap = componentsForService(service, true);

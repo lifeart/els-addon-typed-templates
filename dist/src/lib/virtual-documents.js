@@ -16,6 +16,10 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
     content = content ? content : document.getText();
     const templateTokens = hbs_converter_1.getClassMeta(content);
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
+    if (!scriptForComponent) {
+        componentsMap[fileName] = `export default class TemplateOnlyComponent { args: any }`;
+        return componentsMap[fileName];
+    }
     // console.log('scriptForComponent', scriptForComponent);
     const relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     componentsMap[fileName] = hbs_converter_1.getClass(templateTokens, relComponentImport);
@@ -28,8 +32,15 @@ exports.createFullVirtualTemplate = createFullVirtualTemplate;
 function createVirtualTemplate(projectRoot, componentsMap, fileName, { templatePath, realPath, isArg, isArrayCase, isParam }) {
     // console.log('createVirtualTemplate')
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
+    let isTemplateOnly = false;
+    let relComponentImport = undefined;
+    if (!scriptForComponent) {
+        isTemplateOnly = true;
+    }
+    else {
+        relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
+    }
     // console.log('scriptForComponent', scriptForComponent)
-    const relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     // console.log('relComponentImport', relComponentImport)
     // componentsMap[scriptForComponent] = fs.readFileSync(
     //   scriptForComponent,
@@ -40,9 +51,10 @@ function createVirtualTemplate(projectRoot, componentsMap, fileName, { templateP
         relComponentImport,
         isArg,
         isParam,
+        isTemplateOnly,
         isArrayCase
     });
-    let posStart = getBasicComponent(utils_1.PLACEHOLDER, { relComponentImport, isParam, isArrayCase, isArg }).indexOf(utils_1.PLACEHOLDER);
+    let posStart = getBasicComponent(utils_1.PLACEHOLDER, { relComponentImport, isParam, isTemplateOnly, isArrayCase, isArg }).indexOf(utils_1.PLACEHOLDER);
     let pos = posStart + realPath.length;
     return { pos, posStart };
 }
@@ -50,6 +62,10 @@ exports.createVirtualTemplate = createVirtualTemplate;
 function getBasicComponent(pathExp = utils_1.PLACEHOLDER, flags = {}) {
     let outputType = "string | number | void";
     let relImport = flags.relComponentImport || "./component";
+    let templateOnly = '';
+    if (flags.isTemplateOnly) {
+        templateOnly = 'args: any;';
+    }
     if (flags.isArrayCase) {
         outputType = "any[]";
     }
@@ -59,6 +75,7 @@ function getBasicComponent(pathExp = utils_1.PLACEHOLDER, flags = {}) {
     return [
         `import Component from "${relImport}";`,
         "export default class Template extends Component {",
+        templateOnly,
         `_template_PathExpresion(): ${outputType} {`,
         "return " + pathExp,
         "}",

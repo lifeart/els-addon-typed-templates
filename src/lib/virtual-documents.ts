@@ -22,6 +22,10 @@ export function createFullVirtualTemplate(projectRoot, componentsMap, templatePa
     templatePath,
     projectRoot
   );
+  if (!scriptForComponent) {
+    componentsMap[fileName] = `export default class TemplateOnlyComponent { args: any }`;
+    return componentsMap[fileName];
+  }
   // console.log('scriptForComponent', scriptForComponent);
   const relComponentImport = relativeComponentImport(
     fileName,
@@ -41,12 +45,19 @@ export function createVirtualTemplate(projectRoot, componentsMap, fileName, { te
     templatePath,
     projectRoot
   );
+  let isTemplateOnly = false;
+  let relComponentImport: any = undefined;
+
+  if (!scriptForComponent) {
+    isTemplateOnly = true;
+  } else {
+    relComponentImport = relativeComponentImport(
+      fileName,
+      scriptForComponent
+    );
+  }
   // console.log('scriptForComponent', scriptForComponent)
 
-  const relComponentImport = relativeComponentImport(
-    fileName,
-    scriptForComponent
-  );
   // console.log('relComponentImport', relComponentImport)
 
   // componentsMap[scriptForComponent] = fs.readFileSync(
@@ -59,9 +70,10 @@ export function createVirtualTemplate(projectRoot, componentsMap, fileName, { te
     relComponentImport,
     isArg,
     isParam,
+    isTemplateOnly,
     isArrayCase
   });
-  let posStart = getBasicComponent(PLACEHOLDER, { relComponentImport, isParam, isArrayCase, isArg }).indexOf(
+  let posStart = getBasicComponent(PLACEHOLDER, { relComponentImport, isParam, isTemplateOnly, isArrayCase, isArg }).indexOf(
     PLACEHOLDER
   );
   let pos = posStart + realPath.length;
@@ -73,6 +85,10 @@ export function createVirtualTemplate(projectRoot, componentsMap, fileName, { te
 export function getBasicComponent(pathExp = PLACEHOLDER, flags: any = {}) {
     let outputType = "string | number | void";
     let relImport = flags.relComponentImport || "./component";
+    let templateOnly = '';
+    if (flags.isTemplateOnly) {
+      templateOnly = 'args: any;';
+    }
     if (flags.isArrayCase) {
       outputType = "any[]";
     }
@@ -82,6 +98,7 @@ export function getBasicComponent(pathExp = PLACEHOLDER, flags: any = {}) {
     return [
       `import Component from "${relImport}";`,
       "export default class Template extends Component {",
+      templateOnly,
       `_template_PathExpresion(): ${outputType} {`,
       "return " + pathExp,
       "}",
