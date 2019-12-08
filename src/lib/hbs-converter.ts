@@ -106,9 +106,19 @@ export function getClass(items, componentImport: string) {
     }
   });
 
+  
+
+
+  const pathsForGlobalScope = {
+    'each': "<T>(params: ArrayLike<T>[], hash?)",
+    'let': "<T>(params: ArrayLike<T>, hash?)"
+  };
+
+
   const globalScope = {
-    ["each"]: '<T>(items: Array<T>[], hash:any = {} ): [T, number] { return [(items[0] as unknown ) as T, 0]; }',
-    ["let"]: '<T>(items: T, hash:any = {} ): T { return items; }'
+    ["each"]: 'EachHelper',
+    ["let"]: "LetHelper"
+    // ["let"]: '<T>(items: T, hash:any = {} ): T { return items; }'
   };
 
   function getItemScopes(key, itemScopes: any = []) {
@@ -159,14 +169,21 @@ export function getClass(items, componentImport: string) {
         if (foundKey === "globalScope") {
           if (!(scopeKey in globalScope)) {
             if (blockPaths.includes(key)) {
-              globalScope[scopeKey] = '(params, hash) { return []; }';
+              globalScope[scopeKey] = 'AbstractBlockHelper';
             } else {
-              globalScope[scopeKey] = '(params, hash) { return ""; }';
+              globalScope[scopeKey] = 'AbstractHelper';
             }
           }
-          klass[
-            key
-          ] = `(params = [], hash = {}) { return this.globalScope["${scopeKey}"](params, hash); }`;
+          if (pathsForGlobalScope[scopeKey]) {
+            klass[
+              key
+            ] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"](params, hash); }`;
+          } else {
+            klass[
+              key
+            ] = `(params?, hash?) { return this.globalScope["${scopeKey}"](params, hash); }`;
+          }
+
         } else {
           if (scopeChain.length) {
             klass[
@@ -225,16 +242,30 @@ export function getClass(items, componentImport: string) {
   });
 
   let klssTpl = `
+
+  type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
+  type LetHelper = <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
+  type AbstractHelper = <T>([items]:T[], hash?) => T;
+  type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
+  
+  interface IKnownScope {
+    ${Object.keys(globalScope)
+      .map(key => {
+        return `["${key}"]:${globalScope[key]};`;
+      })
+      .join("\n")}
+  }
+  
+  interface IGlobalScope {
+    [key: string ]: AbstractHelper | AbstractBlockHelper
+  }
+  
+  type GlobalScope = IGlobalScope & IKnownScope;
+
   import Component from "${componentImport}";
 
       export default class Template extends Component {
-          globalScope = {
-              ${Object.keys(globalScope)
-                .map(key => {
-                  return `["${key}"]${globalScope[key]}`;
-                })
-                .join(",\n")}
-          };
+          globalScope:  GlobalScope;
           ${Object.keys(klass)
             .map(key => {
               return `
