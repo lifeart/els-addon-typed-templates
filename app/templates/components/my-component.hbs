@@ -1,1 +1,3 @@
-{{this.profile.name}}
+{{#let (hash foo="bar") as |foo|}}
+    {{foo.id}}
+{{/let}}

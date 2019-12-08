@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 // import * as fs from "fs";
 const resolvers_1 = require("./resolvers");
+const hbs_converter_1 = require("./hbs-converter");
 // function yieldedContext() {
 //   return `
 //   _template_BlockStatement_Each_FirstBlock() {
@@ -10,6 +11,19 @@ const resolvers_1 = require("./resolvers");
 //   }
 //   `;
 // }
+function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri) {
+    const document = server.documents.get(uri);
+    const content = document.getText();
+    const templateTokens = hbs_converter_1.getClassMeta(content);
+    const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
+    const relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
+    componentsMap[fileName] = hbs_converter_1.getClass(templateTokens, relComponentImport);
+    console.log('===============');
+    console.log(componentsMap[fileName]);
+    console.log('===============');
+    return componentsMap[fileName];
+}
+exports.createFullVirtualTemplate = createFullVirtualTemplate;
 function createVirtualTemplate(projectRoot, componentsMap, fileName, { templatePath, realPath, isArg, isArrayCase, isParam }) {
     // console.log('createVirtualTemplate')
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);

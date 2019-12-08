@@ -6,6 +6,10 @@ function virtualTemplateFileName(fsPath) {
     return path.resolve(fsPath).replace(".hbs", '_' + Date.now() + "_template.ts");
 }
 exports.virtualTemplateFileName = virtualTemplateFileName;
+function virtualComponentTemplateFileName(fsPath) {
+    return path.resolve(fsPath).replace(".hbs", '_' + Date.now() + "_component_template.ts");
+}
+exports.virtualComponentTemplateFileName = virtualComponentTemplateFileName;
 function relativeComponentImport(templateFileName, scriptForComponent) {
     return path
         .relative(templateFileName, scriptForComponent)

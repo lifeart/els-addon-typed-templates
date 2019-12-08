@@ -8,12 +8,12 @@ import {
   isEachArgument,
   normalizeArgumentName
 } from "./lib/ast-helpers";
-import { virtualTemplateFileName } from "./lib/resolvers";
+import { virtualTemplateFileName, virtualComponentTemplateFileName } from "./lib/resolvers";
 import { serviceForRoot, componentsForService } from "./lib/ts-service";
-import { createVirtualTemplate } from "./lib/virtual-documents";
+import { createVirtualTemplate, createFullVirtualTemplate } from "./lib/virtual-documents";
 import {
   normalizeDefinitions,
-  getSemanticDiagnostics,
+  getFullSemanticDiagnostics,
   normalizeCompletions
 } from "./lib/ls-utils";
 
@@ -62,6 +62,15 @@ export async function onDefinition(
   return results;
 }
 
+// function onDidChangeContent() {
+//   this.documents.onDidChangeContent(this.onDidChangeContent.bind(this));
+//   private onDidChangeContent(change: any) {
+//     // this.setStatusText('did-change');
+//     this.templateLinter.lint(change.document);
+//   }
+// }
+let diagnosticsTimeout: any = null;
+
 export async function onComplete(
   root,
   { results, focusPath, server, type, textDocument }
@@ -76,7 +85,6 @@ export async function onComplete(
     const service = serviceForRoot(projectRoot);
     const componentsMap = componentsForService(service, true);
     const templatePath = URI.parse(textDocument.uri).fsPath;
-
     let isArg = false;
     const isArrayCase = isEachArgument(focusPath);
     let realPath = realPathName(focusPath);
@@ -87,8 +95,10 @@ export async function onComplete(
     // console.log('realPath', realPath);
 
     const fileName = virtualTemplateFileName(templatePath);
+    const fullFileName = virtualComponentTemplateFileName(templatePath);
 
-    const { posStart, pos } = createVirtualTemplate(
+
+    const { pos } = createVirtualTemplate(
       projectRoot,
       componentsMap,
       fileName,
@@ -103,18 +113,33 @@ export async function onComplete(
 
     // console.log('slice','`'+componentsMap[fileName].slice(pos,pos+2)+'`');
 
-    const templateRange: [number, number] = [posStart, pos];
-    getSemanticDiagnostics(
-      server,
-      service,
-      templateRange,
-      fileName,
-      focusPath,
-      textDocument.uri
-    );
+    // const templateRange: [number, number] = [posStart, pos];
+    clearTimeout(diagnosticsTimeout);
+    diagnosticsTimeout = setTimeout(function() {
+      try {
+        createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+        getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+      } catch(e) {
+        clearTimeout(diagnosticsTimeout);
+        diagnosticsTimeout = setTimeout(()=>{
+          createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+          getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+        }, 10000);
+      }
+    }, 1000);
+
+    // getSemanticDiagnostics(
+    //   server,
+    //   service,
+    //   templateRange,
+    //   fullFileName,
+    //   focusPath,
+    //   textDocument.uri
+    // );
     let tsResults = service.getCompletionsAtPosition(fileName, pos, {
       includeInsertTextCompletions: true
     });
+    console.log('tsResults', tsResults);
     if (tsResults && tsResults.entries.length > 100) {
       // console.log('too match results', componentsMap[fileName], pos, componentsMap[fileName].length);
       return results;

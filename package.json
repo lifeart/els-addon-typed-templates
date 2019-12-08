@@ -40,6 +40,7 @@
   "dependencies": {
     "@glimmer/interfaces": "^0.44.0",
     "@glimmer/opcode-compiler": "^0.44.0",
+    "@glimmer/syntax": "^0.44.0",
     "@simple-dom/interface": "^1.4.0",
     "typescript": "^3.7.3",
     "vscode-languageserver": "^5.2.1",

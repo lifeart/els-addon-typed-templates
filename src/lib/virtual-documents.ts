@@ -4,6 +4,8 @@ import {
   findComponentForTemplate,
   relativeComponentImport
 } from "./resolvers";
+import { getClass, getClassMeta } from './hbs-converter';
+
 // function yieldedContext() {
 //   return `
 //   _template_BlockStatement_Each_FirstBlock() {
@@ -11,6 +13,25 @@ import {
 //   }
 //   `;
 // }
+
+export function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri) {
+  const document = server.documents.get(uri);
+  const content = document.getText();
+  const templateTokens = getClassMeta(content);
+  const scriptForComponent = findComponentForTemplate(
+    templatePath,
+    projectRoot
+  );
+  const relComponentImport = relativeComponentImport(
+    fileName,
+    scriptForComponent
+  );
+  componentsMap[fileName] = getClass(templateTokens, relComponentImport);
+  console.log('===============');
+  console.log(componentsMap[fileName]);
+  console.log('===============');
+  return componentsMap[fileName];
+}
 
 export function createVirtualTemplate(projectRoot, componentsMap, fileName, { templatePath, realPath, isArg, isArrayCase, isParam }: any) {
 
