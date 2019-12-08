@@ -112,15 +112,22 @@ export function getClass(items, componentImport: string) {
   const pathsForGlobalScope = {
     'each': "<T>(params: ArrayLike<T>[], hash?)",
     'let': "<T>(params: ArrayLike<T>, hash?)",
-    'hash': "<T>(params: = [], hash: T)"
+    'array': "<T>(params: ArrayLike<T>, hash?)",
+    'hash': "<T>(params: = [], hash: T)",
+    'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)"
   };
+
+  const tailForGlobalScope = {
+    "if": "([a as T,b as U,c as Y], hash)"
+  }
 
 
   const globalScope = {
     ["each"]: 'EachHelper',
     ["let"]: "LetHelper",
-    ["hash"]: "HashHelper"
-    // ["let"]: '<T>(items: T, hash:any = {} ): T { return items; }'
+    ["hash"]: "HashHelper",
+    ["array"]: "ArrayHelper",
+    ["if"]: "typeof TIfHeper"
   };
 
   function getItemScopes(key, itemScopes: any = []) {
@@ -179,7 +186,7 @@ export function getClass(items, componentImport: string) {
           if (pathsForGlobalScope[scopeKey]) {
             klass[
               key
-            ] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"](params, hash); }`;
+            ] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"]${tailForGlobalScope[scopeKey] ? tailForGlobalScope[scopeKey] : "(params, hash)" }; }`;
           } else {
             klass[
               key
@@ -254,7 +261,11 @@ export function getClass(items, componentImport: string) {
   type AbstractHelper = <T>([items]:T[], hash?) => T;
   type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
   type HashHelper = <T>(items: any[], hash: T) => T;
+  type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
 
+  function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
+    return !!a ? b : c;
+  }
   
   interface IKnownScope {
     ${Object.keys(globalScope)
