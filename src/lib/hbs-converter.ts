@@ -19,14 +19,19 @@ export function getClassMeta(source) {
   return nodes;
 }
 
+export function positionForItem(item) {
+  const { start, end } = item.loc;
+  return `${start.line},${start.column}:${end.line},${end.column}`;
+}
+export function keyForItem(item) {
+  return `${positionForItem(item)} - ${item.type}`;
+}
+
 export function getClass(items, componentImport: string) {
   const methods = {};
   const klass = {};
   const blockPaths: any = [];
-  function keyForItem(item) {
-    const { start, end } = item.loc;
-    return `${start.line},${start.column}:${end.line},${end.column} - ${item.type}`;
-  }
+  
   function serializeKey(key) {
     return key.split(' - ')[0];
   }
@@ -111,14 +116,23 @@ export function getClass(items, componentImport: string) {
 
   const pathsForGlobalScope = {
     'each': "<T>(params: ArrayLike<T>[], hash?)",
-    'let': "<T>(params: ArrayLike<T>, hash?)"
+    'let': "<T>(params: ArrayLike<T>, hash?)",
+    'array': "<T>(params: ArrayLike<T>, hash?)",
+    'hash': "<T>(params: = [], hash: T)",
+    'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)"
   };
+
+  const tailForGlobalScope = {
+    "if": "([a as T,b as U,c as Y], hash)"
+  }
 
 
   const globalScope = {
     ["each"]: 'EachHelper',
-    ["let"]: "LetHelper"
-    // ["let"]: '<T>(items: T, hash:any = {} ): T { return items; }'
+    ["let"]: "LetHelper",
+    ["hash"]: "HashHelper",
+    ["array"]: "ArrayHelper",
+    ["if"]: "typeof TIfHeper"
   };
 
   function getItemScopes(key, itemScopes: any = []) {
@@ -151,11 +165,11 @@ export function getClass(items, componentImport: string) {
       klass[key] = `() { return undefined; }`;
     } else if (klass[key].type === "PathExpression") {
       if (klass[key].data === true) {
-        klass[key] = `() { return this.args.${klass[key].original}; }`;
+        klass[key] = `() { return this.args.${klass[key].original.replace('ELSCompletionDummy', '')}; /*@path-mark ${serializeKey(key)}*/}`;
       } else if (klass[key].this === true) {
-        klass[key] = `() { return ${klass[key].original}; }`;
+        klass[key] = `() { return ${klass[key].original.replace('ELSCompletionDummy', '')}; /*@path-mark ${serializeKey(key)}*/}`;
       } else {
-        const scopeChain = klass[key].original.split('.');
+        const scopeChain = klass[key].original.replace('ELSCompletionDummy', '').split('.');
         const scopeKey = scopeChain.shift();
         const itemScopes = getItemScopes(key);
         let foundKey: string | any[] = "globalScope";
@@ -177,22 +191,22 @@ export function getClass(items, componentImport: string) {
           if (pathsForGlobalScope[scopeKey]) {
             klass[
               key
-            ] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"](params, hash); }`;
+            ] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"]${tailForGlobalScope[scopeKey] ? tailForGlobalScope[scopeKey] : "(params, hash)" }; /*@path-mark ${serializeKey(key)}*/}`;
           } else {
             klass[
               key
-            ] = `(params?, hash?) { return this.globalScope["${scopeKey}"](params, hash); }`;
+            ] = `(params?, hash?) { return this.globalScope["${scopeKey}"](params, hash); /*@path-mark ${serializeKey(key)}*/}`;
           }
 
         } else {
           if (scopeChain.length) {
             klass[
               key
-            ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}].${scopeChain.join('.')}; }`;
+            ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}].${scopeChain.join('.')}; /*@path-mark ${serializeKey(key)}*/}`;
           } else {
             klass[
               key
-            ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}]; }`;
+            ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}]; /*@path-mark ${serializeKey(key)}*/}`;
           }
         }
       }
@@ -233,6 +247,10 @@ export function getClass(items, componentImport: string) {
                         klass[key].path
                       )}"]([${params}]);
                   }`;
+      } else if (hash.length && !params.length) {
+        klass[key] = `() {
+                      return this["${keyForItem(klass[key].path)}"]([],{${hash}});
+                  }`;
       } else {
         klass[key] = `() {
                       return this["${keyForItem(klass[key].path)}"]();
@@ -247,6 +265,12 @@ export function getClass(items, componentImport: string) {
   type LetHelper = <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
   type AbstractHelper = <T>([items]:T[], hash?) => T;
   type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
+  type HashHelper = <T>(items: any[], hash: T) => T;
+  type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
+
+  function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
+    return !!a ? b : c;
+  }
   
   interface IKnownScope {
     ${Object.keys(globalScope)

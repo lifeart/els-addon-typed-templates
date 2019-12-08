@@ -1,4 +1,4 @@
-export declare function createFullVirtualTemplate(projectRoot: any, componentsMap: any, templatePath: any, fileName: any, server: any, uri: any): any;
+export declare function createFullVirtualTemplate(projectRoot: any, componentsMap: any, templatePath: any, fileName: any, server: any, uri: any, content?: string | boolean): any;
 export declare function createVirtualTemplate(projectRoot: any, componentsMap: any, fileName: any, { templatePath, realPath, isArg, isArrayCase, isParam }: any): {
     pos: any;
     posStart: number;

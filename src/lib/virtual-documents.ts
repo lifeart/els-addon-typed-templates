@@ -14,9 +14,9 @@ import { getClass, getClassMeta } from './hbs-converter';
 //   `;
 // }
 
-export function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri) {
+export function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri, content: string | boolean = false) {
   const document = server.documents.get(uri);
-  const content = document.getText();
+  content = content ? content : document.getText();
   const templateTokens = getClassMeta(content);
   const scriptForComponent = findComponentForTemplate(
     templatePath,

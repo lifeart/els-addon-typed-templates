@@ -1,3 +1,4 @@
-{{#let (hash foo="bar") as |foo|}}
-    {{foo.id}}
+{{#let (hash foo=this.paets) as |item|}}
+    {{item.foo.name.foo}}
 {{/let}}
+

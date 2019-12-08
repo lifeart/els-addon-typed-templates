@@ -15,12 +15,40 @@ const ast_helpers_1 = require("./lib/ast-helpers");
 const resolvers_1 = require("./lib/resolvers");
 const ts_service_1 = require("./lib/ts-service");
 const virtual_documents_1 = require("./lib/virtual-documents");
+const hbs_converter_1 = require("./lib/hbs-converter");
 const ls_utils_1 = require("./lib/ls-utils");
-function onDefinition(root, { results, focusPath, type, textDocument }) {
+let hasLinter = false;
+let knownFiles = new Set();
+function lintFile(root, textDocument, server) {
+    const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
+    const service = ts_service_1.serviceForRoot(projectRoot);
+    const componentsMap = ts_service_1.componentsForService(service, true);
+    const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
+    const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
+    virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+    ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+}
+function setupLinter(root, server) {
+    if (hasLinter) {
+        return;
+    }
+    server.documents.onDidChangeContent((change) => {
+        try {
+            lintFile(root, change.document, server);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    });
+    hasLinter = true;
+}
+function onDefinition(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
+        setupLinter(root, server);
+        knownFiles.add(textDocument.uri);
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);
             const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
@@ -42,7 +70,6 @@ function onDefinition(root, { results, focusPath, type, textDocument }) {
                 isParam
             });
             results = service.getDefinitionAtPosition(fileName, pos);
-            // console.log('definitions', results);
             const data = ls_utils_1.normalizeDefinitions(results);
             return data;
         }
@@ -53,19 +80,13 @@ function onDefinition(root, { results, focusPath, type, textDocument }) {
     });
 }
 exports.onDefinition = onDefinition;
-// function onDidChangeContent() {
-//   this.documents.onDidChangeContent(this.onDidChangeContent.bind(this));
-//   private onDidChangeContent(change: any) {
-//     // this.setStatusText('did-change');
-//     this.templateLinter.lint(change.document);
-//   }
-// }
-let diagnosticsTimeout = null;
 function onComplete(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
+        setupLinter(root, server);
+        knownFiles.add(textDocument.uri);
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);
             const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
@@ -79,7 +100,6 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
                 isArg = true;
                 realPath = ast_helpers_1.normalizeArgumentName(realPath);
             }
-            // console.log('realPath', realPath);
             const fileName = resolvers_1.virtualTemplateFileName(templatePath);
             const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
             const { pos } = virtual_documents_1.createVirtualTemplate(projectRoot, componentsMap, fileName, {
@@ -89,42 +109,28 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
                 isParam,
                 isArrayCase
             });
-            // console.log('slice','`'+componentsMap[fileName].slice(pos,pos+2)+'`');
-            // const templateRange: [number, number] = [posStart, pos];
-            clearTimeout(diagnosticsTimeout);
-            diagnosticsTimeout = setTimeout(function () {
-                try {
-                    virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
-                    ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+            let tsResults = null;
+            try {
+                let markId = `; /*@path-mark ${hbs_converter_1.positionForItem(focusPath.node)}*/`;
+                // console.log('markId', markId);
+                let tpl = virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, focusPath.content);
+                // console.log('tpl', tpl);
+                tsResults = service.getCompletionsAtPosition(fullFileName, tpl.indexOf(markId), {
+                    includeInsertTextCompletions: true
+                });
+                if (!tsResults || tsResults && tsResults.entries > 100) {
+                    throw new Error("Too many or no results");
                 }
-                catch (e) {
-                    clearTimeout(diagnosticsTimeout);
-                    diagnosticsTimeout = setTimeout(() => {
-                        virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
-                        ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
-                    }, 10000);
-                }
-            }, 1000);
-            // getSemanticDiagnostics(
-            //   server,
-            //   service,
-            //   templateRange,
-            //   fullFileName,
-            //   focusPath,
-            //   textDocument.uri
-            // );
-            let tsResults = service.getCompletionsAtPosition(fileName, pos, {
-                includeInsertTextCompletions: true
-            });
-            console.log('tsResults', tsResults);
+            }
+            catch (e) {
+                tsResults = service.getCompletionsAtPosition(fileName, pos, {
+                    includeInsertTextCompletions: true
+                });
+            }
             if (tsResults && tsResults.entries.length > 100) {
-                // console.log('too match results', componentsMap[fileName], pos, componentsMap[fileName].length);
                 return results;
             }
-            // console.log('tsResults',  tsResults && tsResults.entries);
             let data = ls_utils_1.normalizeCompletions(tsResults, realPath, isArg);
-            // console.log('data', data);
-            // console.log('mergeResults(results, data);', mergeResults(results, data));
             return utils_1.mergeResults(results, data);
         }
         catch (e) {
