@@ -100,17 +100,13 @@ function toFullDiagnostic(err) {
   };
 }
 
-let diagnosticTimeout: any = null;
-export function getFullSemanticDiagnostics(server, service:  ts.LanguageService, fileName, uri) {
-  clearTimeout(diagnosticTimeout);
+export function getFullSemanticDiagnostics(service:  ts.LanguageService, fileName) {
   const tsDiagnostics = service.getSemanticDiagnostics(fileName);
   const results = tsDiagnostics.map((error: any) =>
     toFullDiagnostic(error)
   ).filter((el)=>el !== null);
   const diagnostics: Diagnostic[] = results as Diagnostic[];
-  diagnosticTimeout = setTimeout(()=>{
-    server.connection.sendDiagnostics({ uri, diagnostics });
-  }, 500);
+  return diagnostics;
 }
 
 export function getSemanticDiagnostics(server, service, templateRange, fileName , focusPath, uri) {

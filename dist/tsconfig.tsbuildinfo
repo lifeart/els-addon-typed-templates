@@ -1154,11 +1154,11 @@
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "9296be2f3b2ebe0729ec97c1b73a464498932efd33afd1c3736724abb7bbf544",
-        "signature": "53a9b7850834c8546774a7d8f20e26937a991f2c5956d4041df6503d43385f78"
+        "version": "9eb03762486bb150e81a87b78fc930092e197c702df4b69122104168135e293d",
+        "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
-        "version": "ce46305da33e7988d0693fdb5be465423b26b8462be00e512ebd739247fd9642",
+        "version": "6a846506a0b07fc78fa09b00dd3ec207b1c1d13057a3519f23b68075040b16b4",
         "signature": "4b6abf33a86c7d341ed53751aa526a2632cc493a20d6510366cc771ec0de760b"
       },
       "../src/lib/common-types.d.ts": {
@@ -6320,11 +6320,11 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
-      "../src/lib/virtual-documents.ts",
-      "../src/index.ts",
-      "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.ts",
-      "../src/lib/ls-utils.ts"
+      "../src/lib/virtual-documents.ts",
+      "../src/lib/common-types.d.ts",
+      "../src/lib/ls-utils.ts",
+      "../src/index.ts"
     ]
   },
   "version": "3.7.3"

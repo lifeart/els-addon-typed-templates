@@ -31,7 +31,7 @@ function lintFile(root, textDocument, server) {
   const templatePath = URI.parse(textDocument.uri).fsPath;
   const fullFileName = virtualComponentTemplateFileName(templatePath);
   createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
-  getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+  return getFullSemanticDiagnostics(service, fullFileName);
 }
 
 function setupLinter(root, type: string, server) {
@@ -42,13 +42,29 @@ function setupLinter(root, type: string, server) {
     return;
   }
 
-  server.documents.onDidChangeContent((change: any)=>{
-    try {
-      lintFile(root, change.document, server)
-    } catch(e) {
-      console.log(e);
-    }
-  });
+  if (Array.isArray(server.linters)) {
+    server.linters.push(async (document: any)=>{
+      let results: any = [];
+      try {
+        results = await lintFile(root, document, server)
+        return results;
+      } catch(e) {
+        console.log(e);
+      }
+      return null;
+    });
+  } else {
+    // will owerride templat-lint
+    server.documents.onDidChangeContent((change: any)=>{
+      try {
+        let diagnostics = lintFile(root, change.document, server);
+        server.connection.sendDiagnostics({ uri: change.document.uri, diagnostics });
+      } catch(e) {
+        console.log(e);
+      }
+    });
+  }
+
 
 
   hasLinter = true;

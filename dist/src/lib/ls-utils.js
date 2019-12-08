@@ -89,15 +89,11 @@ function toFullDiagnostic(err) {
         source: "typed-templates"
     };
 }
-let diagnosticTimeout = null;
-function getFullSemanticDiagnostics(server, service, fileName, uri) {
-    clearTimeout(diagnosticTimeout);
+function getFullSemanticDiagnostics(service, fileName) {
     const tsDiagnostics = service.getSemanticDiagnostics(fileName);
     const results = tsDiagnostics.map((error) => toFullDiagnostic(error)).filter((el) => el !== null);
     const diagnostics = results;
-    diagnosticTimeout = setTimeout(() => {
-        server.connection.sendDiagnostics({ uri, diagnostics });
-    }, 500);
+    return diagnostics;
 }
 exports.getFullSemanticDiagnostics = getFullSemanticDiagnostics;
 function getSemanticDiagnostics(server, service, templateRange, fileName, focusPath, uri) {

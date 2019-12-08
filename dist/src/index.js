@@ -29,7 +29,7 @@ function lintFile(root, textDocument, server) {
     const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
     const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
     virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
-    ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+    return ls_utils_1.getFullSemanticDiagnostics(service, fullFileName);
 }
 function setupLinter(root, type, server) {
     if (type !== 'template') {
@@ -38,14 +38,31 @@ function setupLinter(root, type, server) {
     if (hasLinter) {
         return;
     }
-    server.documents.onDidChangeContent((change) => {
-        try {
-            lintFile(root, change.document, server);
-        }
-        catch (e) {
-            console.log(e);
-        }
-    });
+    if (Array.isArray(server.linters)) {
+        server.linters.push((document) => __awaiter(this, void 0, void 0, function* () {
+            let results = [];
+            try {
+                results = yield lintFile(root, document, server);
+                return results;
+            }
+            catch (e) {
+                console.log(e);
+            }
+            return null;
+        }));
+    }
+    else {
+        // will owerride templat-lint
+        server.documents.onDidChangeContent((change) => {
+            try {
+                let diagnostics = lintFile(root, change.document, server);
+                server.connection.sendDiagnostics({ uri: change.document.uri, diagnostics });
+            }
+            catch (e) {
+                console.log(e);
+            }
+        });
+    }
     hasLinter = true;
 }
 function onDefinition(root, { results, focusPath, server, type, textDocument }) {
