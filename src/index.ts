@@ -69,6 +69,7 @@ export async function onDefinition(
 //     this.templateLinter.lint(change.document);
 //   }
 // }
+let diagnosticsTimeout: any = null;
 
 export async function onComplete(
   root,
@@ -96,7 +97,6 @@ export async function onComplete(
     const fileName = virtualTemplateFileName(templatePath);
     const fullFileName = virtualComponentTemplateFileName(templatePath);
 
-    createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
 
     const { pos } = createVirtualTemplate(
       projectRoot,
@@ -114,7 +114,19 @@ export async function onComplete(
     // console.log('slice','`'+componentsMap[fileName].slice(pos,pos+2)+'`');
 
     // const templateRange: [number, number] = [posStart, pos];
-    getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+    clearTimeout(diagnosticsTimeout);
+    diagnosticsTimeout = setTimeout(function() {
+      try {
+        createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+        getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+      } catch(e) {
+        clearTimeout(diagnosticsTimeout);
+        diagnosticsTimeout = setTimeout(()=>{
+          createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+          getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+        }, 10000);
+      }
+    }, 1000);
 
     // getSemanticDiagnostics(
     //   server,

@@ -18,6 +18,9 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
     const relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     componentsMap[fileName] = hbs_converter_1.getClass(templateTokens, relComponentImport);
+    console.log('===============');
+    console.log(componentsMap[fileName]);
+    console.log('===============');
     return componentsMap[fileName];
 }
 exports.createFullVirtualTemplate = createFullVirtualTemplate;

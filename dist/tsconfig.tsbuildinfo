@@ -1146,11 +1146,11 @@
         "signature": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "569b032ecd621118949b5806c793feb16fcbdf91a635d627dcd2f0eeb4599f9e",
+        "version": "561a8951d0d6799b14bf938868a7fd783faae0e64e5dbe064793126e84fb7e77",
         "signature": "58d30b5d342db0fbb943dc3f216d2c94bee07dec0da274c6da45e81441c1e807"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "dacf148ad528ac8230e4a75a518b4859f82b26d9953a507a6db1445e880f7ac0",
+        "version": "4b1ca94b0f5a91c13031b27b8758eb5063cbc86065a13605648e2ad5ca8cb8de",
         "signature": "3f99779f96861547d6da9894073848fab5d0bd86eb58f1a7398d63ccaa3ebdca"
       },
       "../src/lib/ls-utils.ts": {
@@ -1158,7 +1158,7 @@
         "signature": "5539b3c580c896342c5ee11c66901b285fe1be3d2328b7fe967e129a0641cad7"
       },
       "../src/index.ts": {
-        "version": "588d466ee47d5892718b092d10db308b128b06da4dc7d079fff311267f87dafb",
+        "version": "2594df9998115d48310e475f0d4f692212a36136ecb9b1d2842b5c2d553cd94d",
         "signature": "55a4ed829dd709cf90d6fc3a27e6cf202d2fc2ce2fab7acaf15d5bed9ad6e4a5"
       },
       "../src/lib/common-types.d.ts": {
@@ -6318,8 +6318,8 @@
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
       "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
-      "../src/lib/common-types.d.ts",
       "../src/lib/ls-utils.ts",
+      "../src/lib/common-types.d.ts",
       "../src/index.ts"
     ]
   },

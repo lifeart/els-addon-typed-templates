@@ -21,6 +21,7 @@ exports.getClassMeta = getClassMeta;
 function getClass(items, componentImport) {
     const methods = {};
     const klass = {};
+    const blockPaths = [];
     function keyForItem(item) {
         const { start, end } = item.loc;
         return `${start.line},${start.column}:${end.line},${end.column} - ${item.type}`;
@@ -62,6 +63,9 @@ function getClass(items, componentImport) {
                 key: key
             };
             klass[keyForItem(exp.path)] = exp.path;
+            if (exp.type === 'BlockStatement') {
+                blockPaths.push(keyForItem(exp.path));
+            }
             parents[pointer].push(keyForItem(exp.path));
             exp.params.forEach(p => {
                 klass[keyForItem(p)] = p;
@@ -144,7 +148,12 @@ function getClass(items, componentImport) {
                 }
                 if (foundKey === "globalScope") {
                     if (!(scopeKey in globalScope)) {
-                        globalScope[scopeKey] = '(params, hash) { return ""; }';
+                        if (blockPaths.includes(key)) {
+                            globalScope[scopeKey] = '(params, hash) { return []; }';
+                        }
+                        else {
+                            globalScope[scopeKey] = '(params, hash) { return ""; }';
+                        }
                     }
                     klass[key] = `(params = [], hash = {}) { return this.globalScope["${scopeKey}"](params, hash); }`;
                 }

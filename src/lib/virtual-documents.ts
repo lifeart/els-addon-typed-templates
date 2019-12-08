@@ -26,7 +26,10 @@ export function createFullVirtualTemplate(projectRoot, componentsMap, templatePa
     fileName,
     scriptForComponent
   );
-  componentsMap[fileName] = getClass(templateTokens, relComponentImport)
+  componentsMap[fileName] = getClass(templateTokens, relComponentImport);
+  console.log('===============');
+  console.log(componentsMap[fileName]);
+  console.log('===============');
   return componentsMap[fileName];
 }
 

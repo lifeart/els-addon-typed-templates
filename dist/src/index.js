@@ -53,6 +53,14 @@ function onDefinition(root, { results, focusPath, type, textDocument }) {
     });
 }
 exports.onDefinition = onDefinition;
+// function onDidChangeContent() {
+//   this.documents.onDidChangeContent(this.onDidChangeContent.bind(this));
+//   private onDidChangeContent(change: any) {
+//     // this.setStatusText('did-change');
+//     this.templateLinter.lint(change.document);
+//   }
+// }
+let diagnosticsTimeout = null;
 function onComplete(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!ast_helpers_1.canHandle(type, focusPath)) {
@@ -74,7 +82,6 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
             // console.log('realPath', realPath);
             const fileName = resolvers_1.virtualTemplateFileName(templatePath);
             const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
-            virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
             const { pos } = virtual_documents_1.createVirtualTemplate(projectRoot, componentsMap, fileName, {
                 templatePath,
                 realPath,
@@ -84,7 +91,20 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
             });
             // console.log('slice','`'+componentsMap[fileName].slice(pos,pos+2)+'`');
             // const templateRange: [number, number] = [posStart, pos];
-            ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+            clearTimeout(diagnosticsTimeout);
+            diagnosticsTimeout = setTimeout(function () {
+                try {
+                    virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+                    ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+                }
+                catch (e) {
+                    clearTimeout(diagnosticsTimeout);
+                    diagnosticsTimeout = setTimeout(() => {
+                        virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+                        ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+                    }, 10000);
+                }
+            }, 1000);
             // getSemanticDiagnostics(
             //   server,
             //   service,

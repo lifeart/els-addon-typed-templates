@@ -22,6 +22,7 @@ export function getClassMeta(source) {
 export function getClass(items, componentImport: string) {
   const methods = {};
   const klass = {};
+  const blockPaths: any = [];
   function keyForItem(item) {
     const { start, end } = item.loc;
     return `${start.line},${start.column}:${end.line},${end.column} - ${item.type}`;
@@ -69,6 +70,9 @@ export function getClass(items, componentImport: string) {
       };
 
       klass[keyForItem(exp.path)] = exp.path;
+      if (exp.type === 'BlockStatement') {
+        blockPaths.push(keyForItem(exp.path));
+      }
       parents[pointer].push(keyForItem(exp.path));
 
       exp.params.forEach(p => {
@@ -150,7 +154,11 @@ export function getClass(items, componentImport: string) {
         }
         if (foundKey === "globalScope") {
           if (!(scopeKey in globalScope)) {
-            globalScope[scopeKey] = '(params, hash) { return ""; }';
+            if (blockPaths.includes(key)) {
+              globalScope[scopeKey] = '(params, hash) { return []; }';
+            } else {
+              globalScope[scopeKey] = '(params, hash) { return ""; }';
+            }
           }
           klass[
             key
