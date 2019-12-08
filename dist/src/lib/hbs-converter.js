@@ -99,11 +99,13 @@ function getClass(items, componentImport) {
     });
     const pathsForGlobalScope = {
         'each': "<T>(params: ArrayLike<T>[], hash?)",
-        'let': "<T>(params: ArrayLike<T>, hash?)"
+        'let': "<T>(params: ArrayLike<T>, hash?)",
+        'hash': "<T>(params: = [], hash: T)"
     };
     const globalScope = {
         ["each"]: 'EachHelper',
-        ["let"]: "LetHelper"
+        ["let"]: "LetHelper",
+        ["hash"]: "HashHelper"
         // ["let"]: '<T>(items: T, hash:any = {} ): T { return items; }'
     };
     function getItemScopes(key, itemScopes = []) {
@@ -211,6 +213,11 @@ function getClass(items, componentImport) {
                       return this["${keyForItem(klass[key].path)}"]([${params}]);
                   }`;
             }
+            else if (hash.length && !params.length) {
+                klass[key] = `() {
+                      return this["${keyForItem(klass[key].path)}"]([],{${hash}});
+                  }`;
+            }
             else {
                 klass[key] = `() {
                       return this["${keyForItem(klass[key].path)}"]();
@@ -224,6 +231,8 @@ function getClass(items, componentImport) {
   type LetHelper = <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
   type AbstractHelper = <T>([items]:T[], hash?) => T;
   type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
+  type HashHelper = <T>(items: any[], hash: T) => T;
+
   
   interface IKnownScope {
     ${Object.keys(globalScope)

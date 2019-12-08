@@ -1146,7 +1146,7 @@
         "signature": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "2681fa8c931889685395fc1cd9a08845c44f5abb1c5ab7c181d49ef40f928d02",
+        "version": "f387255911e5c04eb49e26ea06b2141c8d07d76ddec7ef7d2187e596031471e7",
         "signature": "58d30b5d342db0fbb943dc3f216d2c94bee07dec0da274c6da45e81441c1e807"
       },
       "../src/lib/virtual-documents.ts": {
