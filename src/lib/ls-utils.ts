@@ -69,12 +69,22 @@ export function tsDefinitionToLocation(el) {
     offsetToRange(scope.start, scope.length, file)
   );
 }
-
+ 
 function toFullDiagnostic(err) {
   let preErrorText = err.file.text.slice(0, err.start);
   let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
   let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
   let [start, end] = mark.split(':');
+  if (! start || ! end) {
+    let postError = err.file.text.slice(err.start, err.file.text.length);
+    let postErrorMark = postError.slice(postError.indexOf('/*@path-mark ') + 13,postError.indexOf('*/'));
+    [start, end] = postErrorMark.split(':');
+    
+    if (!start || ! end) {
+      console.log(err);
+      return null;
+    }
+  }
   let [startCol, startRow] =  start.split(',').map((e)=>parseInt(e, 10));
   let [endCol, endRow] =  end.split(',').map((e)=>parseInt(e, 10));
   return {
@@ -89,7 +99,7 @@ export function getFullSemanticDiagnostics(server, service, fileName, uri) {
   const tsDiagnostics = service.getSemanticDiagnostics(fileName);
   const diagnostics: Diagnostic[] = tsDiagnostics.map((error: any) =>
     toFullDiagnostic(error)
-  );
+  ).filter((el)=>el !== null)
   server.connection.sendDiagnostics({ uri, diagnostics });
 }
 

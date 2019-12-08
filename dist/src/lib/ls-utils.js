@@ -66,6 +66,15 @@ function toFullDiagnostic(err) {
     let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
     let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
     let [start, end] = mark.split(':');
+    if (!start || !end) {
+        let postError = err.file.text.slice(err.start, err.file.text.length);
+        let postErrorMark = postError.slice(postError.indexOf('/*@path-mark ') + 13, postError.indexOf('*/'));
+        [start, end] = postErrorMark.split(':');
+        if (!start || !end) {
+            console.log(err);
+            return null;
+        }
+    }
     let [startCol, startRow] = start.split(',').map((e) => parseInt(e, 10));
     let [endCol, endRow] = end.split(',').map((e) => parseInt(e, 10));
     return {
@@ -77,7 +86,7 @@ function toFullDiagnostic(err) {
 }
 function getFullSemanticDiagnostics(server, service, fileName, uri) {
     const tsDiagnostics = service.getSemanticDiagnostics(fileName);
-    const diagnostics = tsDiagnostics.map((error) => toFullDiagnostic(error));
+    const diagnostics = tsDiagnostics.map((error) => toFullDiagnostic(error)).filter((el) => el !== null);
     server.connection.sendDiagnostics({ uri, diagnostics });
 }
 exports.getFullSemanticDiagnostics = getFullSemanticDiagnostics;

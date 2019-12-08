@@ -31,7 +31,10 @@ function lintFile(root, textDocument, server) {
   getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
 }
 
-function setupLinter(root, server) {
+function setupLinter(root, type: string, server) {
+  if (type !== 'template') {
+    return;
+  }
   if (hasLinter) {
     return;
   }
@@ -52,11 +55,11 @@ export async function onDefinition(
   root,
   { results, focusPath, server, type, textDocument }
 ) {
-  
+  setupLinter(root, type, server);
+
   if (!canHandle(type, focusPath)) {
     return results;
   }
-  setupLinter(root, server);
   knownFiles.add(textDocument.uri);
 
 
@@ -99,10 +102,11 @@ export async function onComplete(
   root,
   { results, focusPath, server, type, textDocument }
 ) {
+  setupLinter(root, type, server);
+
   if (!canHandle(type, focusPath)) {
     return results;
   }
-  setupLinter(root, server);
   knownFiles.add(textDocument.uri);
 
   try {

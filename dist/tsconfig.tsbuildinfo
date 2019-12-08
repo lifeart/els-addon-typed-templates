@@ -434,7 +434,7 @@
         "signature": "6536c55617357917c842bbbcfb4beb015fd05782e835a431a8ec95c3aaf4a52b"
       },
       "../src/lib/resolvers.ts": {
-        "version": "398e509bb6bbb52247ac4e8de5c88a683599465db5a6a0f5a49373f4856375b7",
+        "version": "10e83a79d6b7d989be3b6fdbb3f8eec9ebe1a77d6faec7adb213a755c9e68c08",
         "signature": "819d5a286587b0a03a4afcd5bdca226752e1d4c9b4e02d30438dbb04ac9113e1"
       },
       "../node_modules/typescript/lib/typescript.d.ts": {
@@ -1146,19 +1146,19 @@
         "signature": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "6ad894c784b0f99aac8dba14f49dec69fc13b9101568f0677966bee24c80d18d",
+        "version": "10526785a871ea76eabe225fc1b184fabfbce06adb3d727484b24f235a83f0b2",
         "signature": "e089620fc1422fbf421ccd877b6626e06692b1f117ed38e7b2a879197496e4d8"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "919d774681b9947ae75573a469d517faac38ac672825879d39d7d2673b8822d7",
+        "version": "fbdd404b2d5a4f85345e471111fdb9980678b902968d4b800d180c18fe35aeb6",
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "0b2b6394080c4794577d2401d39a541495e0b68f71fc6c9f0620431fbd880628",
+        "version": "f1f1dc76acba488ca811fbb7d0ca5d6642612692cd814799b94be5b449e79ff5",
         "signature": "5539b3c580c896342c5ee11c66901b285fe1be3d2328b7fe967e129a0641cad7"
       },
       "../src/index.ts": {
-        "version": "d0daa9ebd45d7366ee15b0388e9f237a8faad70ba1ec540274bad08b77f4837f",
+        "version": "0c57d4c08771defe9bf5b3cb86e48d1b0b8163d3f545dde715d9ba157f84e880",
         "signature": "4b6abf33a86c7d341ed53751aa526a2632cc493a20d6510366cc771ec0de760b"
       },
       "../src/lib/common-types.d.ts": {
@@ -6139,7 +6139,6 @@
       "../node_modules/vscode-languageserver/lib/main.d.ts",
       "../src/lib/utils.ts",
       "../src/lib/ast-helpers.ts",
-      "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
       "../src/lib/ts-service.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
@@ -6318,10 +6317,11 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
       "../src/lib/hbs-converter.ts",
-      "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
+      "../src/index.ts",
       "../src/lib/common-types.d.ts",
-      "../src/index.ts"
+      "../src/lib/resolvers.ts",
+      "../src/lib/virtual-documents.ts"
     ]
   },
   "version": "3.7.3"

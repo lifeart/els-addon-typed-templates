@@ -28,7 +28,10 @@ function lintFile(root, textDocument, server) {
     virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
     ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
 }
-function setupLinter(root, server) {
+function setupLinter(root, type, server) {
+    if (type !== 'template') {
+        return;
+    }
     if (hasLinter) {
         return;
     }
@@ -44,10 +47,10 @@ function setupLinter(root, server) {
 }
 function onDefinition(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
+        setupLinter(root, type, server);
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
-        setupLinter(root, server);
         knownFiles.add(textDocument.uri);
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);
@@ -82,10 +85,10 @@ function onDefinition(root, { results, focusPath, server, type, textDocument }) 
 exports.onDefinition = onDefinition;
 function onComplete(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
+        setupLinter(root, type, server);
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
-        setupLinter(root, server);
         knownFiles.add(textDocument.uri);
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);

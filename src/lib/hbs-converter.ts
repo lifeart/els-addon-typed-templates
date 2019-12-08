@@ -11,8 +11,15 @@ export function getClassMeta(source) {
     BlockStatement(node) {
       nodes.push([node]);
     },
+    ElementModifierStatement(node) {
+      nodes.push([node]);
+    },
     SubExpression(node) {
-      nodes[nodes.length - 1].push(node);
+      if (nodes[nodes.length - 1]) {
+        nodes[nodes.length - 1].push(node);
+      } else {
+        console.log('unexpectedSubexpression', node);
+      }
     }
   });
 
@@ -42,6 +49,10 @@ export function getClass(items, componentImport: string) {
     items.forEach(item => {
       if (item.type === "MustacheStatement" || item.type === "BlockStatement") {
         parents[key].push(keyForItem(item));
+      } else if (item.type === "ElementNode") {
+        item.modifiers.forEach((mod)=>{
+          parents[key].push(keyForItem(mod));
+        })
       }
       addChilds(item.program ? item.program.body : item.children || [], key);
     });
@@ -152,17 +163,17 @@ export function getClass(items, componentImport: string) {
 
   Object.keys(klass).forEach(key => {
     if (klass[key].type === "NumberLiteral") {
-      klass[key] = `() { return ${klass[key].value}; }`;
+      klass[key] = `() { return ${klass[key].value}; /*@path-mark ${serializeKey(key)}*/}`;
     } else if (klass[key].type === "StringLiteral") {
-      klass[key] = `() { return "${klass[key].value}"; }`;
+      klass[key] = `() { return "${klass[key].value}"; /*@path-mark ${serializeKey(key)}*/}`;
     } else if (klass[key].type === "NullLiteral") {
-      klass[key] = `() { return null; }`;
+      klass[key] = `() { return null; /*@path-mark ${serializeKey(key)}*/}`;
     } else if (klass[key].type === "BooleanLiteral") {
       klass[key] = `() { return ${
         klass[key].value === true ? "true" : "false"
-      }; }`;
+      }; /*@path-mark ${serializeKey(key)}*/}`;
     } else if (klass[key].type === "UndefinedLiteral") {
-      klass[key] = `() { return undefined; }`;
+      klass[key] = `() { return undefined; /*@path-mark ${serializeKey(key)}*/}`;
     } else if (klass[key].type === "PathExpression") {
       if (klass[key].data === true) {
         klass[key] = `() { return this.args.${klass[key].original.replace('ELSCompletionDummy', '')}; /*@path-mark ${serializeKey(key)}*/}`;
@@ -217,6 +228,7 @@ export function getClass(items, componentImport: string) {
     if (
       klass[key].type === "SubExpression" ||
       klass[key].type === "MustacheStatement" ||
+      klass[key].type === "ElementModifierStatement" ||
       klass[key].type === "BlockStatement"
     ) {
       //   if (klass[key].type === "BlockStatement") {
@@ -239,22 +251,18 @@ export function getClass(items, componentImport: string) {
         klass[key] = `() {
                       return this["${keyForItem(
                         klass[key].path
-                      )}"]([${params}],{${hash}});
-                  }`;
+                      )}"]([${params}],{${hash}}); /*@path-mark ${serializeKey(key)}*/}`;
       } else if (!hash.length && params.length) {
         klass[key] = `() {
                       return this["${keyForItem(
                         klass[key].path
-                      )}"]([${params}]);
-                  }`;
+                      )}"]([${params}]); /*@path-mark ${serializeKey(key)}*/}`;
       } else if (hash.length && !params.length) {
         klass[key] = `() {
-                      return this["${keyForItem(klass[key].path)}"]([],{${hash}});
-                  }`;
+                      return this["${keyForItem(klass[key].path)}"]([],{${hash}}); /*@path-mark ${serializeKey(key)}*/}`;
       } else {
         klass[key] = `() {
-                      return this["${keyForItem(klass[key].path)}"]();
-                  }`;
+                      return this["${keyForItem(klass[key].path)}"](); /*@path-mark ${serializeKey(key)}*/}`;
       }
     }
   });

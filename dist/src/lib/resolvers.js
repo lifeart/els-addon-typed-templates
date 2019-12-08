@@ -47,6 +47,7 @@ function findComponentForTemplate(fsPath, projectRoot) {
         posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "component.ts")));
         posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "component.js")));
     }
+    // console.log('possibleComponentNames', posibleNames);
     return posibleNames.filter(fileLocation => fs.existsSync(fileLocation))[0];
 }
 exports.findComponentForTemplate = findComponentForTemplate;

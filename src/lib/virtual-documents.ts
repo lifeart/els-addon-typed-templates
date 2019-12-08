@@ -22,6 +22,7 @@ export function createFullVirtualTemplate(projectRoot, componentsMap, templatePa
     templatePath,
     projectRoot
   );
+  // console.log('scriptForComponent', scriptForComponent);
   const relComponentImport = relativeComponentImport(
     fileName,
     scriptForComponent

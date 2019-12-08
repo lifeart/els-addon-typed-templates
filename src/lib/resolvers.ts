@@ -74,5 +74,6 @@ export function findComponentForTemplate(fsPath, projectRoot) {
     );
   }
 
+  // console.log('possibleComponentNames', posibleNames);
   return posibleNames.filter(fileLocation => fs.existsSync(fileLocation))[0];
 }
