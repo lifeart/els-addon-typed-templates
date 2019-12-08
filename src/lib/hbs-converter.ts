@@ -106,7 +106,10 @@ export function getClass(items, componentImport: string) {
     }
   });
 
-  const globalScope = {};
+  const globalScope = {
+    ["each"]: '<T>(items: Array<T>[], hash:any = {} ): [T, number] { return [(items[0] as unknown ) as T, 0]; }',
+    ["let"]: '<T>(items: T, hash:any = {} ): T { return items; }'
+  };
 
   function getItemScopes(key, itemScopes: any = []) {
     let p = Object.keys(parents);
@@ -142,7 +145,8 @@ export function getClass(items, componentImport: string) {
       } else if (klass[key].this === true) {
         klass[key] = `() { return ${klass[key].original}; }`;
       } else {
-        const scopeKey = klass[key].original;
+        const scopeChain = klass[key].original.split('.');
+        const scopeKey = scopeChain.shift();
         const itemScopes = getItemScopes(key);
         let foundKey: string | any[] = "globalScope";
         for (let i = 0; i < itemScopes.length; i++) {
@@ -164,9 +168,15 @@ export function getClass(items, componentImport: string) {
             key
           ] = `(params = [], hash = {}) { return this.globalScope["${scopeKey}"](params, hash); }`;
         } else {
-          klass[
-            key
-          ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}](params, hash); }`;
+          if (scopeChain.length) {
+            klass[
+              key
+            ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}].${scopeChain.join('.')}; }`;
+          } else {
+            klass[
+              key
+            ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}]; }`;
+          }
         }
       }
     }

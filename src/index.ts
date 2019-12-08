@@ -139,6 +139,7 @@ export async function onComplete(
     let tsResults = service.getCompletionsAtPosition(fileName, pos, {
       includeInsertTextCompletions: true
     });
+    console.log('tsResults', tsResults);
     if (tsResults && tsResults.entries.length > 100) {
       // console.log('too match results', componentsMap[fileName], pos, componentsMap[fileName].length);
       return results;

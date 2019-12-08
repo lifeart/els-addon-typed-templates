@@ -38,6 +38,14 @@ function canHandle(type, focusPath) {
     if (focusPath.node.type !== "PathExpression") {
         return false;
     }
+    const meta = focusPath.metaForType("handlebars");
+    const realName = realPathName(focusPath).split('.')[0];
+    const scope = meta.localScope;
+    for (let i = 0; i < scope.length; i++) {
+        if (scope[i].name === realName) {
+            return true;
+        }
+    }
     if (focusPath.node.this === false && focusPath.node.data === false) {
         return false;
     }

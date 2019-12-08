@@ -7,6 +7,7 @@ export default class Foo {
             foo: 'bar'
         }
     }
+    items = [1,3,4]
     profile = {
         id: 12,
         name: 42

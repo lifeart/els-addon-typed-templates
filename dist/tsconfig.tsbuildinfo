@@ -430,7 +430,7 @@
         "signature": "ebfd39a0e7dab18a3d22ea956d728f714927bc3e191e3ad8fefe1c3301d3d9f8"
       },
       "../src/lib/ast-helpers.ts": {
-        "version": "152321c53bdc4d35541a9b21e339eda17a259d6f9e695077ada59a2d230c6cdc",
+        "version": "d1840455cf4234278ab2a0fdc99326aa6fd563848098108fb41e34c471ede155",
         "signature": "6536c55617357917c842bbbcfb4beb015fd05782e835a431a8ec95c3aaf4a52b"
       },
       "../src/lib/resolvers.ts": {
@@ -1146,7 +1146,7 @@
         "signature": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "561a8951d0d6799b14bf938868a7fd783faae0e64e5dbe064793126e84fb7e77",
+        "version": "296487bf7c84ac9dd0072f9623f8a1e027e1bc74ebefe14f7f91b2b8effc5445",
         "signature": "58d30b5d342db0fbb943dc3f216d2c94bee07dec0da274c6da45e81441c1e807"
       },
       "../src/lib/virtual-documents.ts": {
@@ -1158,7 +1158,7 @@
         "signature": "5539b3c580c896342c5ee11c66901b285fe1be3d2328b7fe967e129a0641cad7"
       },
       "../src/index.ts": {
-        "version": "2594df9998115d48310e475f0d4f692212a36136ecb9b1d2842b5c2d553cd94d",
+        "version": "2a3f74a47df987a1d790d8e585c5b932347fd7ca6a62cdd5494b5347df13532f",
         "signature": "55a4ed829dd709cf90d6fc3a27e6cf202d2fc2ce2fab7acaf15d5bed9ad6e4a5"
       },
       "../src/lib/common-types.d.ts": {
@@ -6316,11 +6316,11 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
-      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
+      "../src/index.ts",
       "../src/lib/common-types.d.ts",
-      "../src/index.ts"
+      "../src/lib/hbs-converter.ts"
     ]
   },
   "version": "3.7.3"
