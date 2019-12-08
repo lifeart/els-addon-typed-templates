@@ -70,6 +70,29 @@ export function tsDefinitionToLocation(el) {
   );
 }
 
+function toFullDiagnostic(err) {
+  let preErrorText = err.file.text.slice(0, err.start);
+  let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
+  let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
+  let [start, end] = mark.split(':');
+  let [startCol, startRow] =  start.split(',').map((e)=>parseInt(e, 10));
+  let [endCol, endRow] =  end.split(',').map((e)=>parseInt(e, 10));
+  return {
+    severity: DiagnosticSeverity.Error,
+    range: Range.create(startCol - 1, startRow, endCol - 1, endRow),
+    message: err.messageText,
+    source: "typed-templates"
+  };
+}
+
+export function getFullSemanticDiagnostics(server, service, fileName, uri) {
+  const tsDiagnostics = service.getSemanticDiagnostics(fileName);
+  const diagnostics: Diagnostic[] = tsDiagnostics.map((error: any) =>
+    toFullDiagnostic(error)
+  );
+  server.connection.sendDiagnostics({ uri, diagnostics });
+}
+
 export function getSemanticDiagnostics(server, service, templateRange, fileName , focusPath, uri) {
   //  console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
       //     console.log('getSyntacticDiagnostics', el.messageText, el.start, el.length);

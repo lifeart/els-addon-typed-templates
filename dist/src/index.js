@@ -73,7 +73,9 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
             }
             // console.log('realPath', realPath);
             const fileName = resolvers_1.virtualTemplateFileName(templatePath);
-            const { posStart, pos } = virtual_documents_1.createVirtualTemplate(projectRoot, componentsMap, fileName, {
+            const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
+            virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+            const { pos } = virtual_documents_1.createVirtualTemplate(projectRoot, componentsMap, fileName, {
                 templatePath,
                 realPath,
                 isArg,
@@ -81,8 +83,16 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
                 isArrayCase
             });
             // console.log('slice','`'+componentsMap[fileName].slice(pos,pos+2)+'`');
-            const templateRange = [posStart, pos];
-            ls_utils_1.getSemanticDiagnostics(server, service, templateRange, fileName, focusPath, textDocument.uri);
+            // const templateRange: [number, number] = [posStart, pos];
+            ls_utils_1.getFullSemanticDiagnostics(server, service, fullFileName, textDocument.uri);
+            // getSemanticDiagnostics(
+            //   server,
+            //   service,
+            //   templateRange,
+            //   fullFileName,
+            //   focusPath,
+            //   textDocument.uri
+            // );
             let tsResults = service.getCompletionsAtPosition(fileName, pos, {
                 includeInsertTextCompletions: true
             });
