@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const syntax_1 = require("@glimmer/syntax");
+const utils_1 = require("./utils");
 function getClassMeta(source) {
     const node = syntax_1.preprocess(source);
     const nodes = [];
@@ -115,6 +116,28 @@ function getClass(items, componentImport) {
             }
         }
     });
+    const globalScope = {
+        ["each"]: 'EachHelper',
+        ["let"]: "LetHelper",
+        ["hash"]: "HashHelper",
+        ["array"]: "ArrayHelper",
+        ["if"]: "typeof TIfHeper"
+    };
+    let typeDeclarations = `
+
+  type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
+  type LetHelper = <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
+  type AbstractHelper = <T>([items]:T[], hash?) => T;
+  type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
+  type HashHelper = <T>(items: any[], hash: T) => T;
+  type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
+
+  function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
+    return !!a ? b : c;
+  }
+  
+  
+  `;
     const pathsForGlobalScope = {
         'each': "<T>(params: ArrayLike<T>[], hash?)",
         'let': "<T>(params: ArrayLike<T>, hash?)",
@@ -124,13 +147,6 @@ function getClass(items, componentImport) {
     };
     const tailForGlobalScope = {
         "if": "([a as T,b as U,c as Y], hash)"
-    };
-    const globalScope = {
-        ["each"]: 'EachHelper',
-        ["let"]: "LetHelper",
-        ["hash"]: "HashHelper",
-        ["array"]: "ArrayHelper",
-        ["if"]: "typeof TIfHeper"
     };
     function getItemScopes(key, itemScopes = []) {
         let p = Object.keys(parents);
@@ -164,13 +180,13 @@ function getClass(items, componentImport) {
         }
         else if (klass[key].type === "PathExpression") {
             if (klass[key].data === true) {
-                klass[key] = `() { return this.args.${klass[key].original.replace('ELSCompletionDummy', '')}; /*@path-mark ${serializeKey(key)}*/}`;
+                klass[key] = `() { return this.args.${klass[key].original.replace(utils_1.PLACEHOLDER, '')}; /*@path-mark ${serializeKey(key)}*/}`;
             }
             else if (klass[key].this === true) {
-                klass[key] = `() { return ${klass[key].original.replace('ELSCompletionDummy', '')}; /*@path-mark ${serializeKey(key)}*/}`;
+                klass[key] = `() { return ${klass[key].original.replace(utils_1.PLACEHOLDER, '')}; /*@path-mark ${serializeKey(key)}*/}`;
             }
             else {
-                const scopeChain = klass[key].original.replace('ELSCompletionDummy', '').split('.');
+                const scopeChain = klass[key].original.replace(utils_1.PLACEHOLDER, '').split('.');
                 const scopeKey = scopeChain.shift();
                 const itemScopes = getItemScopes(key);
                 let foundKey = "globalScope";
@@ -248,16 +264,7 @@ function getClass(items, componentImport) {
     });
     let klssTpl = `
 
-  type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
-  type LetHelper = <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
-  type AbstractHelper = <T>([items]:T[], hash?) => T;
-  type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
-  type HashHelper = <T>(items: any[], hash: T) => T;
-  type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
-
-  function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
-    return !!a ? b : c;
-  }
+  ${typeDeclarations}
   
   interface IKnownScope {
     ${Object.keys(globalScope)
