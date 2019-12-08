@@ -1,5 +1,5 @@
 import { URI } from "vscode-uri";
-
+import * as ts from "typescript";
 import {
   Location,
   Range,
@@ -72,6 +72,9 @@ export function tsDefinitionToLocation(el) {
  
 function toFullDiagnostic(err) {
   let preErrorText = err.file.text.slice(0, err.start);
+  if (err.start < err.file.text.indexOf('@mark-meaningful-issues-start')) {
+    return null;
+  }
   let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
   let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
   let [start, end] = mark.split(':');
@@ -79,12 +82,14 @@ function toFullDiagnostic(err) {
     let postError = err.file.text.slice(err.start, err.file.text.length);
     let postErrorMark = postError.slice(postError.indexOf('/*@path-mark ') + 13,postError.indexOf('*/'));
     [start, end] = postErrorMark.split(':');
-    
+
     if (!start || ! end) {
       console.log(err);
       return null;
     }
   }
+  // console.log({mark, start, end})
+  // console.log('preErrorText',preErrorText.slice(preErrorText.lastIndexOf('//@mark ') + 8, preErrorText.lastIndexOf('//@mark ') + 40));
   let [startCol, startRow] =  start.split(',').map((e)=>parseInt(e, 10));
   let [endCol, endRow] =  end.split(',').map((e)=>parseInt(e, 10));
   return {
@@ -95,12 +100,17 @@ function toFullDiagnostic(err) {
   };
 }
 
-export function getFullSemanticDiagnostics(server, service, fileName, uri) {
+let diagnosticTimeout: any = null;
+export function getFullSemanticDiagnostics(server, service:  ts.LanguageService, fileName, uri) {
+  clearTimeout(diagnosticTimeout);
   const tsDiagnostics = service.getSemanticDiagnostics(fileName);
-  const diagnostics: Diagnostic[] = tsDiagnostics.map((error: any) =>
+  const results = tsDiagnostics.map((error: any) =>
     toFullDiagnostic(error)
-  ).filter((el)=>el !== null)
-  server.connection.sendDiagnostics({ uri, diagnostics });
+  ).filter((el)=>el !== null);
+  const diagnostics: Diagnostic[] = results as Diagnostic[];
+  diagnosticTimeout = setTimeout(()=>{
+    server.connection.sendDiagnostics({ uri, diagnostics });
+  }, 500);
 }
 
 export function getSemanticDiagnostics(server, service, templateRange, fileName , focusPath, uri) {

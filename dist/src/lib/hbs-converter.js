@@ -45,6 +45,11 @@ function getClass(items, componentImport) {
     }
     const parents = {};
     const scopes = {};
+    const componentKlassImport = componentImport ? `import Component from "${componentImport}";` : '';
+    const templateComponentDeclaration = componentImport ? `export default class Template extends Component` : `export default class TemplateOnlyComponent`;
+    const componentExtraProperties = componentImport ? "" : `
+    args: any;
+  `;
     function addChilds(items, key) {
         items.forEach(item => {
             if (item.type === "MustacheStatement" || item.type === "BlockStatement") {
@@ -180,10 +185,10 @@ function getClass(items, componentImport) {
         }
         else if (klass[key].type === "PathExpression") {
             if (klass[key].data === true) {
-                klass[key] = `() { return this.args.${klass[key].original.replace(utils_1.PLACEHOLDER, '')}; /*@path-mark ${serializeKey(key)}*/}`;
+                klass[key] = `() { return this.args.${klass[key].original.replace(utils_1.PLACEHOLDER, '').replace('@', '')}; /*@path-mark ${serializeKey(key)}*/}`;
             }
             else if (klass[key].this === true) {
-                klass[key] = `() { return ${klass[key].original.replace(utils_1.PLACEHOLDER, '')}; /*@path-mark ${serializeKey(key)}*/}`;
+                klass[key] = `(${componentImport ? '' : 'this: null'}) { return ${klass[key].original.replace(utils_1.PLACEHOLDER, '')}; /*@path-mark ${serializeKey(key)}*/}`;
             }
             else {
                 const scopeChain = klass[key].original.replace(utils_1.PLACEHOLDER, '').split('.');
@@ -280,20 +285,22 @@ function getClass(items, componentImport) {
   
   type GlobalScope = IGlobalScope & IKnownScope;
 
-  import Component from "${componentImport}";
+  ${componentKlassImport}
 
-      export default class Template extends Component {
-          globalScope:  GlobalScope;
-          ${Object.keys(klass)
+  ${templateComponentDeclaration} {
+      ${componentExtraProperties}
+      globalScope:  GlobalScope;
+      //@mark-meaningful-issues-start
+      ${Object.keys(klass)
         .map(key => {
         return `
-              //@mark [${serializeKey(key)}]
-              "${key}"${klass[key]};`;
+          //@mark [${serializeKey(key)}]
+          "${key}"${klass[key]};`;
     })
         .join("\n")}
-      }
+  }
       
-      `;
+  `;
     return klssTpl;
 }
 exports.getClass = getClass;

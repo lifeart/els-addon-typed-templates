@@ -16,12 +16,11 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
     content = content ? content : document.getText();
     const templateTokens = hbs_converter_1.getClassMeta(content);
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
-    if (!scriptForComponent) {
-        componentsMap[fileName] = `export default class TemplateOnlyComponent { args: any }`;
-        return componentsMap[fileName];
+    let relComponentImport = null;
+    if (scriptForComponent) {
+        relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     }
     // console.log('scriptForComponent', scriptForComponent);
-    const relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     componentsMap[fileName] = hbs_converter_1.getClass(templateTokens, relComponentImport);
     console.log('===============');
     console.log(componentsMap[fileName]);

@@ -22,15 +22,16 @@ export function createFullVirtualTemplate(projectRoot, componentsMap, templatePa
     templatePath,
     projectRoot
   );
-  if (!scriptForComponent) {
-    componentsMap[fileName] = `export default class TemplateOnlyComponent { args: any }`;
-    return componentsMap[fileName];
+
+  let relComponentImport: string | null = null;
+
+  if (scriptForComponent) {
+    relComponentImport = relativeComponentImport(
+      fileName,
+      scriptForComponent
+    );
   }
   // console.log('scriptForComponent', scriptForComponent);
-  const relComponentImport = relativeComponentImport(
-    fileName,
-    scriptForComponent
-  );
   componentsMap[fileName] = getClass(templateTokens, relComponentImport);
   console.log('===============');
   console.log(componentsMap[fileName]);

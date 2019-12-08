@@ -63,6 +63,9 @@ function tsDefinitionToLocation(el) {
 exports.tsDefinitionToLocation = tsDefinitionToLocation;
 function toFullDiagnostic(err) {
     let preErrorText = err.file.text.slice(0, err.start);
+    if (err.start < err.file.text.indexOf('@mark-meaningful-issues-start')) {
+        return null;
+    }
     let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
     let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
     let [start, end] = mark.split(':');
@@ -75,6 +78,8 @@ function toFullDiagnostic(err) {
             return null;
         }
     }
+    // console.log({mark, start, end})
+    // console.log('preErrorText',preErrorText.slice(preErrorText.lastIndexOf('//@mark ') + 8, preErrorText.lastIndexOf('//@mark ') + 40));
     let [startCol, startRow] = start.split(',').map((e) => parseInt(e, 10));
     let [endCol, endRow] = end.split(',').map((e) => parseInt(e, 10));
     return {
@@ -84,10 +89,15 @@ function toFullDiagnostic(err) {
         source: "typed-templates"
     };
 }
+let diagnosticTimeout = null;
 function getFullSemanticDiagnostics(server, service, fileName, uri) {
+    clearTimeout(diagnosticTimeout);
     const tsDiagnostics = service.getSemanticDiagnostics(fileName);
-    const diagnostics = tsDiagnostics.map((error) => toFullDiagnostic(error)).filter((el) => el !== null);
-    server.connection.sendDiagnostics({ uri, diagnostics });
+    const results = tsDiagnostics.map((error) => toFullDiagnostic(error)).filter((el) => el !== null);
+    const diagnostics = results;
+    diagnosticTimeout = setTimeout(() => {
+        server.connection.sendDiagnostics({ uri, diagnostics });
+    }, 500);
 }
 exports.getFullSemanticDiagnostics = getFullSemanticDiagnostics;
 function getSemanticDiagnostics(server, service, templateRange, fileName, focusPath, uri) {

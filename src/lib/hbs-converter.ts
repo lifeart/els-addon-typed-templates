@@ -35,7 +35,7 @@ export function keyForItem(item) {
   return `${positionForItem(item)} - ${item.type}`;
 }
 
-export function getClass(items, componentImport: string) {
+export function getClass(items, componentImport: string | null) {
   const methods = {};
   const klass = {};
   const blockPaths: any = [];
@@ -45,6 +45,14 @@ export function getClass(items, componentImport: string) {
   }
   const parents = {};
   const scopes = {};
+
+
+  const componentKlassImport = componentImport ? `import Component from "${componentImport}";` : '';
+  const templateComponentDeclaration = componentImport ? `export default class Template extends Component`: `export default class TemplateOnlyComponent`;
+
+  const componentExtraProperties = componentImport ? "" : `
+    args: any;
+  `;
 
   function addChilds(items, key) {
     items.forEach(item => {
@@ -190,9 +198,9 @@ export function getClass(items, componentImport: string) {
       klass[key] = `() { return undefined; /*@path-mark ${serializeKey(key)}*/}`;
     } else if (klass[key].type === "PathExpression") {
       if (klass[key].data === true) {
-        klass[key] = `() { return this.args.${klass[key].original.replace(PLACEHOLDER, '')}; /*@path-mark ${serializeKey(key)}*/}`;
+        klass[key] = `() { return this.args.${klass[key].original.replace(PLACEHOLDER, '').replace('@', '')}; /*@path-mark ${serializeKey(key)}*/}`;
       } else if (klass[key].this === true) {
-        klass[key] = `() { return ${klass[key].original.replace(PLACEHOLDER, '')}; /*@path-mark ${serializeKey(key)}*/}`;
+        klass[key] = `(${componentImport?'':'this: null'}) { return ${klass[key].original.replace(PLACEHOLDER, '')}; /*@path-mark ${serializeKey(key)}*/}`;
       } else {
         const scopeChain = klass[key].original.replace(PLACEHOLDER, '').split('.');
         const scopeKey = scopeChain.shift();
@@ -299,20 +307,22 @@ export function getClass(items, componentImport: string) {
   
   type GlobalScope = IGlobalScope & IKnownScope;
 
-  import Component from "${componentImport}";
+  ${componentKlassImport}
 
-      export default class Template extends Component {
-          globalScope:  GlobalScope;
-          ${Object.keys(klass)
-            .map(key => {
-              return `
-              //@mark [${serializeKey(key)}]
-              "${key}"${klass[key]};`;
-            })
-            .join("\n")}
-      }
+  ${templateComponentDeclaration} {
+      ${componentExtraProperties}
+      globalScope:  GlobalScope;
+      //@mark-meaningful-issues-start
+      ${Object.keys(klass)
+        .map(key => {
+          return `
+          //@mark [${serializeKey(key)}]
+          "${key}"${klass[key]};`;
+        })
+        .join("\n")}
+  }
       
-      `;
+  `;
 
   return klssTpl;
 }

@@ -36,7 +36,9 @@ function serviceForRoot(uri) {
                     allowJs: true,
                     allowSyntheticDefaultImports: true,
                     skipLibCheck: true,
+                    noImplicitAny: false,
                     moduleResolution: ts.ModuleResolutionKind.NodeJs,
+                    strictPropertyInitialization: false,
                     module: ts.ModuleKind.ES2015
                 });
             },

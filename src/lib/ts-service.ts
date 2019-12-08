@@ -38,7 +38,9 @@ export function serviceForRoot(uri): ts.LanguageService {
           allowJs: true,
           allowSyntheticDefaultImports: true,
           skipLibCheck: true,
+          noImplicitAny: false,
           moduleResolution: ts.ModuleResolutionKind.NodeJs,
+          strictPropertyInitialization: false,
           module: ts.ModuleKind.ES2015
         });
       },
