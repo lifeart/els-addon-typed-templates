@@ -160,7 +160,7 @@ export function getClass(items, componentImport: string | null) {
     'each': "<T>(params: ArrayLike<T>[], hash?)",
     'let': "<T>(params: ArrayLike<T>, hash?)",
     'array': "<T>(params: ArrayLike<T>, hash?)",
-    'hash': "<T>(params: = [], hash: T)",
+    'hash': "<T>(params = [], hash: T)",
     'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)"
   };
 
@@ -235,11 +235,11 @@ export function getClass(items, componentImport: string | null) {
           if (scopeChain.length) {
             klass[
               key
-            ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}].${scopeChain.join('.')}; /*@path-mark ${serializeKey(key)}*/}`;
+            ] = `() { return this["${foundKey[0]}"]()[${foundKey[1]}].${scopeChain.join('.')}; /*@path-mark ${serializeKey(key)}*/}`;
           } else {
             klass[
               key
-            ] = `(params = [], hash = {}) { return this["${foundKey[0]}"]()[${foundKey[1]}]; /*@path-mark ${serializeKey(key)}*/}`;
+            ] = `() { return this["${foundKey[0]}"]()[${foundKey[1]}]; /*@path-mark ${serializeKey(key)}*/}`;
           }
         }
       }

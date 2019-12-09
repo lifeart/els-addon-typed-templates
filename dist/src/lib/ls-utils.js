@@ -82,10 +82,14 @@ function toFullDiagnostic(err) {
     // console.log('preErrorText',preErrorText.slice(preErrorText.lastIndexOf('//@mark ') + 8, preErrorText.lastIndexOf('//@mark ') + 40));
     let [startCol, startRow] = start.split(',').map((e) => parseInt(e, 10));
     let [endCol, endRow] = end.split(',').map((e) => parseInt(e, 10));
+    let msgText = err.messageText;
+    if (msgText.messageText) {
+        msgText = msgText.messageText;
+    }
     return {
         severity: vscode_languageserver_1.DiagnosticSeverity.Error,
         range: vscode_languageserver_1.Range.create(startCol - 1, startRow, endCol - 1, endRow),
-        message: err.messageText,
+        message: msgText,
         source: "typed-templates"
     };
 }
