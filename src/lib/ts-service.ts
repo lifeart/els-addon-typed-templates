@@ -56,6 +56,7 @@ export function serviceForRoot(uri): ts.LanguageService {
         let appEntry = path.join(uri, "app");
         let addonEntry = path.join(uri, "addon");
         let typesEntry = path.join(uri, "types");
+        let commonTypes = path.join(__dirname, './../../../src/lib/common-types.d.ts');
         let projectTypes = safeWalkSync(
           path.join(uri, "types"),
           walkParams
@@ -71,6 +72,7 @@ export function serviceForRoot(uri): ts.LanguageService {
         return [
           ...Array.from(
             new Set([
+              commonTypes,
               ...els,
               ...projectAppFiles,
               ...projectAddonFiles,

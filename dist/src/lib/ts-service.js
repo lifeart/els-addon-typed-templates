@@ -54,11 +54,13 @@ function serviceForRoot(uri) {
                 let appEntry = path.join(uri, "app");
                 let addonEntry = path.join(uri, "addon");
                 let typesEntry = path.join(uri, "types");
+                let commonTypes = path.join(__dirname, './../../../src/lib/common-types.d.ts');
                 let projectTypes = utils_1.safeWalkSync(path.join(uri, "types"), walkParams).map(el => path.resolve(path.join(typesEntry, el)));
                 let projectAppFiles = utils_1.safeWalkSync(path.join(uri, "app"), walkParams).map(el => path.resolve(path.join(appEntry, el)));
                 let projectAddonFiles = utils_1.safeWalkSync(path.join(uri, "addon"), walkParams).map(el => path.resolve(path.join(addonEntry, el)));
                 return [
                     ...Array.from(new Set([
+                        commonTypes,
                         ...els,
                         ...projectAppFiles,
                         ...projectAddonFiles,

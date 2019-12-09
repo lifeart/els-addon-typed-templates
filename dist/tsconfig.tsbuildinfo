@@ -442,7 +442,7 @@
         "signature": "a999e6b184852e7b868234aca57e9eef8faed858f483166aebb6763d8f04abf5"
       },
       "../src/lib/ts-service.ts": {
-        "version": "d31142ad1737e30867d0f6302fc97f48348c46f1daf49a8225b0c8e493a407e9",
+        "version": "69f5b4fd234865a27bfbe63962ef414be84738b0c94e064a2d9ca824bba28571",
         "signature": "93edd9df0b3c01a45fbd73ac6ae24c48ca451f565670b864a6e9ae119faa4189"
       },
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts": {
@@ -1162,8 +1162,8 @@
         "signature": "4b6abf33a86c7d341ed53751aa526a2632cc493a20d6510366cc771ec0de760b"
       },
       "../src/lib/common-types.d.ts": {
-        "version": "cf1434ee1063d86ca67753ffffe1ae17a49cf415caf8c830889655bc72f43d2a",
-        "signature": "cf1434ee1063d86ca67753ffffe1ae17a49cf415caf8c830889655bc72f43d2a"
+        "version": "dba5f16e878f65bd4d2abfb3597e7e9dfb4c874f5ccad1d51a856331584adf4b",
+        "signature": "dba5f16e878f65bd4d2abfb3597e7e9dfb4c874f5ccad1d51a856331584adf4b"
       }
     },
     "options": {
@@ -6144,7 +6144,6 @@
       "../src/lib/ast-helpers.ts",
       "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
-      "../src/lib/ts-service.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/tier1/symbol-table.d.ts",
@@ -6320,11 +6319,12 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
+      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
       "../src/index.ts",
       "../src/lib/common-types.d.ts",
-      "../src/lib/hbs-converter.ts"
+      "../src/lib/ts-service.ts"
     ]
   },
   "version": "3.7.3"

@@ -1,6 +1,9 @@
 declare module '@glimmer/component' {
-	export default class Component {
-        willDestroy: () => void
+
+    export default class Component<Args extends {} = {}> extends BaseComponent<Args> {
+        args: Args;
+        willDestroy: () => void;
+        toString: () => string;
     }
 }
 
