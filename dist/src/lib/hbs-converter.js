@@ -126,16 +126,21 @@ function getClass(items, componentImport) {
         ["let"]: "LetHelper",
         ["hash"]: "HashHelper",
         ["array"]: "ArrayHelper",
-        ["if"]: "typeof TIfHeper"
+        ["if"]: "typeof TIfHeper",
+        ["on"]: "OnModifer",
+        ["fn"]: "FnHelper"
     };
     let typeDeclarations = `
 
   type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
-  type LetHelper = <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
+  type LetHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
   type AbstractHelper = <T>([items]:T[], hash?) => T;
   type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
   type HashHelper = <T>(items: any[], hash: T) => T;
   type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
+  type OnModifer = ([event, handler]: [string, Function], hash?) => void;
+  type FnHelper = <T extends (...args: any) => any>(func: T, params: Parameters<T>) => Function;
+
 
   function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
     return !!a ? b : c;
@@ -145,13 +150,18 @@ function getClass(items, componentImport) {
   `;
     const pathsForGlobalScope = {
         'each': "<T>(params: ArrayLike<T>[], hash?)",
-        'let': "<T>(params: ArrayLike<T>, hash?)",
+        'let': "<A,B,C,D,E>(params: [A,B?,C?,D?,E?], hash?)",
         'array': "<T>(params: ArrayLike<T>, hash?)",
         'hash': "<T>(params = [], hash: T)",
-        'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)"
+        'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)",
+        'fn': "([fn, ...args]: [Function, Parameters<(...args: any) => any>], hash?)",
+        'on': "([eventName, handler]: [string, Function], hash?)"
     };
     const tailForGlobalScope = {
-        "if": "([a as T,b as U,c as Y], hash)"
+        "if": "([a as T,b as U,c as Y], hash)",
+        "let": "(params as [A,B,C,D,E], hash)",
+        "fn": "([fn, ...args], hash)",
+        "on": "([eventName, handler], hash)"
     };
     function getItemScopes(key, itemScopes = []) {
         let p = Object.keys(parents);
