@@ -58,7 +58,6 @@ export function getClass(items, componentImport: string | null, globalRegistry: 
   const parents = {};
   const scopes = {};
 
-
   const componentKlassImport = componentImport ? `import Component from "${componentImport}";` : '';
   const templateComponentDeclaration = componentImport ? `export default class Template extends Component`: `export default class TemplateOnlyComponent`;
 
@@ -76,6 +75,9 @@ export function getClass(items, componentImport: string | null, globalRegistry: 
         })
       }
       addChilds(item.program ? item.program.body : item.children || [], key);
+      if (item.inverse) {
+        addChilds(item.inverse.body || [], key);
+      }
     });
   }
 
@@ -91,6 +93,7 @@ export function getClass(items, componentImport: string | null, globalRegistry: 
         parents[pointer] = [];
         scopes[pointer] = exp.program ? exp.program.blockParams : [];
         addChilds(exp.program ? exp.program.body : exp.children || [], pointer);
+        addChilds(exp.inverse ? exp.inverse.body : [], pointer);
       }
 
       klass[key] = exp;

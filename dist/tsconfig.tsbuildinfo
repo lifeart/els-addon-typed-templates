@@ -1150,7 +1150,7 @@
         "signature": "b8e7261f41dd775524077306a69c01796bd5a2a742c7338e6607ff4e689bc356"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "ae09752e1056bd465a72ffb2f72a089911f1ceb8a56c142a1e6e671761cb404d",
+        "version": "3d62293d0d0bb6ba31c8ceab1d4dc7554dc8ece7690711a735063359bba88aea",
         "signature": "f341f3000dfc2fe54ca822c2fe174bcad6c66052e28486d847ab71c5256e6bbd"
       },
       "../src/lib/virtual-documents.ts": {

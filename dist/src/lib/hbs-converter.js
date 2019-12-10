@@ -70,6 +70,9 @@ function getClass(items, componentImport, globalRegistry) {
                 });
             }
             addChilds(item.program ? item.program.body : item.children || [], key);
+            if (item.inverse) {
+                addChilds(item.inverse.body || [], key);
+            }
         });
     }
     items.slice(0).forEach(b => {
@@ -83,6 +86,7 @@ function getClass(items, componentImport, globalRegistry) {
                 parents[pointer] = [];
                 scopes[pointer] = exp.program ? exp.program.blockParams : [];
                 addChilds(exp.program ? exp.program.body : exp.children || [], pointer);
+                addChilds(exp.inverse ? exp.inverse.body : [], pointer);
             }
             klass[key] = exp;
             let struct = {
