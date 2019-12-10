@@ -47,6 +47,24 @@ Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/i
 Try type `{{this.}}` or `{{@}}` inside component template.
 
 
+QA:
+
+	- Looks like it's not working.
+
+
+	- to get it woking you have to 
+
+		1.) try autocomplete component (to collect registry) 
+		2.) try autcomplete path `this.` or `@..`
+		3.) change document content
+		
+	There is some issue (not really), addons don't have initializers (yet), and it start working once you explicitly invoke it.
+	
+	You get validation for onDocumentChange method. But, before it, you have to have registry for all ember-app items (and that's why you need autocomplete some component first), get registry, register validator on path autocomplete, start validation on any change (whis is how it's initialized)
+
+	You have to do it once (per project start in vscode) and other document changes should be validated.
+
+
 ## Is it stable?
 
 * Sometimes it may crash your language server, don't worry.
