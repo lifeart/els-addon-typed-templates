@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const syntax_1 = require("@glimmer/syntax");
 const utils_1 = require("./utils");
+const camelcase = require("camelcase");
 function getClassMeta(source) {
     const node = syntax_1.preprocess(source);
     const nodes = [];
@@ -36,10 +37,17 @@ function keyForItem(item) {
     return `${positionForItem(item)} - ${item.type}`;
 }
 exports.keyForItem = keyForItem;
-function getClass(items, componentImport) {
+function importNameForItem(item) {
+    return 'TemplateImported_' + camelcase(item, { pascalCase: true });
+}
+function getClass(items, componentImport, globalRegistry) {
     const methods = {};
     const klass = {};
     const blockPaths = [];
+    const imports = [];
+    function addImport(name, filePath) {
+        imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
+    }
     function serializeKey(key) {
         return key.split(' - ')[0];
     }
@@ -216,9 +224,18 @@ function getClass(items, componentImport) {
                     if (!(scopeKey in globalScope)) {
                         if (blockPaths.includes(key)) {
                             globalScope[scopeKey] = 'AbstractBlockHelper';
+                            // if (scopeKey in globalRegistry) {
+                            // addImport(scopeKey, globalRegistry[scopeKey]);
+                            // }
                         }
                         else {
-                            globalScope[scopeKey] = 'AbstractHelper';
+                            if (scopeKey in globalRegistry) {
+                                addImport(scopeKey, globalRegistry[scopeKey]);
+                                globalScope[scopeKey] = importNameForItem(scopeKey);
+                            }
+                            else {
+                                globalScope[scopeKey] = 'AbstractHelper';
+                            }
                         }
                     }
                     if (pathsForGlobalScope[scopeKey]) {
@@ -278,6 +295,8 @@ function getClass(items, componentImport) {
         }
     });
     let klssTpl = `
+
+  ${imports.join('\n')}
 
   ${typeDeclarations}
   

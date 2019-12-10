@@ -3,21 +3,72 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const fs = require("fs");
 function virtualTemplateFileName(fsPath) {
-    return path.resolve(fsPath).replace(".hbs", '_' + Date.now() + "_template.ts");
+    return path
+        .resolve(fsPath)
+        .replace(".hbs", "_" + Date.now() + "_template.ts");
 }
 exports.virtualTemplateFileName = virtualTemplateFileName;
 function virtualComponentTemplateFileName(fsPath) {
-    return path.resolve(fsPath).replace(".hbs", '_' + Date.now() + "_component_template.ts");
+    return path
+        .resolve(fsPath)
+        .replace(".hbs", "_" + Date.now() + "_component_template.ts");
 }
 exports.virtualComponentTemplateFileName = virtualComponentTemplateFileName;
-function relativeComponentImport(templateFileName, scriptForComponent) {
+function relativeImport(templateFile, scriptFile) {
     return path
-        .relative(templateFileName, scriptForComponent)
+        .relative(templateFile, scriptFile)
         .split(path.sep)
         .join("/")
         .replace("..", ".")
         .replace(".ts", "")
         .replace(".js", "");
+}
+exports.relativeImport = relativeImport;
+function ralativeAddonImport(templateFileName, addonItemFileName) {
+    let extname = path.extname(addonItemFileName);
+    let subRelative = relativeImport(templateFileName, addonItemFileName);
+    // ./../../../node_modules/@ember/render-modifiers/app/modifiers/did-insert
+    let searchPref = "/node_modules/";
+    // todo - read ember-addons property
+    if (subRelative.includes("node_modules")) {
+        let normalizedRelative = subRelative.split(searchPref)[1];
+        let [group, item] = normalizedRelative.split("/");
+        let addonFolderName = group;
+        if (group.startsWith("@")) {
+            addonFolderName = [group, item].join("/");
+        }
+        let normalizedEntry = addonItemFileName
+            .split(path.sep)
+            .join("/")
+            .split(searchPref)[0];
+        let addonName = addonFolderName;
+        try {
+            let item = require(path.join(normalizedEntry, "node_modules", addonFolderName, "index.js"));
+            if (item.name) {
+                addonName = item.name;
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+        let imp = normalizedRelative.slice(normalizedRelative.indexOf(addonFolderName) + addonFolderName.length + 1, normalizedRelative.length);
+        console.log("imp", imp);
+        let addonImp = imp.replace("app/", "addon/");
+        let maybeAddonPath = path.join(normalizedEntry, "node_modules", addonFolderName, addonImp + extname);
+        console.log("maybeAddonPath", maybeAddonPath);
+        if (fs.existsSync(maybeAddonPath)) {
+            return `${addonName}/${addonImp.replace("addon/", "")}`;
+        }
+        else {
+            return subRelative;
+        }
+    }
+    else
+        return subRelative;
+}
+exports.ralativeAddonImport = ralativeAddonImport;
+function relativeComponentImport(templateFileName, scriptForComponent) {
+    return ralativeAddonImport(templateFileName, scriptForComponent);
 }
 exports.relativeComponentImport = relativeComponentImport;
 function findComponentForTemplate(fsPath, projectRoot) {

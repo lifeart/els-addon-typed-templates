@@ -11,8 +11,33 @@ const hbs_converter_1 = require("./hbs-converter");
 //   }
 //   `;
 // }
+function getValidRegistryItems(registry, templateFile) {
+    const items = {};
+    if (registry === null) {
+        return items;
+    }
+    else {
+        const keys = ["helper", "modifier"];
+        keys.forEach(keyName => {
+            Object.keys(registry[keyName]).forEach(name => {
+                const itemPaths = registry[keyName][name].filter(p => !p.endsWith(".hbs"));
+                let primaryPath = itemPaths.find(p => p.endsWith(".ts"));
+                if (primaryPath) {
+                    items[name] = resolvers_1.ralativeAddonImport(templateFile, primaryPath);
+                }
+                else {
+                    if (itemPaths.length) {
+                        items[name] = resolvers_1.ralativeAddonImport(templateFile, itemPaths.sort()[0]);
+                    }
+                }
+            });
+        });
+    }
+    return items;
+}
 function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri, content = false) {
     const document = server.documents.get(uri);
+    const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
     content = content ? content : document.getText();
     const templateTokens = hbs_converter_1.getClassMeta(content);
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
@@ -21,10 +46,10 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
         relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     }
     // console.log('scriptForComponent', scriptForComponent);
-    componentsMap[fileName] = hbs_converter_1.getClass(templateTokens, relComponentImport);
-    console.log('===============');
+    componentsMap[fileName] = hbs_converter_1.getClass(templateTokens, relComponentImport, getValidRegistryItems(registry, fileName));
+    console.log("===============");
     console.log(componentsMap[fileName]);
-    console.log('===============');
+    console.log("===============");
     return componentsMap[fileName];
 }
 exports.createFullVirtualTemplate = createFullVirtualTemplate;
@@ -53,7 +78,13 @@ function createVirtualTemplate(projectRoot, componentsMap, fileName, { templateP
         isTemplateOnly,
         isArrayCase
     });
-    let posStart = getBasicComponent(utils_1.PLACEHOLDER, { relComponentImport, isParam, isTemplateOnly, isArrayCase, isArg }).indexOf(utils_1.PLACEHOLDER);
+    let posStart = getBasicComponent(utils_1.PLACEHOLDER, {
+        relComponentImport,
+        isParam,
+        isTemplateOnly,
+        isArrayCase,
+        isArg
+    }).indexOf(utils_1.PLACEHOLDER);
     let pos = posStart + realPath.length;
     return { pos, posStart };
 }
@@ -61,9 +92,9 @@ exports.createVirtualTemplate = createVirtualTemplate;
 function getBasicComponent(pathExp = utils_1.PLACEHOLDER, flags = {}) {
     let outputType = "string | number | void";
     let relImport = flags.relComponentImport || "./component";
-    let templateOnly = '';
+    let templateOnly = "";
     if (flags.isTemplateOnly) {
-        templateOnly = 'args: any;';
+        templateOnly = "args: any;";
     }
     if (flags.isArrayCase) {
         outputType = "any[]";

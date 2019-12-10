@@ -1,5 +1,6 @@
 import { preprocess as parse, traverse } from "@glimmer/syntax";
 import { PLACEHOLDER } from './utils'; 
+import * as camelcase from 'camelcase';
 
 export function getClassMeta(source) {
   const node = parse(source);
@@ -35,10 +36,20 @@ export function keyForItem(item) {
   return `${positionForItem(item)} - ${item.type}`;
 }
 
-export function getClass(items, componentImport: string | null) {
+function importNameForItem(item) {
+  return 'TemplateImported_' + camelcase(item, {pascalCase: true});
+}
+
+export function getClass(items, componentImport: string | null, globalRegistry: any) {
   const methods = {};
   const klass = {};
   const blockPaths: any = [];
+
+  const imports: string[] = [];
+
+  function addImport(name, filePath) {
+    imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
+  }
   
   function serializeKey(key) {
     return key.split(' - ')[0];
@@ -227,8 +238,16 @@ export function getClass(items, componentImport: string | null) {
           if (!(scopeKey in globalScope)) {
             if (blockPaths.includes(key)) {
               globalScope[scopeKey] = 'AbstractBlockHelper';
+              // if (scopeKey in globalRegistry) {
+                // addImport(scopeKey, globalRegistry[scopeKey]);
+              // }
             } else {
-              globalScope[scopeKey] = 'AbstractHelper';
+              if (scopeKey in globalRegistry) {
+                addImport(scopeKey, globalRegistry[scopeKey]);
+                globalScope[scopeKey] = importNameForItem(scopeKey);
+              } else {
+                globalScope[scopeKey] = 'AbstractHelper';
+              }
             }
           }
           if (pathsForGlobalScope[scopeKey]) {
@@ -300,6 +319,8 @@ export function getClass(items, componentImport: string | null) {
   });
 
   let klssTpl = `
+
+  ${imports.join('\n')}
 
   ${typeDeclarations}
   

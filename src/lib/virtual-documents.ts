@@ -1,10 +1,11 @@
-import { PLACEHOLDER } from './utils';
+import { PLACEHOLDER } from "./utils";
 // import * as fs from "fs";
 import {
   findComponentForTemplate,
-  relativeComponentImport
+  relativeComponentImport,
+  ralativeAddonImport
 } from "./resolvers";
-import { getClass, getClassMeta } from './hbs-converter';
+import { getClass, getClassMeta } from "./hbs-converter";
 
 // function yieldedContext() {
 //   return `
@@ -14,8 +15,42 @@ import { getClass, getClassMeta } from './hbs-converter';
 //   `;
 // }
 
-export function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri, content: string | boolean = false) {
+function getValidRegistryItems(registry: any, templateFile: string) {
+  const items: any = {};
+  if (registry === null) {
+    return items;
+  } else {
+    const keys = ["helper", "modifier"];
+    keys.forEach(keyName => {
+      Object.keys(registry[keyName]).forEach(name => {
+        const itemPaths = registry[keyName][name].filter(
+          p => !p.endsWith(".hbs")
+        );
+        let primaryPath = itemPaths.find(p => p.endsWith(".ts"));
+        if (primaryPath) {
+          items[name] = ralativeAddonImport(templateFile, primaryPath);
+        } else {
+          if (itemPaths.length) {
+            items[name] = ralativeAddonImport(templateFile, itemPaths.sort()[0]);
+          }
+        }
+      });
+    });
+  }
+  return items;
+}
+
+export function createFullVirtualTemplate(
+  projectRoot,
+  componentsMap,
+  templatePath,
+  fileName,
+  server,
+  uri,
+  content: string | boolean = false
+) {
   const document = server.documents.get(uri);
+  const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
   content = content ? content : document.getText();
   const templateTokens = getClassMeta(content);
   const scriptForComponent = findComponentForTemplate(
@@ -26,21 +61,26 @@ export function createFullVirtualTemplate(projectRoot, componentsMap, templatePa
   let relComponentImport: string | null = null;
 
   if (scriptForComponent) {
-    relComponentImport = relativeComponentImport(
-      fileName,
-      scriptForComponent
-    );
+    relComponentImport = relativeComponentImport(fileName, scriptForComponent);
   }
   // console.log('scriptForComponent', scriptForComponent);
-  componentsMap[fileName] = getClass(templateTokens, relComponentImport);
-  console.log('===============');
+  componentsMap[fileName] = getClass(
+    templateTokens,
+    relComponentImport,
+    getValidRegistryItems(registry, fileName)
+  );
+  console.log("===============");
   console.log(componentsMap[fileName]);
-  console.log('===============');
+  console.log("===============");
   return componentsMap[fileName];
 }
 
-export function createVirtualTemplate(projectRoot, componentsMap, fileName, { templatePath, realPath, isArg, isArrayCase, isParam }: any) {
-
+export function createVirtualTemplate(
+  projectRoot,
+  componentsMap,
+  fileName,
+  { templatePath, realPath, isArg, isArrayCase, isParam }: any
+) {
   // console.log('createVirtualTemplate')
   const scriptForComponent = findComponentForTemplate(
     templatePath,
@@ -52,10 +92,7 @@ export function createVirtualTemplate(projectRoot, componentsMap, fileName, { te
   if (!scriptForComponent) {
     isTemplateOnly = true;
   } else {
-    relComponentImport = relativeComponentImport(
-      fileName,
-      scriptForComponent
-    );
+    relComponentImport = relativeComponentImport(fileName, scriptForComponent);
   }
   // console.log('scriptForComponent', scriptForComponent)
 
@@ -74,36 +111,37 @@ export function createVirtualTemplate(projectRoot, componentsMap, fileName, { te
     isTemplateOnly,
     isArrayCase
   });
-  let posStart = getBasicComponent(PLACEHOLDER, { relComponentImport, isParam, isTemplateOnly, isArrayCase, isArg }).indexOf(
-    PLACEHOLDER
-  );
+  let posStart = getBasicComponent(PLACEHOLDER, {
+    relComponentImport,
+    isParam,
+    isTemplateOnly,
+    isArrayCase,
+    isArg
+  }).indexOf(PLACEHOLDER);
   let pos = posStart + realPath.length;
   return { pos, posStart };
 }
 
-
-
 export function getBasicComponent(pathExp = PLACEHOLDER, flags: any = {}) {
-    let outputType = "string | number | void";
-    let relImport = flags.relComponentImport || "./component";
-    let templateOnly = '';
-    if (flags.isTemplateOnly) {
-      templateOnly = 'args: any;';
-    }
-    if (flags.isArrayCase) {
-      outputType = "any[]";
-    }
-    if (flags.isParam) {
-      outputType = "any";
-    }
-    return [
-      `import Component from "${relImport}";`,
-      "export default class Template extends Component {",
-      templateOnly,
-      `_template_PathExpresion(): ${outputType} {`,
-      "return " + pathExp,
-      "}",
-      "}"
-    ].join("");
+  let outputType = "string | number | void";
+  let relImport = flags.relComponentImport || "./component";
+  let templateOnly = "";
+  if (flags.isTemplateOnly) {
+    templateOnly = "args: any;";
   }
-  
+  if (flags.isArrayCase) {
+    outputType = "any[]";
+  }
+  if (flags.isParam) {
+    outputType = "any";
+  }
+  return [
+    `import Component from "${relImport}";`,
+    "export default class Template extends Component {",
+    templateOnly,
+    `_template_PathExpresion(): ${outputType} {`,
+    "return " + pathExp,
+    "}",
+    "}"
+  ].join("");
+}
