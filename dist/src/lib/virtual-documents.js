@@ -23,11 +23,11 @@ function getValidRegistryItems(registry, templateFile) {
                 const itemPaths = registry[keyName][name].filter(p => !p.endsWith(".hbs"));
                 let primaryPath = itemPaths.find(p => p.endsWith(".ts"));
                 if (primaryPath) {
-                    items[name] = resolvers_1.relativeImport(templateFile, primaryPath);
+                    items[name] = resolvers_1.ralativeAddonImport(templateFile, primaryPath);
                 }
                 else {
                     if (itemPaths.length) {
-                        items[name] = resolvers_1.relativeImport(templateFile, itemPaths.sort()[0]);
+                        items[name] = resolvers_1.ralativeAddonImport(templateFile, itemPaths.sort()[0]);
                     }
                 }
             });

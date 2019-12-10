@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const syntax_1 = require("@glimmer/syntax");
 const utils_1 = require("./utils");
+const camelcase = require("camelcase");
 function getClassMeta(source) {
     const node = syntax_1.preprocess(source);
     const nodes = [];
@@ -37,7 +38,7 @@ function keyForItem(item) {
 }
 exports.keyForItem = keyForItem;
 function importNameForItem(item) {
-    return 'scope' + Buffer.from(item).toString('base64').slice(0, -2);
+    return 'TemplateImported_' + camelcase(item, { pascalCase: true });
 }
 function getClass(items, componentImport, globalRegistry) {
     const methods = {};

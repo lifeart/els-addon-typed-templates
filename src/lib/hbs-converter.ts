@@ -1,5 +1,6 @@
 import { preprocess as parse, traverse } from "@glimmer/syntax";
 import { PLACEHOLDER } from './utils'; 
+import * as camelcase from 'camelcase';
 
 export function getClassMeta(source) {
   const node = parse(source);
@@ -36,7 +37,7 @@ export function keyForItem(item) {
 }
 
 function importNameForItem(item) {
-  return 'scope'+Buffer.from(item).toString('base64').slice(0,-2);
+  return 'TemplateImported_' + camelcase(item, {pascalCase: true});
 }
 
 export function getClass(items, componentImport: string | null, globalRegistry: any) {

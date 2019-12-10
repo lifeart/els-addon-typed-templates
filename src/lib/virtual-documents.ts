@@ -3,7 +3,7 @@ import { PLACEHOLDER } from "./utils";
 import {
   findComponentForTemplate,
   relativeComponentImport,
-  relativeImport
+  ralativeAddonImport
 } from "./resolvers";
 import { getClass, getClassMeta } from "./hbs-converter";
 
@@ -28,10 +28,10 @@ function getValidRegistryItems(registry: any, templateFile: string) {
         );
         let primaryPath = itemPaths.find(p => p.endsWith(".ts"));
         if (primaryPath) {
-          items[name] = relativeImport(templateFile, primaryPath);
+          items[name] = ralativeAddonImport(templateFile, primaryPath);
         } else {
           if (itemPaths.length) {
-            items[name] = relativeImport(templateFile, itemPaths.sort()[0]);
+            items[name] = ralativeAddonImport(templateFile, itemPaths.sort()[0]);
           }
         }
       });
