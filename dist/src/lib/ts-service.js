@@ -69,11 +69,11 @@ function serviceForRoot(uri) {
                 ];
             },
             getScriptVersion(_fileName) {
-                // if (fs.existsSync(_fileName)) {
-                //   let stats = fs.statSync(_fileName);
-                //   return stats.mtime.getTime().toString();
-                // }
-                return "";
+                if (fs.existsSync(_fileName)) {
+                    let stats = fs.statSync(_fileName);
+                    return stats.mtime.getTime().toString();
+                }
+                return Date.now().toString();
             },
             getScriptSnapshot(fileName) {
                 const maybeVirtualFile = componentsForService(services[uri])[path.resolve(fileName)];
