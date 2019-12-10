@@ -34,7 +34,7 @@ function lintFile(root, textDocument, server) {
   return getFullSemanticDiagnostics(service, fullFileName);
 }
 
-function setupLinter(root, type: string, server) {
+function setupLinter(root, type: string, server, uri: string) {
   if (type !== 'template') {
     return;
   }
@@ -65,7 +65,8 @@ function setupLinter(root, type: string, server) {
     });
   }
 
-
+  let diagnostics = lintFile(root, { uri }, server);
+  server.connection.sendDiagnostics({ uri, diagnostics });
 
   hasLinter = true;
 }
@@ -74,7 +75,7 @@ export async function onDefinition(
   root,
   { results, focusPath, server, type, textDocument }
 ) {
-  setupLinter(root, type, server);
+  setupLinter(root, type, server, textDocument.uri);
 
   if (!canHandle(type, focusPath)) {
     return results;
@@ -121,7 +122,7 @@ export async function onComplete(
   root,
   { results, focusPath, server, type, textDocument }
 ) {
-  setupLinter(root, type, server);
+  setupLinter(root, type, server, textDocument.uri);
 
   if (!canHandle(type, focusPath)) {
     return results;

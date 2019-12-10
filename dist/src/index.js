@@ -31,7 +31,7 @@ function lintFile(root, textDocument, server) {
     virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
     return ls_utils_1.getFullSemanticDiagnostics(service, fullFileName);
 }
-function setupLinter(root, type, server) {
+function setupLinter(root, type, server, uri) {
     if (type !== 'template') {
         return;
     }
@@ -63,11 +63,13 @@ function setupLinter(root, type, server) {
             }
         });
     }
+    let diagnostics = lintFile(root, { uri }, server);
+    server.connection.sendDiagnostics({ uri, diagnostics });
     hasLinter = true;
 }
 function onDefinition(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
-        setupLinter(root, type, server);
+        setupLinter(root, type, server, textDocument.uri);
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
@@ -105,7 +107,7 @@ function onDefinition(root, { results, focusPath, server, type, textDocument }) 
 exports.onDefinition = onDefinition;
 function onComplete(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
-        setupLinter(root, type, server);
+        setupLinter(root, type, server, textDocument.uri);
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
