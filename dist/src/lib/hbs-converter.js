@@ -3,18 +3,78 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const syntax_1 = require("@glimmer/syntax");
 const utils_1 = require("./utils");
 const camelcase = require("camelcase");
+const fs = require("fs");
+const lodash_1 = require("lodash");
+const resolvers_1 = require("./resolvers");
+function normalizeAngleTagName(tagName) {
+    return tagName
+        .split('::')
+        .map((item) => lodash_1.kebabCase(item))
+        .join('/');
+}
+function isSimpleComponentElement(node) {
+    return node.blockParams.length && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
+}
 function getClassMeta(source) {
     const node = syntax_1.preprocess(source);
     const nodes = [];
     syntax_1.traverse(node, {
         MustacheStatement(node) {
-            nodes.push([node]);
+            //@ts-ignore
+            if (!node.isIgnored) {
+                nodes.push([node]);
+            }
         },
         BlockStatement(node) {
             nodes.push([node]);
         },
         ElementModifierStatement(node) {
             nodes.push([node]);
+        },
+        ElementNode(node) {
+            if (isSimpleComponentElement(node)) {
+                const componentName = normalizeAngleTagName(node.tag);
+                nodes.push([{
+                        type: 'BlockStatement',
+                        isComponent: true,
+                        path: {
+                            type: 'PathExpression',
+                            original: componentName,
+                            this: false,
+                            data: false,
+                            parts: [componentName],
+                            loc: node.loc
+                        },
+                        params: [],
+                        inverse: null,
+                        hash: {
+                            type: 'Hash',
+                            pairs: node.attributes.filter((attr) => attr.name.startsWith('@')).map((attr) => {
+                                let value = attr.value;
+                                if (value.type === 'MustacheStatement') {
+                                    //@ts-ignore
+                                    value.type = 'SubExpression';
+                                    //@ts-ignore
+                                    value.isIgnored = true;
+                                }
+                                return {
+                                    type: 'HashPair',
+                                    key: attr.name.replace('@', ''),
+                                    value: value,
+                                    loc: attr.loc
+                                };
+                            })
+                        },
+                        program: {
+                            type: "Block",
+                            body: node.children,
+                            blockParams: node.blockParams,
+                            chained: false,
+                            loc: node.loc
+                        },
+                        loc: node.loc
+                    }]);
+            }
         },
         SubExpression(node) {
             if (nodes[nodes.length - 1]) {
@@ -38,15 +98,46 @@ function keyForItem(item) {
 }
 exports.keyForItem = keyForItem;
 function importNameForItem(item) {
-    return 'TemplateImported_' + camelcase(item, { pascalCase: true });
+    return 'TemplateImported_' + camelcase(item, { pascalCase: true }).split('/').join('_');
 }
-function getClass(items, componentImport, globalRegistry) {
+function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, templateFileName, scriptFileName) {
+    let klass = `
+  export default EmptyKlass {
+    args: any;
+  };
+  `;
+    try {
+        let source = fs.readFileSync(templateFileName, 'utf8');
+        let items = getClassMeta(source);
+        klass = getClass(componentsMap, virtualFileName, items, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry);
+    }
+    catch (e) {
+        console.log(e);
+    }
+    console.log('--------------------------');
+    console.log(virtualFileName);
+    console.log('--------------------------');
+    console.log(klass);
+    console.log('--------------------------');
+    console.log('--------------------------');
+    console.log('--------------------------');
+    componentsMap[virtualFileName] = klass;
+}
+function getClass(componentsMap, fileName, items, componentImport, globalRegistry) {
     const methods = {};
     const klass = {};
     const blockPaths = [];
+    const yields = [];
+    const componentsForImport = [];
     const imports = [];
     function addImport(name, filePath) {
         imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
+    }
+    function addComponentImport(name, filePath) {
+        let virtualFileName = resolvers_1.virtualComponentTemplateFileName(filePath.template);
+        registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script);
+        // todo - we need to resolve proper template and compile it :)
+        imports.push(`import ${importNameForItem(name)} from "${resolvers_1.relativeImport(fileName, virtualFileName)}";`);
     }
     function serializeKey(key) {
         return key.split(' - ')[0];
@@ -69,6 +160,9 @@ function getClass(items, componentImport, globalRegistry) {
                 });
             }
             addChilds(item.program ? item.program.body : item.children || [], key);
+            if (item.inverse) {
+                addChilds(item.inverse.body || [], key);
+            }
         });
     }
     items.slice(0).forEach(b => {
@@ -82,6 +176,7 @@ function getClass(items, componentImport, globalRegistry) {
                 parents[pointer] = [];
                 scopes[pointer] = exp.program ? exp.program.blockParams : [];
                 addChilds(exp.program ? exp.program.body : exp.children || [], pointer);
+                addChilds(exp.inverse ? exp.inverse.body : [], pointer);
             }
             klass[key] = exp;
             let struct = {
@@ -97,6 +192,9 @@ function getClass(items, componentImport, globalRegistry) {
             klass[keyForItem(exp.path)] = exp.path;
             if (exp.type === 'BlockStatement') {
                 blockPaths.push(keyForItem(exp.path));
+                if (exp.isComponent) {
+                    componentsForImport.push(exp.path.original);
+                }
             }
             parents[pointer].push(keyForItem(exp.path));
             exp.params.forEach(p => {
@@ -129,6 +227,8 @@ function getClass(items, componentImport, globalRegistry) {
             }
         }
     });
+    // console.log('componentsForImport', componentsForImport);
+    // console.log('globalRegistry', globalRegistry);
     const globalScope = {
         ["each"]: 'EachHelper',
         ["let"]: "LetHelper",
@@ -136,10 +236,12 @@ function getClass(items, componentImport, globalRegistry) {
         ["array"]: "ArrayHelper",
         ["if"]: "typeof TIfHeper",
         ["on"]: "OnModifer",
-        ["fn"]: "FnHelper"
+        ["fn"]: "FnHelper",
+        ["yield"]: "YieldHelper"
     };
     let typeDeclarations = `
 
+  type YieldHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
   type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
   type LetHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
   type AbstractHelper = <T>([items]:T[], hash?) => T;
@@ -163,11 +265,13 @@ function getClass(items, componentImport, globalRegistry) {
         'hash': "<T>(params = [], hash: T)",
         'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)",
         'fn': "([fn, ...args]: [Function, Parameters<(...args: any) => any>], hash?)",
-        'on': "([eventName, handler]: [string, Function], hash?)"
+        'on': "([eventName, handler]: [string, Function], hash?)",
+        'yield': "<A,B,C,D,E>(params?: [A?,B?,C?,D?,E?], hash?)"
     };
     const tailForGlobalScope = {
         "if": "([a as T,b as U,c as Y], hash)",
         "let": "(params as [A,B,C,D,E], hash)",
+        "yield": "(params as [A,B,C,D,E], hash)",
         "fn": "([fn, ...args], hash)",
         "on": "([eventName, handler], hash)"
     };
@@ -186,7 +290,10 @@ function getClass(items, componentImport, globalRegistry) {
         return itemScopes;
     }
     Object.keys(klass).forEach(key => {
-        if (klass[key].type === "NumberLiteral") {
+        if (klass[key].type === "TextNode") {
+            klass[key] = `() { return "${klass[key].chars}"; /*@path-mark ${serializeKey(key)}*/}`;
+        }
+        else if (klass[key].type === "NumberLiteral") {
             klass[key] = `() { return ${klass[key].value}; /*@path-mark ${serializeKey(key)}*/}`;
         }
         else if (klass[key].type === "StringLiteral") {
@@ -224,9 +331,9 @@ function getClass(items, componentImport, globalRegistry) {
                     if (!(scopeKey in globalScope)) {
                         if (blockPaths.includes(key)) {
                             globalScope[scopeKey] = 'AbstractBlockHelper';
-                            // if (scopeKey in globalRegistry) {
-                            // addImport(scopeKey, globalRegistry[scopeKey]);
-                            // }
+                            if (scopeKey in globalRegistry && componentsForImport.includes(scopeKey)) {
+                                addComponentImport(scopeKey, globalRegistry[scopeKey]);
+                            }
                         }
                         else {
                             if (scopeKey in globalRegistry) {
@@ -240,9 +347,24 @@ function getClass(items, componentImport, globalRegistry) {
                     }
                     if (pathsForGlobalScope[scopeKey]) {
                         klass[key] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"]${tailForGlobalScope[scopeKey] ? tailForGlobalScope[scopeKey] : "(params, hash)"}; /*@path-mark ${serializeKey(key)}*/}`;
+                        if (scopeKey === 'yield') {
+                            const scopes = getItemScopes(key);
+                            const slosestScope = scopes[0];
+                            if (!slosestScope) {
+                                console.log('unable to find scope for ' + key);
+                            }
+                            else {
+                                yields.push(slosestScope[0]);
+                            }
+                        }
                     }
                     else {
-                        klass[key] = `(params?, hash?) { return this.globalScope["${scopeKey}"](params, hash); /*@path-mark ${serializeKey(key)}*/}`;
+                        if (scopeKey in globalRegistry && componentsForImport.includes(scopeKey)) {
+                            klass[key] = `(_?, hash?) { let klass = new ${importNameForItem(scopeKey)}(); klass.args = hash; return klass.defaultYield(); /*@path-mark ${serializeKey(key)}*/}`;
+                        }
+                        else {
+                            klass[key] = `(params?, hash?) { return this.globalScope["${scopeKey}"](params, hash); /*@path-mark ${serializeKey(key)}*/}`;
+                        }
                     }
                 }
                 else {
@@ -319,6 +441,7 @@ function getClass(items, componentImport, globalRegistry) {
   ${templateComponentDeclaration} {
       ${componentExtraProperties}
       globalScope:  GlobalScope;
+      ${yields.length ? `defaultYield() { return this['${yields[0]}']() };` : ''}
       //@mark-meaningful-issues-start
       ${Object.keys(klass)
         .map(key => {

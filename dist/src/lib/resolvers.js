@@ -52,10 +52,8 @@ function ralativeAddonImport(templateFileName, addonItemFileName) {
             console.log(e);
         }
         let imp = normalizedRelative.slice(normalizedRelative.indexOf(addonFolderName) + addonFolderName.length + 1, normalizedRelative.length);
-        console.log("imp", imp);
         let addonImp = imp.replace("app/", "addon/");
         let maybeAddonPath = path.join(normalizedEntry, "node_modules", addonFolderName, addonImp + extname);
-        console.log("maybeAddonPath", maybeAddonPath);
         if (fs.existsSync(maybeAddonPath)) {
             return `${addonName}/${addonImp.replace("addon/", "")}`;
         }

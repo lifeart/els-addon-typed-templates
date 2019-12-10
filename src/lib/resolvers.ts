@@ -61,7 +61,6 @@ export function ralativeAddonImport(
       normalizedRelative.indexOf(addonFolderName) + addonFolderName.length + 1,
       normalizedRelative.length
     );
-    console.log("imp", imp);
     let addonImp = imp.replace("app/", "addon/");
     let maybeAddonPath = path.join(
       normalizedEntry,
@@ -69,7 +68,6 @@ export function ralativeAddonImport(
       addonFolderName,
       addonImp + extname
     );
-    console.log("maybeAddonPath", maybeAddonPath);
     if (fs.existsSync(maybeAddonPath)) {
       return `${addonName}/${addonImp.replace("addon/", "")}`;
     } else {
