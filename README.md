@@ -6,6 +6,8 @@ How to use?
 
 Install this addon as `dev-dependency` inside your ember project.
 
+How typed template looks under the hood?
+[issue-351282903](https://github.com/lifeart/els-addon-typed-templates/pull/11#issue-351282903)
 
 ### Autocomplete
 
