@@ -46,13 +46,14 @@ Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/i
 
 Try type `{{this.}}` or `{{@}}` inside component template.
 
+[UELS](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable) >= `0.2.54` required.
 
 QA:
 
 	- Looks like it's not working.
 
 
-	- to get it woking you have to 
+	- To get it woking you have to: 
 
 		1.) try autocomplete component (to collect registry) 
 		2.) try autcomplete path `this.` or `@..`
@@ -64,6 +65,10 @@ QA:
 
 	You have to do it once (per project start in vscode) and other document changes should be validated.
 
+QA:
+ 
+	- Would it be possible to add these as dependencies to the language server or somesuch?
+	- Nope, because it's "experimental" and "heavy" functionality, adding it into language server itself may decrease DX for other users. UELS has addon API, using this addon API you able add functionality into langserver. All addons scoped inside projects (to allow users have multple addon versions for different ember projects and versions).
 
 ## Is it stable?
 
