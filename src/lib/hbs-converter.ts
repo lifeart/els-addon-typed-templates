@@ -44,6 +44,7 @@ export function getClass(items, componentImport: string | null, globalRegistry: 
   const methods = {};
   const klass = {};
   const blockPaths: any = [];
+  const yields: string[] = [];
 
   const imports: string[] = [];
 
@@ -150,11 +151,13 @@ export function getClass(items, componentImport: string | null, globalRegistry: 
     ["array"]: "ArrayHelper",
     ["if"]: "typeof TIfHeper",
     ["on"]: "OnModifer",
-    ["fn"]: "FnHelper"
+    ["fn"]: "FnHelper",
+    ["yield"]: "YieldHelper"
   };
   
   let typeDeclarations = `
 
+  type YieldHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
   type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
   type LetHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
   type AbstractHelper = <T>([items]:T[], hash?) => T;
@@ -179,12 +182,14 @@ export function getClass(items, componentImport: string | null, globalRegistry: 
     'hash': "<T>(params = [], hash: T)",
     'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)",
     'fn': "([fn, ...args]: [Function, Parameters<(...args: any) => any>], hash?)",
-    'on': "([eventName, handler]: [string, Function], hash?)"
+    'on': "([eventName, handler]: [string, Function], hash?)",
+    'yield':  "<A,B,C,D,E>(params?: [A?,B?,C?,D?,E?], hash?)"
   };
 
   const tailForGlobalScope = {
     "if": "([a as T,b as U,c as Y], hash)",
     "let": "(params as [A,B,C,D,E], hash)",
+    "yield": "(params as [A,B,C,D,E], hash)",
     "fn": "([fn, ...args], hash)",
     "on": "([eventName, handler], hash)"
   }
@@ -254,6 +259,15 @@ export function getClass(items, componentImport: string | null, globalRegistry: 
             klass[
               key
             ] = `${pathsForGlobalScope[scopeKey]} { return this.globalScope["${scopeKey}"]${tailForGlobalScope[scopeKey] ? tailForGlobalScope[scopeKey] : "(params, hash)" }; /*@path-mark ${serializeKey(key)}*/}`;
+            if (scopeKey === 'yield') {
+              const scopes = getItemScopes(key);
+              const slosestScope = scopes[0];
+              if (!slosestScope) {
+                console.log('unable to find scope for ' + key);
+              } else {
+                yields.push(slosestScope[0]);
+              }
+            }
           } else {
             klass[
               key
@@ -343,6 +357,7 @@ export function getClass(items, componentImport: string | null, globalRegistry: 
   ${templateComponentDeclaration} {
       ${componentExtraProperties}
       globalScope:  GlobalScope;
+      ${yields.length?`defaultYield() { return this['${yields[0]}']() };`:''}
       //@mark-meaningful-issues-start
       ${Object.keys(klass)
         .map(key => {
