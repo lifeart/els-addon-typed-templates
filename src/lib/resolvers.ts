@@ -9,14 +9,17 @@ export function virtualComponentTemplateFileName(fsPath) {
   return path.resolve(fsPath).replace(".hbs", '_' + Date.now() + "_component_template.ts");
 }
 
-export function relativeComponentImport(templateFileName, scriptForComponent) {
+export function relativeImport(templateFile, scriptFile) {
   return path
-    .relative(templateFileName, scriptForComponent)
+    .relative(templateFile, scriptFile)
     .split(path.sep)
     .join("/")
-    .replace("..", ".")
-    .replace(".ts", "")
+    .replace("..", ".").replace(".ts", "")
     .replace(".js", "");
+}
+
+export function relativeComponentImport(templateFileName: string, scriptForComponent: string): string {
+  return relativeImport(templateFileName, scriptForComponent);
 }
 
 export function findComponentForTemplate(fsPath, projectRoot) {

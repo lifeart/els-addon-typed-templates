@@ -36,10 +36,17 @@ function keyForItem(item) {
     return `${positionForItem(item)} - ${item.type}`;
 }
 exports.keyForItem = keyForItem;
-function getClass(items, componentImport) {
+function importNameForItem(item) {
+    return 'scope' + Buffer.from(item).toString('base64').slice(0, -2);
+}
+function getClass(items, componentImport, globalRegistry) {
     const methods = {};
     const klass = {};
     const blockPaths = [];
+    const imports = [];
+    function addImport(name, filePath) {
+        imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
+    }
     function serializeKey(key) {
         return key.split(' - ')[0];
     }
@@ -216,9 +223,18 @@ function getClass(items, componentImport) {
                     if (!(scopeKey in globalScope)) {
                         if (blockPaths.includes(key)) {
                             globalScope[scopeKey] = 'AbstractBlockHelper';
+                            // if (scopeKey in globalRegistry) {
+                            // addImport(scopeKey, globalRegistry[scopeKey]);
+                            // }
                         }
                         else {
-                            globalScope[scopeKey] = 'AbstractHelper';
+                            if (scopeKey in globalRegistry) {
+                                addImport(scopeKey, globalRegistry[scopeKey]);
+                                globalScope[scopeKey] = importNameForItem(scopeKey);
+                            }
+                            else {
+                                globalScope[scopeKey] = 'AbstractHelper';
+                            }
                         }
                     }
                     if (pathsForGlobalScope[scopeKey]) {
@@ -278,6 +294,8 @@ function getClass(items, componentImport) {
         }
     });
     let klssTpl = `
+
+  ${imports.join('\n')}
 
   ${typeDeclarations}
   

@@ -434,8 +434,8 @@
         "signature": "6536c55617357917c842bbbcfb4beb015fd05782e835a431a8ec95c3aaf4a52b"
       },
       "../src/lib/resolvers.ts": {
-        "version": "10e83a79d6b7d989be3b6fdbb3f8eec9ebe1a77d6faec7adb213a755c9e68c08",
-        "signature": "819d5a286587b0a03a4afcd5bdca226752e1d4c9b4e02d30438dbb04ac9113e1"
+        "version": "29860184f13ce2f9baca40c5af3744db27ec3e39e54a47dac2781b95715137be",
+        "signature": "997a2d050fa3c115b59613c8854d614281949ec2ceab773c04bb84147d4963b2"
       },
       "../node_modules/typescript/lib/typescript.d.ts": {
         "version": "a999e6b184852e7b868234aca57e9eef8faed858f483166aebb6763d8f04abf5",
@@ -1146,11 +1146,11 @@
         "signature": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "685d30db8bfe714127ff8b8f091dc55909c1dce9394ea8316b810211051f0e88",
-        "signature": "52eff1f6eb85af58a36d8c8896a05b9d430ac9ff963da85c5c68c7b334234a23"
+        "version": "47100903c79dd6c646113454c61adee2f91b54993f4a7cb4893d198e9658a3e8",
+        "signature": "f341f3000dfc2fe54ca822c2fe174bcad6c66052e28486d847ab71c5256e6bbd"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "510c14a9d40cf6f43e89e336b2dc08dc6efca4bf434a6ba02dd9c582f50c726c",
+        "version": "d99fe4549a02eb84c6ef64cd20000eb6c0c24452a1331345c7e5fcd2c57afe88",
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
@@ -6144,6 +6144,7 @@
       "../src/lib/ast-helpers.ts",
       "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
+      "../src/lib/ts-service.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/tier1/symbol-table.d.ts",
@@ -6319,12 +6320,11 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
-      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
       "../src/index.ts",
       "../src/lib/common-types.d.ts",
-      "../src/lib/ts-service.ts"
+      "../src/lib/hbs-converter.ts"
     ]
   },
   "version": "3.7.3"
