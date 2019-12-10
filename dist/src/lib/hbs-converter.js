@@ -100,16 +100,17 @@ exports.keyForItem = keyForItem;
 function importNameForItem(item) {
     return 'TemplateImported_' + camelcase(item, { pascalCase: true }).split('/').join('_');
 }
-function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, templateFileName, scriptFileName) {
+function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, templateFileName, scriptFileName, depth) {
     let klass = `
   export default EmptyKlass {
     args: any;
+    defaultYield() { return []; };
   };
   `;
     try {
         let source = fs.readFileSync(templateFileName, 'utf8');
         let items = getClassMeta(source);
-        klass = getClass(componentsMap, virtualFileName, items, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry);
+        klass = getClass(componentsMap, virtualFileName, items, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry, depth);
     }
     catch (e) {
         console.log(e);
@@ -119,23 +120,24 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
     console.log('--------------------------');
     console.log(klass);
     console.log('--------------------------');
-    console.log('--------------------------');
-    console.log('--------------------------');
     componentsMap[virtualFileName] = klass;
 }
-function getClass(componentsMap, fileName, items, componentImport, globalRegistry) {
+function getClass(componentsMap, fileName, items, componentImport, globalRegistry, depth = 1) {
     const methods = {};
     const klass = {};
     const blockPaths = [];
     const yields = [];
     const componentsForImport = [];
     const imports = [];
+    if (depth < 0) {
+        return `export default class UnreachedComponent { args: any; defaultYield() { return []; } };`;
+    }
     function addImport(name, filePath) {
         imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
     }
     function addComponentImport(name, filePath) {
         let virtualFileName = resolvers_1.virtualComponentTemplateFileName(filePath.template);
-        registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script);
+        registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script, depth - 1);
         // todo - we need to resolve proper template and compile it :)
         imports.push(`import ${importNameForItem(name)} from "${resolvers_1.relativeImport(fileName, virtualFileName)}";`);
     }
@@ -441,7 +443,9 @@ function getClass(componentsMap, fileName, items, componentImport, globalRegistr
   ${templateComponentDeclaration} {
       ${componentExtraProperties}
       globalScope:  GlobalScope;
-      ${yields.length ? `defaultYield() { return this['${yields[0]}']() };` : ''}
+      defaultYield() {
+        return ${yields.length ? `this['${yields[0]}']()` : '[]'};
+      }
       //@mark-meaningful-issues-start
       ${Object.keys(klass)
         .map(key => {
