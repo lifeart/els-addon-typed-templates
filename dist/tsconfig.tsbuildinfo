@@ -1162,7 +1162,7 @@
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "bf2e4afbd3ca48e59df2ddfeb08c7e94cd0dbe9ce61d959782abfcf5659cf5fa",
+        "version": "400ba5e4db111d5b67b81b545ff1df7ec7629cf7aa132636f1b896653e577bbb",
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
@@ -6652,11 +6652,11 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
       "../node_modules/camelcase/index.d.ts",
+      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
-      "../src/lib/ls-utils.ts",
       "../src/index.ts",
       "../src/lib/common-types.d.ts",
-      "../src/lib/hbs-converter.ts"
+      "../src/lib/ls-utils.ts"
     ]
   },
   "version": "3.7.3"
