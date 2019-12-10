@@ -434,8 +434,8 @@
         "signature": "6536c55617357917c842bbbcfb4beb015fd05782e835a431a8ec95c3aaf4a52b"
       },
       "../src/lib/resolvers.ts": {
-        "version": "84e1d3f6a8bfee3ebb4196255beaea0d18db26e38a793232634eda26d432860a",
-        "signature": "fb486bb8bda37b0ad048618895536575741f3a5420e4b994e781688cf12086cd"
+        "version": "0a763bf10e80ae7023d8bbf7da2b2312ad6bf0cc4dc0a4e5db0ff7fd18c89e3e",
+        "signature": "74a17c2b746dd368c8d44ae5fb2833f8fcf3223dc728799150720e8c4b944ab5"
       },
       "../node_modules/typescript/lib/typescript.d.ts": {
         "version": "a999e6b184852e7b868234aca57e9eef8faed858f483166aebb6763d8f04abf5",
@@ -6472,7 +6472,6 @@
       "../node_modules/vscode-languageserver/lib/main.d.ts",
       "../src/lib/utils.ts",
       "../src/lib/ast-helpers.ts",
-      "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
       "../src/lib/ts-service.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
@@ -6654,9 +6653,10 @@
       "../node_modules/camelcase/index.d.ts",
       "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
-      "../src/index.ts",
+      "../src/lib/ls-utils.ts",
       "../src/lib/common-types.d.ts",
-      "../src/lib/ls-utils.ts"
+      "../src/lib/resolvers.ts",
+      "../src/index.ts"
     ]
   },
   "version": "3.7.3"

@@ -3,15 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const fs = require("fs");
 function virtualTemplateFileName(fsPath) {
+    const extName = path.extname(fsPath);
     return path
         .resolve(fsPath)
-        .replace(".hbs", "_" + Date.now() + "_template.ts");
+        .replace(extName, "_" + Date.now() + "_template.ts");
 }
 exports.virtualTemplateFileName = virtualTemplateFileName;
 function virtualComponentTemplateFileName(fsPath) {
+    const extName = path.extname(fsPath);
     return path
         .resolve(fsPath)
-        .replace(".hbs", "_" + Date.now() + "_component_template.ts");
+        .replace(extName, "_" + Date.now() + "_component_template.ts");
 }
 exports.virtualComponentTemplateFileName = virtualComponentTemplateFileName;
 function relativeImport(templateFile, scriptFile) {
@@ -70,8 +72,12 @@ function relativeComponentImport(templateFileName, scriptForComponent) {
 }
 exports.relativeComponentImport = relativeComponentImport;
 function findComponentForTemplate(fsPath, projectRoot) {
+    const extName = path.extname(fsPath);
+    if (extName !== '.hbs') {
+        return fsPath;
+    }
     const absPath = path.resolve(fsPath);
-    const fileName = path.basename(absPath, ".hbs");
+    const fileName = path.basename(absPath, extName);
     const dir = path.dirname(absPath);
     const classicComponentTemplatesLocation = "app/templates/components";
     const normalizedDirname = dir.split(path.sep).join("/");
@@ -81,11 +87,15 @@ function findComponentForTemplate(fsPath, projectRoot) {
         "component.ts",
         "component.js"
     ];
-    const posibleNames = fileNames.map(name => path.join(dir, name));
     const relativePath = path
         .relative(projectRoot, dir)
         .split(path.sep)
         .join("/");
+    if (!relativePath.startsWith(classicComponentTemplatesLocation) && fileName === 'template') {
+        fileNames.push('controller.ts');
+        fileNames.push('controller.js');
+    }
+    const posibleNames = fileNames.map(name => path.join(dir, name));
     if (relativePath.startsWith(classicComponentTemplatesLocation)) {
         const pureName = normalizedDirname.split(classicComponentTemplatesLocation).pop() +
             fileName;
