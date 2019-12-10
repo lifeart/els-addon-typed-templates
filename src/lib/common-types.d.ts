@@ -8,6 +8,7 @@ declare module '@glimmer/component' {
 }
 
 declare module '@ember/component' {
+    export function setComponentTemplate<T,U>(Template: T, Klass: U): U;
 
     export default class Component<Args extends {} = {}> extends BaseComponent<Args> {
         args: Args;
@@ -17,11 +18,8 @@ declare module '@ember/component' {
 }
 
 declare module "@ember/component/helper" {
-    export function helper<T>(T): T;
+    export function helper<T>(Helper: T): T;
 }
 declare module "@ember/modifier" {
-    export function setModifierManager<T,U>(T,U): U;
-}
-declare module "@ember/component" {
-    export function setComponentTemplate<T,U>(T,U): U;
+    export function setModifierManager<T,U>(Manager: T,Modifier: U): U;
 }
