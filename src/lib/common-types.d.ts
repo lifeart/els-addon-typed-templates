@@ -7,6 +7,15 @@ declare module '@glimmer/component' {
     }
 }
 
+declare module '@ember/component' {
+
+    export default class Component<Args extends {} = {}> extends BaseComponent<Args> {
+        args: Args;
+        willDestroy: () => void;
+        toString: () => string;
+    }
+}
+
 declare module "@ember/component/helper" {
     export function helper<T>(T): T;
 }

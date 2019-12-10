@@ -32,6 +32,22 @@ function getValidRegistryItems(registry, templateFile) {
                 }
             });
         });
+        const componentKeys = ["component"];
+        componentKeys.forEach(keyName => {
+            Object.keys(registry[keyName]).forEach(name => {
+                const componentTemplates = registry[keyName][name].filter(p => p.endsWith(".hbs"));
+                const hasScriptHbs = componentTemplates.find(name => name.endsWith('.hbs'));
+                const componentScripts = registry[keyName][name].filter(p => !p.endsWith(".hbs")).sort();
+                const hasScriptTs = componentScripts.find(name => name.endsWith('.ts'));
+                const hasScriptJs = componentScripts.find(name => name.endsWith('.js'));
+                if (hasScriptHbs) {
+                    items[name] = {
+                        template: hasScriptHbs,
+                        script: hasScriptTs || hasScriptJs || null
+                    };
+                }
+            });
+        });
     }
     return items;
 }
@@ -46,7 +62,7 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
         relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     }
     // console.log('scriptForComponent', scriptForComponent);
-    componentsMap[fileName] = hbs_converter_1.getClass(templateTokens, relComponentImport, getValidRegistryItems(registry, fileName));
+    componentsMap[fileName] = hbs_converter_1.getClass(componentsMap, fileName, templateTokens, relComponentImport, getValidRegistryItems(registry, fileName));
     console.log("===============");
     console.log(componentsMap[fileName]);
     console.log("===============");
