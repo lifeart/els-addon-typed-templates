@@ -166,8 +166,8 @@
         "signature": "61215c1a376bbe8f51cab4cc4ddbf3746387015113c37a84d981d4738c21b878"
       },
       "../node_modules/@types/node/child_process.d.ts": {
-        "version": "b61c2ff5ee2ff5ec8fb37b64be2713a6255d746e070dc5b26dd390006c74bfb5",
-        "signature": "b61c2ff5ee2ff5ec8fb37b64be2713a6255d746e070dc5b26dd390006c74bfb5"
+        "version": "4c50c12d023c7ba3b08aed969b723594bf74e5c5a6c80b421d8664bf22c3c072",
+        "signature": "4c50c12d023c7ba3b08aed969b723594bf74e5c5a6c80b421d8664bf22c3c072"
       },
       "../node_modules/@types/node/cluster.d.ts": {
         "version": "ce629710e5e58724902b753212e97861fd73e2aa09f5d88cb6d55dc763cf8c8a",
@@ -254,8 +254,8 @@
         "signature": "5b34786b5d59b4e627c76f1294a00b5e92260a31ca87b29d9b7cb9acd3ba1acc"
       },
       "../node_modules/@types/node/readline.d.ts": {
-        "version": "e1045d32a6a59dbcbe0ed2edddc6568221acc299ac68d92284153e7c00b39d51",
-        "signature": "e1045d32a6a59dbcbe0ed2edddc6568221acc299ac68d92284153e7c00b39d51"
+        "version": "d08dfb553aa396ac399e7c67e24f6b964b12a49e99d245009c7c579827f6d5f2",
+        "signature": "d08dfb553aa396ac399e7c67e24f6b964b12a49e99d245009c7c579827f6d5f2"
       },
       "../node_modules/@types/node/repl.d.ts": {
         "version": "30b9c2c0949e27506c7e751bd51749ca5ecb0d0a3ea854064039ffaa3707fad4",
@@ -426,12 +426,12 @@
         "signature": "e412afe13639f92925a8296a98fa39470bde3a9915014eea206c08591aafe220"
       },
       "../src/lib/utils.ts": {
-        "version": "5a208b03ade804419d6fee42512768eb3b406be9b27c1d7c85594a6c73f7dc31",
-        "signature": "ebfd39a0e7dab18a3d22ea956d728f714927bc3e191e3ad8fefe1c3301d3d9f8"
+        "version": "d80940ef17c199b0c40a7c3c8842862b7448131f5d15624fb8d4b74ef17e7434",
+        "signature": "b308f8a8b556fc229318b6f6f444e4f4972bf28c7534ac0506e854d4bb4f7459"
       },
       "../src/lib/ast-helpers.ts": {
-        "version": "d1840455cf4234278ab2a0fdc99326aa6fd563848098108fb41e34c471ede155",
-        "signature": "6536c55617357917c842bbbcfb4beb015fd05782e835a431a8ec95c3aaf4a52b"
+        "version": "5f61edc32b774ac8e008ba023a6d33cade904d20d94f364efb7dc48628a2923d",
+        "signature": "0144b1a677874370a1fe1adfa58c0d6c3f0f014dccfa7c09698f5b59256fec9c"
       },
       "../src/lib/resolvers.ts": {
         "version": "0a763bf10e80ae7023d8bbf7da2b2312ad6bf0cc4dc0a4e5db0ff7fd18c89e3e",
@@ -445,6 +445,10 @@
         "version": "e3b21785e905f3afc8829746d8ab9f8b5cf93640e3e7ece4c00ec376c12e887f",
         "signature": "93edd9df0b3c01a45fbd73ac6ae24c48ca451f565670b864a6e9ae119faa4189"
       },
+      "../node_modules/camelcase/index.d.ts": {
+        "version": "b8e7261f41dd775524077306a69c01796bd5a2a742c7338e6607ff4e689bc356",
+        "signature": "b8e7261f41dd775524077306a69c01796bd5a2a742c7338e6607ff4e689bc356"
+      },
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts": {
         "version": "307539727690f90d77860d34859ea54d091fde1088b1e0a265da27a9c5991c99",
         "signature": "307539727690f90d77860d34859ea54d091fde1088b1e0a265da27a9c5991c99"
@@ -456,62 +460,6 @@
       "../node_modules/@glimmer/interfaces/dist/types/lib/tier1/symbol-table.d.ts": {
         "version": "a825a2ce0c654a8f0bc7d6d6fd4b3b24ae9b209f29403a6e8e143e2db071eca0",
         "signature": "a825a2ce0c654a8f0bc7d6d6fd4b3b24ae9b209f29403a6e8e143e2db071eca0"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": {
-        "version": "ae0426f9542e2e16a1b34c48090ccb4b24e914b01276576b35124de438f764c9",
-        "signature": "ae0426f9542e2e16a1b34c48090ccb4b24e914b01276576b35124de438f764c9"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/assert.d.ts": {
-        "version": "1fac6db8c6c51b34eb188c06fef4740ebb4eddd2784687ccb825aedcedc5a321",
-        "signature": "1fac6db8c6c51b34eb188c06fef4740ebb4eddd2784687ccb825aedcedc5a321"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": {
-        "version": "8930edcf2dbf35a62db3a1ca62b62f8d3173a5b67aa304c3564ac70bae094975",
-        "signature": "8930edcf2dbf35a62db3a1ca62b62f8d3173a5b67aa304c3564ac70bae094975"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts": {
-        "version": "64f2ef4de6e790c4294254432898335d3eb457378fc7ce362c9b2d0302ee2e9a",
-        "signature": "64f2ef4de6e790c4294254432898335d3eb457378fc7ce362c9b2d0302ee2e9a"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": {
-        "version": "378889330d85cabf23310a6bade1e38899a608e1aa623523a041be05b1e9e297",
-        "signature": "378889330d85cabf23310a6bade1e38899a608e1aa623523a041be05b1e9e297"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/collections.d.ts": {
-        "version": "dfe2c6e2da425722e964c8d406156558fd40d4a4b1de3fb1c909412211c11f0a",
-        "signature": "dfe2c6e2da425722e964c8d406156558fd40d4a4b1de3fb1c909412211c11f0a"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": {
-        "version": "4c98a65e916cf05dc5ae9325f3abbb1adab0ed268f0e49d389045a4366b3a020",
-        "signature": "4c98a65e916cf05dc5ae9325f3abbb1adab0ed268f0e49d389045a4366b3a020"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": {
-        "version": "0f3e563342625d50fade61afa2f24f9116801bab28c0ba89dceca57b1e47f04d",
-        "signature": "0f3e563342625d50fade61afa2f24f9116801bab28c0ba89dceca57b1e47f04d"
-      },
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts": {
-        "version": "e9e687dd12a5529dafb0b7b9446e235f3df7e7ec47ca99989f2700d5380c3f61",
-        "signature": "e9e687dd12a5529dafb0b7b9446e235f3df7e7ec47ca99989f2700d5380c3f61"
-      },
-      "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": {
-        "version": "1f9f0e8c2e85fd8d44c0120b9450fd7cbf95d5aa1da83b1934553c8a69834ea5",
-        "signature": "1f9f0e8c2e85fd8d44c0120b9450fd7cbf95d5aa1da83b1934553c8a69834ea5"
-      },
-      "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts": {
-        "version": "930d43ee2e53f01e73770bcf36455f84b5d7a96cbe947243481bfc64d14a79ac",
-        "signature": "930d43ee2e53f01e73770bcf36455f84b5d7a96cbe947243481bfc64d14a79ac"
-      },
-      "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts": {
-        "version": "bbb9a6a414747252b4304e2506c742a4da1f4a430661f1f36dc79b115533a9f3",
-        "signature": "bbb9a6a414747252b4304e2506c742a4da1f4a430661f1f36dc79b115533a9f3"
-      },
-      "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": {
-        "version": "c961cdf84e0da67d47f5f98e65f57bf143c8a86651acec63d4f39299ed1dac07",
-        "signature": "c961cdf84e0da67d47f5f98e65f57bf143c8a86651acec63d4f39299ed1dac07"
-      },
-      "../node_modules/@glimmer/reference/dist/types/index.d.ts": {
-        "version": "8e2aede4f2e64152433a54c8b890d2c889ad3e488004307b2fec29030047dbe0",
-        "signature": "8e2aede4f2e64152433a54c8b890d2c889ad3e488004307b2fec29030047dbe0"
       },
       "../node_modules/@glimmer/validator/dist/types/lib/validators.d.ts": {
         "version": "0dea06689195a18e7d5ff77dab787c4ed3bc8b9c7ded5a16e65863fbaf1527ae",
@@ -529,9 +477,89 @@
         "version": "e7704729b6c03c800b8f43cb62c7f74c03715d452c8b5fc79cadb18ca84f6847",
         "signature": "e7704729b6c03c800b8f43cb62c7f74c03715d452c8b5fc79cadb18ca84f6847"
       },
+      "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": {
+        "version": "10d94cc7c761c50e8c0eda3b3bf2f74742195593eb9a160d5ef795b215289a6a",
+        "signature": "10d94cc7c761c50e8c0eda3b3bf2f74742195593eb9a160d5ef795b215289a6a"
+      },
+      "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts": {
+        "version": "e8dcbcb358957cc04685b68a799b8f4aa6226b9870a0f0c7ca2b7a2db460e63c",
+        "signature": "e8dcbcb358957cc04685b68a799b8f4aa6226b9870a0f0c7ca2b7a2db460e63c"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": {
+        "version": "770319747c87d693c30eb1738734215a1edf6a7421528c9bef77ac5f3268eed7",
+        "signature": "770319747c87d693c30eb1738734215a1edf6a7421528c9bef77ac5f3268eed7"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts": {
+        "version": "6c75685cdd1892a264a02574bd3ca431fa3cea050bf4e55986f99c8b8ed912df",
+        "signature": "6c75685cdd1892a264a02574bd3ca431fa3cea050bf4e55986f99c8b8ed912df"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts": {
+        "version": "9e8a56786c8fb9567a670ab94b6c203d26b3e8ef866b000f2e7733023ad4c678",
+        "signature": "9e8a56786c8fb9567a670ab94b6c203d26b3e8ef866b000f2e7733023ad4c678"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": {
+        "version": "6b057b27733a274b3933399fee9ab66a443b8dcffe9ca5d7ae4258f2c0770cae",
+        "signature": "6b057b27733a274b3933399fee9ab66a443b8dcffe9ca5d7ae4258f2c0770cae"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts": {
+        "version": "0d00ce37be5948bc9dea32ae1963feef215e8f36f1362809f6db45c3f3c88890",
+        "signature": "0d00ce37be5948bc9dea32ae1963feef215e8f36f1362809f6db45c3f3c88890"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts": {
+        "version": "69957a216ea9261b907ec3b7c4e1773063cf23055d7a94d2cba6375a737fe453",
+        "signature": "69957a216ea9261b907ec3b7c4e1773063cf23055d7a94d2cba6375a737fe453"
+      },
       "../node_modules/@simple-dom/interface/index.d.ts": {
         "version": "5cd727b925a53aa246dcc9e42e63a9ea52b88f50ec0d4c3986e61819157a7103",
         "signature": "5cd727b925a53aa246dcc9e42e63a9ea52b88f50ec0d4c3986e61819157a7103"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts": {
+        "version": "aad2401cb3f14f3ef51e1067528c59133334b2102d84095a7702f034a3370f16",
+        "signature": "aad2401cb3f14f3ef51e1067528c59133334b2102d84095a7702f034a3370f16"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": {
+        "version": "a16b6ed3a04bec1c4def64704e42ca5afa53c4d673cabe9a5693e983d9bd0896",
+        "signature": "a16b6ed3a04bec1c4def64704e42ca5afa53c4d673cabe9a5693e983d9bd0896"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": {
+        "version": "54aed5f4b98aee357f47622d53ee3439c8cdc3164cadba25071c81bc59f4d3ec",
+        "signature": "54aed5f4b98aee357f47622d53ee3439c8cdc3164cadba25071c81bc59f4d3ec"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts": {
+        "version": "d367c2869d7317cbec3387e9a2378ade515a9b5e8773ff4fb0a33f96cafa0254",
+        "signature": "d367c2869d7317cbec3387e9a2378ade515a9b5e8773ff4fb0a33f96cafa0254"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": {
+        "version": "c4020e1412a88a36187ab5062e02771c65d73248b86253023aa4713c3460fa67",
+        "signature": "c4020e1412a88a36187ab5062e02771c65d73248b86253023aa4713c3460fa67"
+      },
+      "../node_modules/@glimmer/util/dist/types/lib/string.d.ts": {
+        "version": "6f496f6090cffa1bb93409b781df464a869bb8af5ebd3bc3e28e3b7e9b3ae321",
+        "signature": "6f496f6090cffa1bb93409b781df464a869bb8af5ebd3bc3e28e3b7e9b3ae321"
+      },
+      "../node_modules/@glimmer/util/dist/types/index.d.ts": {
+        "version": "94bd0c0df82733c44963bcab62add2609d86c6096df4ac4346bb357d101ed145",
+        "signature": "94bd0c0df82733c44963bcab62add2609d86c6096df4ac4346bb357d101ed145"
+      },
+      "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": {
+        "version": "e576c4367794a63bb89bef032ea91f9e43132eef96abeaff5e6fe1160934e264",
+        "signature": "e576c4367794a63bb89bef032ea91f9e43132eef96abeaff5e6fe1160934e264"
+      },
+      "../node_modules/@glimmer/reference/dist/types/lib/property.d.ts": {
+        "version": "6ac342a0cacff71d6c2432a7a72c15a90a56244cace64650651f8194263af291",
+        "signature": "6ac342a0cacff71d6c2432a7a72c15a90a56244cace64650651f8194263af291"
+      },
+      "../node_modules/@glimmer/reference/dist/types/lib/iterable-impl.d.ts": {
+        "version": "d6be19d3aab0f26d7c843f62bc12eab57d91a4c999cb16db812ca972d54b783b",
+        "signature": "d6be19d3aab0f26d7c843f62bc12eab57d91a4c999cb16db812ca972d54b783b"
+      },
+      "../node_modules/@glimmer/reference/dist/types/lib/combinators.d.ts": {
+        "version": "4cb377749e79291a894bf6f72766fbe5da2d56c292ca0396109bf6efbb650feb",
+        "signature": "4cb377749e79291a894bf6f72766fbe5da2d56c292ca0396109bf6efbb650feb"
+      },
+      "../node_modules/@glimmer/reference/dist/types/index.d.ts": {
+        "version": "c13015d9a4c651bac01535e09fb68ebe6cae706b002b7326c6400498df0687ca",
+        "signature": "c13015d9a4c651bac01535e09fb68ebe6cae706b002b7326c6400498df0687ca"
       },
       "../node_modules/@glimmer/interfaces/dist/types/lib/dom/bounds.d.ts": {
         "version": "81e23c451e9732f4cab631d11540b536ce18845d81a36387aea33fe2994595ca",
@@ -549,17 +577,21 @@
         "version": "4ffab8acb2749a153aefc0ba6c6a65a9909546c10adffad901c411459b85aeaf",
         "signature": "4ffab8acb2749a153aefc0ba6c6a65a9909546c10adffad901c411459b85aeaf"
       },
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts": {
-        "version": "e9e687dd12a5529dafb0b7b9446e235f3df7e7ec47ca99989f2700d5380c3f61",
-        "signature": "e9e687dd12a5529dafb0b7b9446e235f3df7e7ec47ca99989f2700d5380c3f61"
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": {
+        "version": "ae0426f9542e2e16a1b34c48090ccb4b24e914b01276576b35124de438f764c9",
+        "signature": "ae0426f9542e2e16a1b34c48090ccb4b24e914b01276576b35124de438f764c9"
       },
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts": {
-        "version": "d0061a7a82d3d7274cf6d77fd504fba0db30a063e6e9cf87a76c418a69dbfe29",
-        "signature": "d0061a7a82d3d7274cf6d77fd504fba0db30a063e6e9cf87a76c418a69dbfe29"
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/assert.d.ts": {
+        "version": "1fac6db8c6c51b34eb188c06fef4740ebb4eddd2784687ccb825aedcedc5a321",
+        "signature": "1fac6db8c6c51b34eb188c06fef4740ebb4eddd2784687ccb825aedcedc5a321"
       },
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/registers.d.ts": {
-        "version": "4b958a1a748efb337504f652ea4182cc91eddcd389409471ecdf06bf6a613a6c",
-        "signature": "4b958a1a748efb337504f652ea4182cc91eddcd389409471ecdf06bf6a613a6c"
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": {
+        "version": "8930edcf2dbf35a62db3a1ca62b62f8d3173a5b67aa304c3564ac70bae094975",
+        "signature": "8930edcf2dbf35a62db3a1ca62b62f8d3173a5b67aa304c3564ac70bae094975"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts": {
+        "version": "64f2ef4de6e790c4294254432898335d3eb457378fc7ce362c9b2d0302ee2e9a",
+        "signature": "64f2ef4de6e790c4294254432898335d3eb457378fc7ce362c9b2d0302ee2e9a"
       },
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts": {
         "version": "435d366d8a683f0395da0a58625ad3d94145764660dad217c0fa62143f3480d7",
@@ -613,6 +645,34 @@
         "version": "46c1be126deb31d269f71c54f1d36e677fa0e17aafcd9087c2629b04660367ed",
         "signature": "46c1be126deb31d269f71c54f1d36e677fa0e17aafcd9087c2629b04660367ed"
       },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": {
+        "version": "378889330d85cabf23310a6bade1e38899a608e1aa623523a041be05b1e9e297",
+        "signature": "378889330d85cabf23310a6bade1e38899a608e1aa623523a041be05b1e9e297"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/collections.d.ts": {
+        "version": "dfe2c6e2da425722e964c8d406156558fd40d4a4b1de3fb1c909412211c11f0a",
+        "signature": "dfe2c6e2da425722e964c8d406156558fd40d4a4b1de3fb1c909412211c11f0a"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": {
+        "version": "4c98a65e916cf05dc5ae9325f3abbb1adab0ed268f0e49d389045a4366b3a020",
+        "signature": "4c98a65e916cf05dc5ae9325f3abbb1adab0ed268f0e49d389045a4366b3a020"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": {
+        "version": "0f3e563342625d50fade61afa2f24f9116801bab28c0ba89dceca57b1e47f04d",
+        "signature": "0f3e563342625d50fade61afa2f24f9116801bab28c0ba89dceca57b1e47f04d"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts": {
+        "version": "e9e687dd12a5529dafb0b7b9446e235f3df7e7ec47ca99989f2700d5380c3f61",
+        "signature": "e9e687dd12a5529dafb0b7b9446e235f3df7e7ec47ca99989f2700d5380c3f61"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts": {
+        "version": "d0061a7a82d3d7274cf6d77fd504fba0db30a063e6e9cf87a76c418a69dbfe29",
+        "signature": "d0061a7a82d3d7274cf6d77fd504fba0db30a063e6e9cf87a76c418a69dbfe29"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/registers.d.ts": {
+        "version": "4b958a1a748efb337504f652ea4182cc91eddcd389409471ecdf06bf6a613a6c",
+        "signature": "4b958a1a748efb337504f652ea4182cc91eddcd389409471ecdf06bf6a613a6c"
+      },
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/-debug-strip.d.ts": {
         "version": "3d769f5db98c8a1edddfdd7238ee55448ec178ad6a54c417223b8e3a74fcb6fb",
         "signature": "3d769f5db98c8a1edddfdd7238ee55448ec178ad6a54c417223b8e3a74fcb6fb"
@@ -621,27 +681,43 @@
         "version": "c17cd1c17241aeeee0203963094bd7a924f62b342fbfae84827814acd069b351",
         "signature": "c17cd1c17241aeeee0203963094bd7a924f62b342fbfae84827814acd069b351"
       },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": {
+        "version": "1f9f0e8c2e85fd8d44c0120b9450fd7cbf95d5aa1da83b1934553c8a69834ea5",
+        "signature": "1f9f0e8c2e85fd8d44c0120b9450fd7cbf95d5aa1da83b1934553c8a69834ea5"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts": {
+        "version": "930d43ee2e53f01e73770bcf36455f84b5d7a96cbe947243481bfc64d14a79ac",
+        "signature": "930d43ee2e53f01e73770bcf36455f84b5d7a96cbe947243481bfc64d14a79ac"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/const.d.ts": {
+        "version": "bbb9a6a414747252b4304e2506c742a4da1f4a430661f1f36dc79b115533a9f3",
+        "signature": "bbb9a6a414747252b4304e2506c742a4da1f4a430661f1f36dc79b115533a9f3"
+      },
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": {
+        "version": "c961cdf84e0da67d47f5f98e65f57bf143c8a86651acec63d4f39299ed1dac07",
+        "signature": "c961cdf84e0da67d47f5f98e65f57bf143c8a86651acec63d4f39299ed1dac07"
+      },
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts": {
         "version": "8e2aede4f2e64152433a54c8b890d2c889ad3e488004307b2fec29030047dbe0",
         "signature": "8e2aede4f2e64152433a54c8b890d2c889ad3e488004307b2fec29030047dbe0"
       },
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/constants.d.ts": {
+      "../node_modules/@glimmer/program/dist/types/lib/constants.d.ts": {
         "version": "5a6ea394175ca1b461852744893f6a4bc6da04cad4ee93cd5be6371576fcd323",
         "signature": "5a6ea394175ca1b461852744893f6a4bc6da04cad4ee93cd5be6371576fcd323"
       },
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/opcode.d.ts": {
+      "../node_modules/@glimmer/program/dist/types/lib/opcode.d.ts": {
         "version": "c1301b71301014ecc0d7e51a33dfd72a0842765b5e07d609f0db1c33d8927fd0",
         "signature": "c1301b71301014ecc0d7e51a33dfd72a0842765b5e07d609f0db1c33d8927fd0"
       },
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/program.d.ts": {
+      "../node_modules/@glimmer/program/dist/types/lib/program.d.ts": {
         "version": "c9ea7f69de0bdfc7f2d80ea46e30668aa8ccc3e1cc20ff19e966f6e4f9bf4ce2",
         "signature": "c9ea7f69de0bdfc7f2d80ea46e30668aa8ccc3e1cc20ff19e966f6e4f9bf4ce2"
       },
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/helpers.d.ts": {
+      "../node_modules/@glimmer/program/dist/types/lib/helpers.d.ts": {
         "version": "9041fb32ad271ccf71411a876222caa5d7d8a576acdcda571c6baa191dd59072",
         "signature": "9041fb32ad271ccf71411a876222caa5d7d8a576acdcda571c6baa191dd59072"
       },
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/index.d.ts": {
+      "../node_modules/@glimmer/program/dist/types/index.d.ts": {
         "version": "218efeccc8b35d7e18c0e575b2af353287538d30833eeacaeef866f29315f0ed",
         "signature": "218efeccc8b35d7e18c0e575b2af353287538d30833eeacaeef866f29315f0ed"
       },
@@ -1049,58 +1125,6 @@
         "version": "a63dcad354760be9fc212cb3ab6fb4eb40df004d697fe6f0bfb161b982471b82",
         "signature": "a63dcad354760be9fc212cb3ab6fb4eb40df004d697fe6f0bfb161b982471b82"
       },
-      "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": {
-        "version": "770319747c87d693c30eb1738734215a1edf6a7421528c9bef77ac5f3268eed7",
-        "signature": "770319747c87d693c30eb1738734215a1edf6a7421528c9bef77ac5f3268eed7"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts": {
-        "version": "6c75685cdd1892a264a02574bd3ca431fa3cea050bf4e55986f99c8b8ed912df",
-        "signature": "6c75685cdd1892a264a02574bd3ca431fa3cea050bf4e55986f99c8b8ed912df"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts": {
-        "version": "9e8a56786c8fb9567a670ab94b6c203d26b3e8ef866b000f2e7733023ad4c678",
-        "signature": "9e8a56786c8fb9567a670ab94b6c203d26b3e8ef866b000f2e7733023ad4c678"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": {
-        "version": "6b057b27733a274b3933399fee9ab66a443b8dcffe9ca5d7ae4258f2c0770cae",
-        "signature": "6b057b27733a274b3933399fee9ab66a443b8dcffe9ca5d7ae4258f2c0770cae"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts": {
-        "version": "0d00ce37be5948bc9dea32ae1963feef215e8f36f1362809f6db45c3f3c88890",
-        "signature": "0d00ce37be5948bc9dea32ae1963feef215e8f36f1362809f6db45c3f3c88890"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts": {
-        "version": "69957a216ea9261b907ec3b7c4e1773063cf23055d7a94d2cba6375a737fe453",
-        "signature": "69957a216ea9261b907ec3b7c4e1773063cf23055d7a94d2cba6375a737fe453"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts": {
-        "version": "aad2401cb3f14f3ef51e1067528c59133334b2102d84095a7702f034a3370f16",
-        "signature": "aad2401cb3f14f3ef51e1067528c59133334b2102d84095a7702f034a3370f16"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": {
-        "version": "a16b6ed3a04bec1c4def64704e42ca5afa53c4d673cabe9a5693e983d9bd0896",
-        "signature": "a16b6ed3a04bec1c4def64704e42ca5afa53c4d673cabe9a5693e983d9bd0896"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": {
-        "version": "54aed5f4b98aee357f47622d53ee3439c8cdc3164cadba25071c81bc59f4d3ec",
-        "signature": "54aed5f4b98aee357f47622d53ee3439c8cdc3164cadba25071c81bc59f4d3ec"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts": {
-        "version": "d367c2869d7317cbec3387e9a2378ade515a9b5e8773ff4fb0a33f96cafa0254",
-        "signature": "d367c2869d7317cbec3387e9a2378ade515a9b5e8773ff4fb0a33f96cafa0254"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": {
-        "version": "c4020e1412a88a36187ab5062e02771c65d73248b86253023aa4713c3460fa67",
-        "signature": "c4020e1412a88a36187ab5062e02771c65d73248b86253023aa4713c3460fa67"
-      },
-      "../node_modules/@glimmer/util/dist/types/lib/string.d.ts": {
-        "version": "6f496f6090cffa1bb93409b781df464a869bb8af5ebd3bc3e28e3b7e9b3ae321",
-        "signature": "6f496f6090cffa1bb93409b781df464a869bb8af5ebd3bc3e28e3b7e9b3ae321"
-      },
-      "../node_modules/@glimmer/util/dist/types/index.d.ts": {
-        "version": "94bd0c0df82733c44963bcab62add2609d86c6096df4ac4346bb357d101ed145",
-        "signature": "94bd0c0df82733c44963bcab62add2609d86c6096df4ac4346bb357d101ed145"
-      },
       "../node_modules/@glimmer/syntax/dist/types/lib/parser/handlebars-node-visitors.d.ts": {
         "version": "ba31b7503bd52c5e7ac12eb944033d68588742da6ca846a8fd860bf0a2784577",
         "signature": "ba31b7503bd52c5e7ac12eb944033d68588742da6ca846a8fd860bf0a2784577"
@@ -1149,16 +1173,16 @@
         "version": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428",
         "signature": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428"
       },
-      "../node_modules/camelcase/index.d.ts": {
-        "version": "b8e7261f41dd775524077306a69c01796bd5a2a742c7338e6607ff4e689bc356",
-        "signature": "b8e7261f41dd775524077306a69c01796bd5a2a742c7338e6607ff4e689bc356"
+      "../src/lib/ast-parser.ts": {
+        "version": "c07fa6c3d03b531c96281a5ef8cf9d9f09c2465d9aa02515a405cddd87353009",
+        "signature": "deeba18a09f3b90d449c2523bdced5718ae869123f3cbb70d61aa746e4ea2d2f"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "6556507c525b75dc1ccf3e9ee9955db79b519ae85b08dc6b92eedda92543443f",
-        "signature": "6f15da731d0cb554a38ad7b873eefca9fe98a4b778971251c5c20bd97e696904"
+        "version": "e4e0d6e08cce86ea67acb3e22754b847946b9c146df7c75a1be87c112f4448e6",
+        "signature": "978b14bf24782e9e62defea38871ce57924cf4f822a45c445694a58394525577"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "c34eef0211c46ccf8ffdee529fb6059710b02bdc00ad3a56db30dfc26142f6f7",
+        "version": "9e8f1a0918647388f79f409bdd22f8c859bd38c274b1e904a08075bef85d2679",
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
@@ -1170,8 +1194,8 @@
         "signature": "4b6abf33a86c7d341ed53751aa526a2632cc493a20d6510366cc771ec0de760b"
       },
       "../src/lib/common-types.d.ts": {
-        "version": "a19180128acf2366ee4f58c0477c72780bebb2f966a9a9173a4c33591b50a456",
-        "signature": "a19180128acf2366ee4f58c0477c72780bebb2f966a9a9173a4c33591b50a456"
+        "version": "9b3d51341a105aa53aa06255e44a7dba0f6fee1b93c1f9e6d15c178d22ef4aaf",
+        "signature": "9b3d51341a105aa53aa06255e44a7dba0f6fee1b93c1f9e6d15c178d22ef4aaf"
       }
     },
     "options": {
@@ -2029,6 +2053,12 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../node_modules/camelcase/index.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2042,112 +2072,6 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/interfaces/dist/types/lib/tier1/symbol-table.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/assert.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": [
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/collections.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2182,7 +2106,170 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": [
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts": [
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts": [
+        "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts": [
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../node_modules/@simple-dom/interface/index.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts": [
+        "../node_modules/@simple-dom/interface/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": [
+        "../node_modules/@simple-dom/interface/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": [
+        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts": [
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/string.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/index.d.ts": [
+        "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/string.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": [
+        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/property.d.ts": [
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/iterable-impl.d.ts": [
+        "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/property.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/combinators.d.ts": [
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/index.d.ts": [
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/property.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/iterable-impl.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/combinators.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2224,27 +2311,25 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts": [
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/assert.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/registers.d.ts": [
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2312,7 +2397,7 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/wire-format/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/wire-format/dist/types/lib/opcodes.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2356,6 +2441,60 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/collections.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/registers.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/-debug-strip.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
@@ -2373,50 +2512,80 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/const.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/constants.d.ts": [
+      "../node_modules/@glimmer/program/dist/types/lib/constants.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/opcode.d.ts": [
+      "../node_modules/@glimmer/program/dist/types/lib/opcode.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/program.d.ts": [
+      "../node_modules/@glimmer/program/dist/types/lib/program.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
+        "../node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/helpers.d.ts": [
+      "../node_modules/@glimmer/program/dist/types/lib/helpers.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/constants.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/program.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/helpers.d.ts",
+      "../node_modules/@glimmer/program/dist/types/index.d.ts": [
+        "../node_modules/@glimmer/program/dist/types/lib/constants.d.ts",
+        "../node_modules/@glimmer/program/dist/types/lib/program.d.ts",
+        "../node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
+        "../node_modules/@glimmer/program/dist/types/lib/helpers.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2424,7 +2593,7 @@
       ],
       "../node_modules/@glimmer/opcode-compiler/dist/types/lib/program-context.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/index.d.ts",
+        "../node_modules/@glimmer/program/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2635,7 +2804,7 @@
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2644,7 +2813,7 @@
       "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts": [
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2681,7 +2850,7 @@
       "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts": [
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/stack.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2691,9 +2860,9 @@
       "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts": [
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/attributes/dynamic.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -2724,16 +2893,16 @@
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/component/curried-component.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/component/interfaces.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -2743,8 +2912,8 @@
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/component/interfaces.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
@@ -2765,11 +2934,11 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/opcode-compiler/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/program/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/append.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts",
@@ -2794,8 +2963,8 @@
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
@@ -2806,7 +2975,7 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/vm/render-result.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/update.d.ts",
@@ -2822,8 +2991,8 @@
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/low-level.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/update.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/render-result.d.ts",
@@ -2848,9 +3017,9 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -2859,7 +3028,7 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/expressions.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2874,9 +3043,9 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/component.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
@@ -2891,15 +3060,15 @@
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/references.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/content.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/references.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2914,8 +3083,8 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/dom.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/modifier/interfaces.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm.d.ts",
@@ -2933,7 +3102,7 @@
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/vm.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -2967,7 +3136,7 @@
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/append.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -2988,7 +3157,7 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/dom/props.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -3000,7 +3169,7 @@
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -3404,107 +3573,6 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts": [
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts": [
-        "../node_modules/@simple-dom/interface/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": [
-        "../node_modules/@simple-dom/interface/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts": [
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/string.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/string.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
       "../node_modules/@glimmer/syntax/dist/types/lib/parser/handlebars-node-visitors.d.ts": [
         "../node_modules/@glimmer/syntax/dist/types/lib/types/nodes.d.ts",
         "../node_modules/@glimmer/syntax/dist/types/lib/types/handlebars-ast.d.ts",
@@ -3614,18 +3682,20 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/camelcase/index.d.ts": [
+      "../src/lib/ast-parser.ts": [
+        "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
+        "../src/lib/ast-helpers.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../src/lib/hbs-converter.ts": [
-        "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
         "../src/lib/utils.ts",
         "../node_modules/camelcase/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../src/lib/resolvers.ts",
+        "../src/lib/ast-parser.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
@@ -3634,6 +3704,7 @@
         "../src/lib/utils.ts",
         "../src/lib/resolvers.ts",
         "../src/lib/hbs-converter.ts",
+        "../src/lib/ast-parser.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -4469,6 +4540,12 @@
       "../src/lib/ts-service.ts": [
         "../node_modules/typescript/lib/typescript.d.ts"
       ],
+      "../node_modules/camelcase/index.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -4482,112 +4559,6 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/interfaces/dist/types/lib/tier1/symbol-table.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/assert.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": [
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/collections.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": [
-        "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/reference/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -4622,7 +4593,170 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": [
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts": [
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts": [
+        "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts": [
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../node_modules/@simple-dom/interface/index.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts": [
+        "../node_modules/@simple-dom/interface/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": [
+        "../node_modules/@simple-dom/interface/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": [
+        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts": [
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/lib/string.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/util/dist/types/index.d.ts": [
+        "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@glimmer/util/dist/types/lib/string.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": [
+        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/property.d.ts": [
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/iterable-impl.d.ts": [
+        "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/property.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/lib/combinators.d.ts": [
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/reference/dist/types/index.d.ts": [
+        "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/property.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/iterable-impl.d.ts",
+        "../node_modules/@glimmer/reference/dist/types/lib/combinators.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -4664,27 +4798,25 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
-        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
-        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
-        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
-        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts": [
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/assert.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/registers.d.ts": [
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -4766,7 +4898,7 @@
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/program.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/components.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/serialize.d.ts",
-        "../node_modules/@glimmer/wire-format/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/wire-format/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -4796,6 +4928,60 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/collections.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/registers.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/-debug-strip.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
@@ -4813,6 +4999,36 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/reference.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/const.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts": [
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
@@ -4823,40 +5039,40 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/constants.d.ts": [
+      "../node_modules/@glimmer/program/dist/types/lib/constants.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/opcode.d.ts": [
+      "../node_modules/@glimmer/program/dist/types/lib/opcode.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/program.d.ts": [
+      "../node_modules/@glimmer/program/dist/types/lib/program.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
+        "../node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/helpers.d.ts": [
+      "../node_modules/@glimmer/program/dist/types/lib/helpers.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/constants.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/program.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/helpers.d.ts",
+      "../node_modules/@glimmer/program/dist/types/index.d.ts": [
+        "../node_modules/@glimmer/program/dist/types/lib/constants.d.ts",
+        "../node_modules/@glimmer/program/dist/types/lib/program.d.ts",
+        "../node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
+        "../node_modules/@glimmer/program/dist/types/lib/helpers.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -4864,7 +5080,7 @@
       ],
       "../node_modules/@glimmer/opcode-compiler/dist/types/lib/program-context.d.ts": [
         "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/index.d.ts",
+        "../node_modules/@glimmer/program/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -5075,7 +5291,7 @@
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -5084,7 +5300,7 @@
       "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts": [
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -5121,7 +5337,7 @@
       "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts": [
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/stack.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -5131,9 +5347,9 @@
       "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts": [
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/attributes/dynamic.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -5164,16 +5380,16 @@
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/component/curried-component.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/component/interfaces.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -5183,8 +5399,8 @@
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/component/interfaces.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
@@ -5205,11 +5421,11 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/opcode-compiler/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/program/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/program/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/append.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts",
@@ -5222,7 +5438,7 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/vm/low-level.d.ts": [
-        "../node_modules/@glimmer/program/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/program/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/append.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -5234,8 +5450,8 @@
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/dom/helper.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
@@ -5246,7 +5462,7 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/vm/render-result.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/update.d.ts",
@@ -5262,15 +5478,15 @@
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/low-level.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/update.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/render-result.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/stack.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/arguments.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
-        "../node_modules/@glimmer/program/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/program/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -5288,9 +5504,9 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -5299,7 +5515,7 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/expressions.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -5314,9 +5530,9 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/component.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
@@ -5331,15 +5547,15 @@
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/references.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/content.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/references.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -5354,8 +5570,8 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/dom.d.ts": [
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/modifier/interfaces.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm.d.ts",
@@ -5373,7 +5589,7 @@
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/compiled/opcodes/vm.d.ts": [
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/opcodes.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm.d.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -5407,7 +5623,7 @@
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/append.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/vm/element-builder.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
-        "../node_modules/@glimmer/reference/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -5428,7 +5644,7 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../node_modules/@glimmer/runtime/dist/types/lib/dom/props.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -5440,7 +5656,7 @@
         "../node_modules/@glimmer/runtime/dist/types/lib/environment.d.ts",
         "../node_modules/@glimmer/runtime/dist/types/lib/bounds.d.ts",
         "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -5844,112 +6060,11 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts": [
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts": [
-        "../node_modules/@simple-dom/interface/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts": [
-        "../node_modules/@simple-dom/interface/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts": [
-        "../node_modules/@glimmer/interfaces/dist/types/index.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/lib/string.d.ts": [
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/@glimmer/util/dist/types/index.d.ts": [
-        "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-        "../node_modules/@glimmer/util/dist/types/lib/string.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
       "../node_modules/@glimmer/syntax/dist/types/lib/parser/handlebars-node-visitors.d.ts": [
         "../node_modules/@glimmer/syntax/dist/types/lib/types/nodes.d.ts",
         "../node_modules/@glimmer/syntax/dist/types/lib/types/handlebars-ast.d.ts",
         "../node_modules/@glimmer/syntax/dist/types/lib/parser.d.ts",
-        "../node_modules/@glimmer/syntax/node_modules/@glimmer/util/dist/types/index.d.ts",
+        "../node_modules/@glimmer/util/dist/types/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -6049,12 +6164,6 @@
         "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
         "../node_modules/@glimmer/syntax/dist/types/lib/types/nodes.d.ts",
         "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/@types/node/ts3.2/fs.d.ts",
-        "../node_modules/@types/node/util.d.ts",
-        "../node_modules/@types/node/ts3.2/util.d.ts"
-      ],
-      "../node_modules/camelcase/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -6183,35 +6292,43 @@
       "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
       "../src/lib/ts-service.ts",
+      "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/tier1/symbol-table.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
-      "../node_modules/@glimmer/reference/node_modules/@glimmer/util/dist/types/index.d.ts",
-      "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
-      "../node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
-      "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
-      "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
-      "../node_modules/@glimmer/reference/dist/types/index.d.ts",
       "../node_modules/@glimmer/validator/dist/types/lib/validators.d.ts",
       "../node_modules/@glimmer/validator/dist/types/lib/meta.d.ts",
       "../node_modules/@glimmer/validator/dist/types/lib/tracking.d.ts",
       "../node_modules/@glimmer/validator/dist/types/index.d.ts",
+      "../node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+      "../node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts",
       "../node_modules/@simple-dom/interface/index.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
+      "../node_modules/@glimmer/util/dist/types/lib/string.d.ts",
+      "../node_modules/@glimmer/util/dist/types/index.d.ts",
+      "../node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
+      "../node_modules/@glimmer/reference/dist/types/lib/property.d.ts",
+      "../node_modules/@glimmer/reference/dist/types/lib/iterable-impl.d.ts",
+      "../node_modules/@glimmer/reference/dist/types/lib/combinators.d.ts",
+      "../node_modules/@glimmer/reference/dist/types/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/dom/bounds.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/runtime/scope.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/runtime/arguments.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/runtime/element.d.ts",
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts",
-      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/registers.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/components.d.ts",
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/dom/tree-construction.d.ts",
@@ -6225,14 +6342,25 @@
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/template.d.ts",
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/lib/dom/simple.d.ts",
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/interfaces/dist/types/index.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/util/dist/types/index.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/opcodes.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/registers.d.ts",
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/lib/-debug-strip.d.ts",
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/vm/dist/types/index.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/reference.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/validators.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/const.d.ts",
+      "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/lib/iterable.d.ts",
       "../node_modules/@glimmer/runtime/node_modules/@glimmer/reference/dist/types/index.d.ts",
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/constants.d.ts",
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/program.d.ts",
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/lib/helpers.d.ts",
-      "../node_modules/@glimmer/opcode-compiler/node_modules/@glimmer/program/dist/types/index.d.ts",
+      "../node_modules/@glimmer/program/dist/types/lib/constants.d.ts",
+      "../node_modules/@glimmer/program/dist/types/lib/opcode.d.ts",
+      "../node_modules/@glimmer/program/dist/types/lib/program.d.ts",
+      "../node_modules/@glimmer/program/dist/types/lib/helpers.d.ts",
+      "../node_modules/@glimmer/program/dist/types/index.d.ts",
       "../node_modules/@glimmer/opcode-compiler/dist/types/lib/program-context.d.ts",
       "../node_modules/@glimmer/opcode-compiler/dist/types/lib/syntax/macros.d.ts",
       "../node_modules/@glimmer/opcode-compiler/dist/types/lib/syntax/concat.d.ts",
@@ -6334,19 +6462,6 @@
       "../node_modules/simple-html-tokenizer/dist/types/tokenize.d.ts",
       "../node_modules/simple-html-tokenizer/dist/types/index.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/parser.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/array-utils.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/assert.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/guid.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/platform-utils.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/collections.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/destroy.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/dom.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/is-serialization-first-node.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/list-utils.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/lifetimes.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/object-utils.d.ts",
-      "../node_modules/@glimmer/util/dist/types/lib/string.d.ts",
-      "../node_modules/@glimmer/util/dist/types/index.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/parser/handlebars-node-visitors.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/builders.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/types/visitor-keys.d.ts",
@@ -6359,12 +6474,12 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
-      "../node_modules/camelcase/index.d.ts",
+      "../src/lib/ast-parser.ts",
       "../src/lib/hbs-converter.ts",
-      "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
       "../src/index.ts",
-      "../src/lib/common-types.d.ts"
+      "../src/lib/common-types.d.ts",
+      "../src/lib/virtual-documents.ts"
     ]
   },
   "version": "3.7.3"

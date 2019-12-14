@@ -14,4 +14,5 @@ export default class Foo {
         id: 12,
         name: 42
     }
+    hello() {}
 }

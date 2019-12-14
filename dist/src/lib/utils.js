@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const walkSync = require("walk-sync");
 const vscode_languageserver_1 = require("vscode-languageserver");
+const lodash_1 = require("lodash");
 function safeWalkSync(filePath, opts) {
     if (!filePath) {
         return [];
@@ -13,6 +14,13 @@ function safeWalkSync(filePath, opts) {
     return walkSync(filePath, opts);
 }
 exports.safeWalkSync = safeWalkSync;
+function normalizeAngleTagName(tagName) {
+    return tagName
+        .split('::')
+        .map((item) => lodash_1.kebabCase(item))
+        .join('/');
+}
+exports.normalizeAngleTagName = normalizeAngleTagName;
 exports.PLACEHOLDER = "ELSCompletionDummy";
 function mergeResults(existingResults, newResults) {
     let indexes = new Set();

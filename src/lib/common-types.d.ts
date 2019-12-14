@@ -23,3 +23,4 @@ declare module "@ember/component/helper" {
 declare module "@ember/modifier" {
     export function setModifierManager<T,U>(Manager: T,Modifier: U): U;
 }
+

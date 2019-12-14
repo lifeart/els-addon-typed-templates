@@ -1,94 +1,8 @@
-import { preprocess as parse, traverse } from "@glimmer/syntax";
 import { PLACEHOLDER } from './utils'; 
 import * as camelcase from 'camelcase';
 import * as fs from 'fs';
-import { kebabCase } from 'lodash';
 import { relativeImport, virtualComponentTemplateFileName } from './resolvers';
-
-function normalizeAngleTagName(tagName: string) {
-  return tagName
-    .split('::')
-    .map((item: string) => kebabCase(item))
-    .join('/');
-}
-
-function isSimpleComponentElement(node) {
-  return node.blockParams.length && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
-}
-
-export function getClassMeta(source) {
-  const node = parse(source);
-  const nodes: any = [];
-
-  traverse(node, {
-    MustacheStatement(node) {
-      //@ts-ignore
-      if (!node.isIgnored) {
-        nodes.push([node]);
-      }
-    },
-    BlockStatement(node) {
-      nodes.push([node]);
-    },
-    ElementModifierStatement(node) {
-      nodes.push([node]);
-    },
-    ElementNode(node) {
-      if (isSimpleComponentElement(node)) {
-        const componentName = normalizeAngleTagName(node.tag);
-        nodes.push([{
-          type: 'BlockStatement',
-          isComponent: true,
-          path: {
-            type: 'PathExpression',
-            original: componentName,
-            this: false,
-            data: false,
-            parts: [componentName],
-            loc: node.loc
-          },
-          params: [],
-          inverse: null,
-          hash: {
-            type: 'Hash',
-            pairs: node.attributes.filter((attr)=>attr.name.startsWith('@')).map((attr)=>{
-              let value = attr.value;
-              if (value.type === 'MustacheStatement') {
-                //@ts-ignore
-                value.type = 'SubExpression';
-                //@ts-ignore
-                value.isIgnored = true;
-              }
-              return {
-                type: 'HashPair',
-                key: attr.name.replace('@', ''),
-                value: value,
-                loc: attr.loc
-              }
-            })
-          },
-          program: {
-            type: "Block",
-            body: node.children,
-            blockParams: node.blockParams,
-            chained: false,
-            loc: node.loc
-          },
-          loc: node.loc
-        }])
-      }
-    },
-    SubExpression(node) {
-      if (nodes[nodes.length - 1]) {
-        nodes[nodes.length - 1].push(node);
-      } else {
-        console.log('unexpectedSubexpression', node);
-      }
-    }
-  });
-
-  return nodes;
-}
+import { getClassMeta } from './ast-parser';
 
 export function positionForItem(item) {
   const { start, end } = item.loc;
@@ -256,7 +170,9 @@ export function getClass(componentsMap, fileName, items, componentImport: string
     ["if"]: "typeof TIfHeper",
     ["on"]: "OnModifer",
     ["fn"]: "FnHelper",
-    ["yield"]: "YieldHelper"
+    ["yield"]: "YieldHelper",
+    ["concat"]: "ConcatHelper",
+    ["and"]: "AndHelper"
   };
   
   let typeDeclarations = `
@@ -269,8 +185,10 @@ export function getClass(componentsMap, fileName, items, componentImport: string
   type HashHelper = <T>(items: any[], hash: T) => T;
   type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
   type OnModifer = ([event, handler]: [string, Function], hash?) => void;
-  type FnHelper = <T extends (...args: any) => any>(func: T, params: Parameters<T>) => Function;
-
+  type FnHelper = <T extends AnyFn>([func, ...params]:[T,Parameters<T>]) => T;
+  type ConcatHelper = (...args: (number|string)[]) => string;
+  type AndHelper = <T,U>([a,b]:[T,U])=> boolean;
+  
 
   function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
     return !!a ? b : c;
@@ -285,7 +203,7 @@ export function getClass(componentsMap, fileName, items, componentImport: string
     'array': "<T>(params: ArrayLike<T>, hash?)",
     'hash': "<T>(params = [], hash: T)",
     'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)",
-    'fn': "([fn, ...args]: [Function, Parameters<(...args: any) => any>], hash?)",
+    'fn': "([fn, ...args]: [AnyFn, ...Parameters<AnyFn>], hash?)",
     'on': "([eventName, handler]: [string, Function], hash?)",
     'yield':  "<A,B,C,D,E>(params?: [A?,B?,C?,D?,E?], hash?)"
   };
@@ -294,7 +212,7 @@ export function getClass(componentsMap, fileName, items, componentImport: string
     "if": "([a as T,b as U,c as Y], hash)",
     "let": "(params as [A,B,C,D,E], hash)",
     "yield": "(params as [A,B,C,D,E], hash)",
-    "fn": "([fn, ...args], hash)",
+    "fn": "[fn, args as Parameters<AnyFn>[]]",
     "on": "([eventName, handler], hash)"
   }
 

@@ -1,4 +1,4 @@
-import { PLACEHOLDER } from './utils';
+import { PLACEHOLDER, normalizeAngleTagName } from './utils';
 
 export function isParamPath(astPath) {
   const parentType = astPath.parent && astPath.parent.type;
@@ -60,4 +60,60 @@ export function isEachArgument(focusPath) {
       return true;
     }
   }
+}
+
+export function isSimpleBlockComponentElement(node) {
+  return node.blockParams.length && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
+}
+
+export function positionForItem(item) {
+  const { start, end } = item.loc;
+  return `${start.line},${start.column}:${end.line},${end.column}`;
+}
+export function keyForItem(item) {
+  return `${positionForItem(item)} - ${item.type}`;
+}
+
+export function tagComponentToBlock(node) {
+  const componentName = normalizeAngleTagName(node.tag);
+  return {
+    type: 'BlockStatement',
+    isComponent: true,
+    path: {
+      type: 'PathExpression',
+      original: componentName,
+      this: false,
+      data: false,
+      parts: [componentName],
+      loc: node.loc
+    },
+    params: [],
+    inverse: null,
+    hash: {
+      type: 'Hash',
+      pairs: node.attributes.filter((attr)=>attr.name.startsWith('@')).map((attr)=>{
+        let value = attr.value;
+        if (value.type === 'MustacheStatement') {
+          //@ts-ignore
+          value.type = 'SubExpression';
+          //@ts-ignore
+          value.isIgnored = true;
+        }
+        return {
+          type: 'HashPair',
+          key: attr.name.replace('@', ''),
+          value: value,
+          loc: attr.loc
+        }
+      })
+    },
+    program: {
+      type: "Block",
+      body: node.children,
+      blockParams: node.blockParams,
+      chained: false,
+      loc: node.loc
+    },
+    loc: node.loc
+  };
 }

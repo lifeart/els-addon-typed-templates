@@ -4,6 +4,7 @@ const utils_1 = require("./utils");
 // import * as fs from "fs";
 const resolvers_1 = require("./resolvers");
 const hbs_converter_1 = require("./hbs-converter");
+const ast_parser_1 = require("./ast-parser");
 // function yieldedContext() {
 //   return `
 //   _template_BlockStatement_Each_FirstBlock() {
@@ -55,7 +56,7 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
     const document = server.documents.get(uri);
     const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
     content = content ? content : document.getText();
-    const templateTokens = hbs_converter_1.getClassMeta(content);
+    const templateTokens = ast_parser_1.getClassMeta(content);
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
     let relComponentImport = null;
     if (scriptForComponent) {

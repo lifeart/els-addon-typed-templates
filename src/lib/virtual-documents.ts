@@ -5,8 +5,8 @@ import {
   relativeComponentImport,
   ralativeAddonImport
 } from "./resolvers";
-import { getClass, getClassMeta } from "./hbs-converter";
-
+import { getClass } from "./hbs-converter";
+import { getClassMeta} from './ast-parser';
 // function yieldedContext() {
 //   return `
 //   _template_BlockStatement_Each_FirstBlock() {

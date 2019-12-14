@@ -3,6 +3,7 @@ import * as walkSync from "walk-sync";
 import {
     CompletionItemKind
   } from "vscode-languageserver";
+  import { kebabCase } from 'lodash';
 
 export function safeWalkSync(filePath, opts) {
     if (!filePath) {
@@ -12,6 +13,14 @@ export function safeWalkSync(filePath, opts) {
       return [];
     }
     return walkSync(filePath, opts);
+}
+
+
+export function normalizeAngleTagName(tagName: string) {
+  return tagName
+    .split('::')
+    .map((item: string) => kebabCase(item))
+    .join('/');
 }
 
 export const PLACEHOLDER = "ELSCompletionDummy";

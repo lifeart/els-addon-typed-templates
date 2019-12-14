@@ -61,4 +61,61 @@ function isEachArgument(focusPath) {
     }
 }
 exports.isEachArgument = isEachArgument;
+function isSimpleBlockComponentElement(node) {
+    return node.blockParams.length && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
+}
+exports.isSimpleBlockComponentElement = isSimpleBlockComponentElement;
+function positionForItem(item) {
+    const { start, end } = item.loc;
+    return `${start.line},${start.column}:${end.line},${end.column}`;
+}
+exports.positionForItem = positionForItem;
+function keyForItem(item) {
+    return `${positionForItem(item)} - ${item.type}`;
+}
+exports.keyForItem = keyForItem;
+function tagComponentToBlock(node) {
+    const componentName = utils_1.normalizeAngleTagName(node.tag);
+    return {
+        type: 'BlockStatement',
+        isComponent: true,
+        path: {
+            type: 'PathExpression',
+            original: componentName,
+            this: false,
+            data: false,
+            parts: [componentName],
+            loc: node.loc
+        },
+        params: [],
+        inverse: null,
+        hash: {
+            type: 'Hash',
+            pairs: node.attributes.filter((attr) => attr.name.startsWith('@')).map((attr) => {
+                let value = attr.value;
+                if (value.type === 'MustacheStatement') {
+                    //@ts-ignore
+                    value.type = 'SubExpression';
+                    //@ts-ignore
+                    value.isIgnored = true;
+                }
+                return {
+                    type: 'HashPair',
+                    key: attr.name.replace('@', ''),
+                    value: value,
+                    loc: attr.loc
+                };
+            })
+        },
+        program: {
+            type: "Block",
+            body: node.children,
+            blockParams: node.blockParams,
+            chained: false,
+            loc: node.loc
+        },
+        loc: node.loc
+    };
+}
+exports.tagComponentToBlock = tagComponentToBlock;
 //# sourceMappingURL=ast-helpers.js.map

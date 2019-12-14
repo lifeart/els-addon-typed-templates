@@ -1,93 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const syntax_1 = require("@glimmer/syntax");
 const utils_1 = require("./utils");
 const camelcase = require("camelcase");
 const fs = require("fs");
-const lodash_1 = require("lodash");
 const resolvers_1 = require("./resolvers");
-function normalizeAngleTagName(tagName) {
-    return tagName
-        .split('::')
-        .map((item) => lodash_1.kebabCase(item))
-        .join('/');
-}
-function isSimpleComponentElement(node) {
-    return node.blockParams.length && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
-}
-function getClassMeta(source) {
-    const node = syntax_1.preprocess(source);
-    const nodes = [];
-    syntax_1.traverse(node, {
-        MustacheStatement(node) {
-            //@ts-ignore
-            if (!node.isIgnored) {
-                nodes.push([node]);
-            }
-        },
-        BlockStatement(node) {
-            nodes.push([node]);
-        },
-        ElementModifierStatement(node) {
-            nodes.push([node]);
-        },
-        ElementNode(node) {
-            if (isSimpleComponentElement(node)) {
-                const componentName = normalizeAngleTagName(node.tag);
-                nodes.push([{
-                        type: 'BlockStatement',
-                        isComponent: true,
-                        path: {
-                            type: 'PathExpression',
-                            original: componentName,
-                            this: false,
-                            data: false,
-                            parts: [componentName],
-                            loc: node.loc
-                        },
-                        params: [],
-                        inverse: null,
-                        hash: {
-                            type: 'Hash',
-                            pairs: node.attributes.filter((attr) => attr.name.startsWith('@')).map((attr) => {
-                                let value = attr.value;
-                                if (value.type === 'MustacheStatement') {
-                                    //@ts-ignore
-                                    value.type = 'SubExpression';
-                                    //@ts-ignore
-                                    value.isIgnored = true;
-                                }
-                                return {
-                                    type: 'HashPair',
-                                    key: attr.name.replace('@', ''),
-                                    value: value,
-                                    loc: attr.loc
-                                };
-                            })
-                        },
-                        program: {
-                            type: "Block",
-                            body: node.children,
-                            blockParams: node.blockParams,
-                            chained: false,
-                            loc: node.loc
-                        },
-                        loc: node.loc
-                    }]);
-            }
-        },
-        SubExpression(node) {
-            if (nodes[nodes.length - 1]) {
-                nodes[nodes.length - 1].push(node);
-            }
-            else {
-                console.log('unexpectedSubexpression', node);
-            }
-        }
-    });
-    return nodes;
-}
-exports.getClassMeta = getClassMeta;
+const ast_parser_1 = require("./ast-parser");
 function positionForItem(item) {
     const { start, end } = item.loc;
     return `${start.line},${start.column}:${end.line},${end.column}`;
@@ -109,7 +26,7 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
   `;
     try {
         let source = fs.readFileSync(templateFileName, 'utf8');
-        let items = getClassMeta(source);
+        let items = ast_parser_1.getClassMeta(source);
         klass = getClass(componentsMap, virtualFileName, items, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry, depth);
     }
     catch (e) {
@@ -239,7 +156,9 @@ function getClass(componentsMap, fileName, items, componentImport, globalRegistr
         ["if"]: "typeof TIfHeper",
         ["on"]: "OnModifer",
         ["fn"]: "FnHelper",
-        ["yield"]: "YieldHelper"
+        ["yield"]: "YieldHelper",
+        ["concat"]: "ConcatHelper",
+        ["and"]: "AndHelper"
     };
     let typeDeclarations = `
 
@@ -251,8 +170,10 @@ function getClass(componentsMap, fileName, items, componentImport, globalRegistr
   type HashHelper = <T>(items: any[], hash: T) => T;
   type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
   type OnModifer = ([event, handler]: [string, Function], hash?) => void;
-  type FnHelper = <T extends (...args: any) => any>(func: T, params: Parameters<T>) => Function;
-
+  type FnHelper = <T extends AnyFn>([func, ...params]:[T,Parameters<T>]) => T;
+  type ConcatHelper = (...args: (number|string)[]) => string;
+  type AndHelper = <T,U>([a,b]:[T,U])=> boolean;
+  
 
   function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
     return !!a ? b : c;
@@ -266,7 +187,7 @@ function getClass(componentsMap, fileName, items, componentImport, globalRegistr
         'array': "<T>(params: ArrayLike<T>, hash?)",
         'hash': "<T>(params = [], hash: T)",
         'if': "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)",
-        'fn': "([fn, ...args]: [Function, Parameters<(...args: any) => any>], hash?)",
+        'fn': "([fn, ...args]: [AnyFn, ...Parameters<AnyFn>], hash?)",
         'on': "([eventName, handler]: [string, Function], hash?)",
         'yield': "<A,B,C,D,E>(params?: [A?,B?,C?,D?,E?], hash?)"
     };
@@ -274,7 +195,7 @@ function getClass(componentsMap, fileName, items, componentImport, globalRegistr
         "if": "([a as T,b as U,c as Y], hash)",
         "let": "(params as [A,B,C,D,E], hash)",
         "yield": "(params as [A,B,C,D,E], hash)",
-        "fn": "([fn, ...args], hash)",
+        "fn": "[fn, args as Parameters<AnyFn>[]]",
         "on": "([eventName, handler], hash)"
     };
     function getItemScopes(key, itemScopes = []) {
