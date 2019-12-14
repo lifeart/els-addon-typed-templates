@@ -22,6 +22,9 @@ function normalizePathOriginal(node) {
     else if (node.this === true) {
         return `${node.original.replace(utils_1.PLACEHOLDER, "")}`;
     }
+    else {
+        return node.original;
+    }
 }
 function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }) {
     let result = "";
@@ -110,7 +113,7 @@ exports.transform = {
     },
     _makeFn(rawArgs, rawBody, key) {
         let body = `return ${rawBody}`;
-        if (rawBody.indcludes("return ")) {
+        if (rawBody.includes("return ")) {
             body = rawBody;
         }
         let args = `(${rawArgs})`;

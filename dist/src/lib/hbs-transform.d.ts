@@ -17,12 +17,12 @@ export declare function transformPathExpression(node: any, key: any, { getItemSc
 }): string;
 export declare const transform: {
     support(node: any): boolean;
-    transform(node: any, key: any): string;
-    wrapToFunction(str: any, key: any): string;
-    addMark(key: any): string;
-    _wrap(str: any, key: any): string;
-    fn(args: any, body: any, key: any): string;
-    _makeFn(rawArgs: any, rawBody: any, key: any): string;
+    transform(node: any, key: string): string;
+    wrapToFunction(str: string, key: string): string;
+    addMark(key: string): string;
+    _wrap(str: string, key: string): string;
+    fn(args: string, body: string, key: string): string;
+    _makeFn(rawArgs: string, rawBody: string, key: string): string;
     TextNode(node: any): string;
     hashedExp(node: any): string;
     SubExpression(node: any): string;

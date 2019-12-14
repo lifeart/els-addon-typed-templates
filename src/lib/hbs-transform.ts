@@ -19,6 +19,8 @@ function normalizePathOriginal(node) {
       .replace("@", "")}`;
   } else if (node.this === true) {
     return `${node.original.replace(PLACEHOLDER, "")}`;
+  } else {
+    return node.original;
   }
 }
 
@@ -133,24 +135,24 @@ export const transform = {
   support(node) {
     return node.type in this;
   },
-  transform(node, key) {
+  transform(node: any, key: string) {
     return this._wrap(this[node.type](node), key);
   },
-  wrapToFunction(str, key) {
+  wrapToFunction(str: string, key: string) {
     return this._wrap(str, key);
   },
-  addMark(key) {
+  addMark(key: string) {
     return `/*@path-mark ${serializeKey(key)}*/`;
   },
-  _wrap(str, key) {
+  _wrap(str: string, key: string) {
     return `() { return ${str}; ${this.addMark(key)}}`;
   },
-  fn(args, body, key) {
+  fn(args: string, body: string, key: string) {
     return this._makeFn(args, body, key);
   },
-  _makeFn(rawArgs, rawBody, key) {
+  _makeFn(rawArgs: string, rawBody: string, key: string) {
     let body = `return ${rawBody}`;
-    if (rawBody.indcludes("return ")) {
+    if (rawBody.includes("return ")) {
       body = rawBody;
     }
     let args = `(${rawArgs})`;
