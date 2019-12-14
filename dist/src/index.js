@@ -15,7 +15,7 @@ const ast_helpers_1 = require("./lib/ast-helpers");
 const resolvers_1 = require("./lib/resolvers");
 const ts_service_1 = require("./lib/ts-service");
 const virtual_documents_1 = require("./lib/virtual-documents");
-const hbs_converter_1 = require("./lib/hbs-converter");
+const hbs_transform_1 = require("./lib/hbs-transform");
 const ls_utils_1 = require("./lib/ls-utils");
 let hasLinter = false;
 let knownFiles = new Set();
@@ -136,7 +136,7 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
             });
             let tsResults = null;
             try {
-                let markId = `; /*@path-mark ${hbs_converter_1.positionForItem(focusPath.node)}*/`;
+                let markId = `; /*@path-mark ${hbs_transform_1.positionForItem(focusPath.node)}*/`;
                 // console.log('markId', markId);
                 let tpl = virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, focusPath.content);
                 // console.log('tpl', tpl);

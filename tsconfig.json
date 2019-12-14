@@ -25,7 +25,7 @@
         "preserveConstEnums": true,
         "newLine": "crlf",
 
-        "types": []
+        "types": ["jest"]
     },
     "exclude": ["node_modules", "app", "dist"],
     "include": ["./src/**/*"],

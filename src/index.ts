@@ -11,7 +11,7 @@ import {
 import { virtualTemplateFileName, virtualComponentTemplateFileName } from "./lib/resolvers";
 import { serviceForRoot, componentsForService } from "./lib/ts-service";
 import { createVirtualTemplate, createFullVirtualTemplate } from "./lib/virtual-documents";
-import { positionForItem } from './lib/hbs-converter';
+import { positionForItem } from './lib/hbs-transform';
 import {
   normalizeDefinitions,
   getFullSemanticDiagnostics,
