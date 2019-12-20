@@ -126,8 +126,9 @@ export function getClass(
   type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
   type HashHelper = <T>(items: any[], hash: T) => T;
   type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
+  type AnyFn = (...args) => any;
   type OnModifer = ([event, handler]: [string, Function], hash?) => void;
-  type FnHelper = <T extends AnyFn>([func, ...params]:[T,Parameters<T>]) => T;
+  type FnHelper =  AnyFn;
   type ConcatHelper = (...args: (number|string)[]) => string;
   type AndHelper = <T,U>([a,b]:[T,U])=> boolean;
   
@@ -145,7 +146,7 @@ export function getClass(
     array: "<T>(params: ArrayLike<T>, hash?)",
     hash: "<T>(params = [], hash: T)",
     if: "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)",
-    fn: "([fn, ...args]: [AnyFn, ...Parameters<AnyFn>], hash?)",
+    fn: "(params: any[], hash?)",
     on: "([eventName, handler]: [string, Function], hash?)",
     yield: "<A,B,C,D,E>(params?: [A?,B?,C?,D?,E?], hash?)"
   };
@@ -154,7 +155,7 @@ export function getClass(
     if: "([a as T,b as U,c as Y], hash)",
     let: "(params as [A,B,C,D,E], hash)",
     yield: "(params as [A,B,C,D,E], hash)",
-    fn: "[fn, args as Parameters<AnyFn>[]]",
+    fn: "(params)",
     on: "([eventName, handler], hash)"
   };
 

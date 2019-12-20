@@ -1166,7 +1166,7 @@
         "signature": "db36ccb2d12b9c09fb402b2e2479971dfb6529662f5a3e06cd13386dffe0a742"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "e90eadb2fb4b7fbb4ae9454245b87a62359f6ad6440c7b3bbca9c678e51e4e23",
+        "version": "351319a6d1ee0b58570f371c3a56502af1b891b44f2a4fd761b103db13372f66",
         "signature": "b15b9d58f89857aefe6c132e04ce7db5c5541ccafa823f3b9255e2cc00d866c6"
       },
       "../src/lib/virtual-documents.ts": {
@@ -1188,6 +1188,14 @@
       "../src/lib/common-types.d.ts": {
         "version": "9b3d51341a105aa53aa06255e44a7dba0f6fee1b93c1f9e6d15c178d22ef4aaf",
         "signature": "9b3d51341a105aa53aa06255e44a7dba0f6fee1b93c1f9e6d15c178d22ef4aaf"
+      },
+      "../src/lib/hbs-converter.test.ts": {
+        "version": "5914c543583f8bd15a062bd4791c8ad7dc57bcda5aec6691f29aa69296e34f5e",
+        "signature": "c49b11861ba3b7f421f702f103b13267d64d566ff6a7b2353d66377b6fa56e06"
+      },
+      "../src/lib/hbs-extractor.test.ts": {
+        "version": "2d5e2c0a8bfc7f2092c2cc23ea00a37147557fa31f897c82d2a7b318a89bdd4b",
+        "signature": "5af2a93a31e2ff9f94348f3cf0c3ecdaded3b4dc809bd441262e1eafa5be1d34"
       },
       "../node_modules/jest-diff/build/types.d.ts": {
         "version": "71ba0678a3c647f5c0706ae975c031ace0d464e60f9ce56eaa7f1678d065aab7",
@@ -3727,6 +3735,20 @@
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../src/lib/common-types.d.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../src/lib/hbs-converter.test.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../src/lib/hbs-extractor.test.ts": [
+        "../src/lib/ast-parser.ts",
+        "../src/lib/hbs-extractor.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -6464,15 +6486,17 @@
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
+      "../src/lib/hbs-extractor.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
       "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
+      "../src/lib/hbs-converter.test.ts",
+      "../src/lib/hbs-extractor.test.ts",
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/hbs-extractor.ts",
       "../src/lib/hbs-converter.ts"
     ]
   },
