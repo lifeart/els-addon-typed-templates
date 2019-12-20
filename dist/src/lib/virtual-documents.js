@@ -54,6 +54,9 @@ function getValidRegistryItems(registry, templateFile) {
 }
 function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fileName, server, uri, content = false) {
     const document = server.documents.get(uri);
+    if (!document && !content) {
+        return `export default class Template {};`;
+    }
     const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
     content = content ? content : document.getText();
     const { nodes, comments } = ast_parser_1.getClassMeta(content);

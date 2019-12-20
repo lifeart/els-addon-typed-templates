@@ -114,6 +114,10 @@ export function getClass(
     ["fn"]: "FnHelper",
     ["yield"]: "YieldHelper",
     ["concat"]: "ConcatHelper",
+    ["prevent-default"]: "EventCatcherHelper",
+    ["stop-propagation"]: "EventCatcherHelper",
+    ["lazy-mount"]: "(params?, hash?)=>[{isLoading: boolean, error: any}]",
+    ["v-get"]: "([ctx, prop]: [Object, string], hash?) => any",
     ["and"]: "AndHelper"
   };
 
@@ -130,8 +134,8 @@ export function getClass(
   type OnModifer = ([event, handler]: [string, Function], hash?) => void;
   type FnHelper =  AnyFn;
   type ConcatHelper = (...args: (number|string)[]) => string;
-  type AndHelper = <T,U>([a,b]:[T,U])=> boolean;
-  
+  type AndHelper = <A,B,C,D,E>(items: [A,B,C?,D?,E?]) => boolean;
+  type EventCatcherHelper = <A,B,C,D,E>(items?:[A?,B?,C?,D?,E?]) => AnyFn;
 
   function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
     return !!a ? b : c;
@@ -143,10 +147,13 @@ export function getClass(
   const pathsForGlobalScope = {
     each: "<T>(params: ArrayLike<T>[], hash?)",
     let: "<A,B,C,D,E>(params: [A,B?,C?,D?,E?], hash?)",
+    and: "<A,B,C,D,E>(params: [A,B,C?,D?,E?])",
+    'stop-propagation': "<A,B,C,D,E>(params?: [A?,B?,C?,D?,E?])",
+    'prevent-default': "<A,B,C,D,E>(params?: [A?,B?,C?,D?,E?])",
     array: "<T>(params: ArrayLike<T>, hash?)",
     hash: "<T>(params = [], hash: T)",
     if: "<T,U,Y>([a,b,c]:[T?,U?,Y?], hash?)",
-    fn: "(params: any[], hash?)",
+    fn: "(params: any[])",
     on: "([eventName, handler]: [string, Function], hash?)",
     yield: "<A,B,C,D,E>(params?: [A?,B?,C?,D?,E?], hash?)"
   };
@@ -154,6 +161,9 @@ export function getClass(
   const tailForGlobalScope = {
     if: "([a as T,b as U,c as Y], hash)",
     let: "(params as [A,B,C,D,E], hash)",
+    and: "(params as [A,B,C,D,E])",
+    'prevent-default': "(params as [A,B,C,D,E])",
+    'stop-propagation': "(params as [A,B,C,D,E])",
     yield: "(params as [A,B,C,D,E], hash)",
     fn: "(params)",
     on: "([eventName, handler], hash)"

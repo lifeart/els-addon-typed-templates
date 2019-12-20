@@ -1166,11 +1166,11 @@
         "signature": "db36ccb2d12b9c09fb402b2e2479971dfb6529662f5a3e06cd13386dffe0a742"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "351319a6d1ee0b58570f371c3a56502af1b891b44f2a4fd761b103db13372f66",
+        "version": "49ee4279c52fa8eb995fb0f6b0e882845241809c9457e7dd1118b442f2645737",
         "signature": "b15b9d58f89857aefe6c132e04ce7db5c5541ccafa823f3b9255e2cc00d866c6"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "2502b262d125412a65551aa2695c957a31260a2d04af3184547eae3d860f9ff0",
+        "version": "6d6b883ae97641ee3e1b884810627ebec9cc4c51a5194eb0c702a5efda5b83d3",
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
@@ -6306,7 +6306,6 @@
       "../src/lib/ast-helpers.ts",
       "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
-      "../src/lib/ts-service.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -6487,9 +6486,9 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
+      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
-      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -6497,7 +6496,8 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/hbs-converter.ts"
+      "../src/lib/ts-service.ts",
+      "../src/index.ts"
     ]
   },
   "version": "3.7.3"

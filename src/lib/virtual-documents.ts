@@ -71,6 +71,9 @@ export function createFullVirtualTemplate(
   content: string | boolean = false
 ) {
   const document = server.documents.get(uri);
+  if (!document && !content) {
+    return `export default class Template {};`;
+  }
   const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
   content = content ? content : document.getText();
   const { nodes, comments } = getClassMeta(content);
