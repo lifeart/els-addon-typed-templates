@@ -4,6 +4,7 @@ const syntax_1 = require("@glimmer/syntax");
 const ast_helpers_1 = require("./ast-helpers");
 function getClassMeta(source) {
     const nodes = [];
+    const comments = [];
     try {
         const node = syntax_1.preprocess(source);
         syntax_1.traverse(node, {
@@ -11,6 +12,11 @@ function getClassMeta(source) {
                 //@ts-ignore
                 if (!node.isIgnored) {
                     nodes.push([node]);
+                }
+            },
+            MustacheCommentStatement(node) {
+                if (node.loc) {
+                    comments.push([node.loc.end.line + 1, node.value]);
                 }
             },
             BlockStatement(node) {
@@ -37,7 +43,9 @@ function getClassMeta(source) {
     catch (e) {
         // 
     }
-    return nodes;
+    return {
+        nodes, comments
+    };
 }
 exports.getClassMeta = getClassMeta;
 //# sourceMappingURL=ast-parser.js.map

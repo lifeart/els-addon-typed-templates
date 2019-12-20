@@ -38,6 +38,7 @@ export function serviceForRoot(uri): ts.LanguageService {
           allowJs: true,
           allowSyntheticDefaultImports: true,
           skipLibCheck: true,
+          experimentalDecorators: true,
           noImplicitAny: false,
           moduleResolution: ts.ModuleResolutionKind.NodeJs,
           strictPropertyInitialization: false,

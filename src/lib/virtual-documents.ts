@@ -73,7 +73,7 @@ export function createFullVirtualTemplate(
   const document = server.documents.get(uri);
   const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
   content = content ? content : document.getText();
-  const templateTokens = getClassMeta(content);
+  const { nodes, comments } = getClassMeta(content);
   const scriptForComponent = findComponentForTemplate(
     templatePath,
     projectRoot
@@ -87,7 +87,7 @@ export function createFullVirtualTemplate(
   // console.log('scriptForComponent', scriptForComponent);
   componentsMap[fileName] = getClass(componentsMap,
     fileName,
-    templateTokens,
+    {nodes, comments},
     relComponentImport,
     getValidRegistryItems(registry, fileName)
   );

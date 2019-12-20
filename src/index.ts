@@ -19,12 +19,15 @@ import {
 } from "./lib/ls-utils";
 
 let hasLinter: any = false;
-let knownFiles: any = new Set();
-
+// let knownFiles: any = new Set();
+/* */
 function lintFile(root, textDocument, server) {
-  if (!knownFiles.has(textDocument.uri)) {
+  if (!textDocument.uri.endsWith('.hbs')) {
     return;
   }
+  // if (!knownFiles.has(textDocument.uri)) {
+  //   return;
+  // }
   const projectRoot = URI.parse(root).fsPath;
   const service = serviceForRoot(projectRoot);
   const componentsMap = componentsForService(service, true);
@@ -80,7 +83,7 @@ export async function onDefinition(
   if (!canHandle(type, focusPath)) {
     return results;
   }
-  knownFiles.add(textDocument.uri);
+  // knownFiles.add(textDocument.uri);
 
 
   try {
@@ -118,6 +121,10 @@ export async function onDefinition(
   return results;
 }
 
+export function onInit(server, item) {
+  setupLinter(item.root, 'template', server, '');
+}
+
 export async function onComplete(
   root,
   { results, focusPath, server, type, textDocument }
@@ -127,7 +134,7 @@ export async function onComplete(
   if (!canHandle(type, focusPath)) {
     return results;
   }
-  knownFiles.add(textDocument.uri);
+  // knownFiles.add(textDocument.uri);
 
   try {
     const isParam = isParamPath(focusPath);

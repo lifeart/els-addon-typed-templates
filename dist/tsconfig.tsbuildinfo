@@ -442,7 +442,7 @@
         "signature": "a999e6b184852e7b868234aca57e9eef8faed858f483166aebb6763d8f04abf5"
       },
       "../src/lib/ts-service.ts": {
-        "version": "e3b21785e905f3afc8829746d8ab9f8b5cf93640e3e7ece4c00ec376c12e887f",
+        "version": "63ba31b87fac4dfe4fd6d167b5e5dfd987074bfa738a2250f24d7bdcc62db5da",
         "signature": "93edd9df0b3c01a45fbd73ac6ae24c48ca451f565670b864a6e9ae119faa4189"
       },
       "../node_modules/camelcase/index.d.ts": {
@@ -1154,23 +1154,23 @@
         "signature": "e8766e0cc8191e06789e4fa67b02f2472dbf491a1f8bd09210fb0d5b2c759428"
       },
       "../src/lib/ast-parser.ts": {
-        "version": "c07fa6c3d03b531c96281a5ef8cf9d9f09c2465d9aa02515a405cddd87353009",
-        "signature": "deeba18a09f3b90d449c2523bdced5718ae869123f3cbb70d61aa746e4ea2d2f"
+        "version": "4d1deff9ad4cce9a08f36037c3c9bf4e2f36c913f53faa44a008ec560914a767",
+        "signature": "6832c824d2c9108d9070798657e3901a7a2645b758ddd8d78123e8d8a4a4ac2b"
       },
       "../src/lib/hbs-transform.ts": {
         "version": "35e10686ef3a244f95b8ad78f34fd3fe262404755f3a63ffe2774e84e68b8d51",
         "signature": "bd5b5a2ec46344c80468efe4dd4f8dad4f651de1df9331ce71b2b4eb10b4d489"
       },
       "../src/lib/hbs-extractor.ts": {
-        "version": "1bb45e11e4bcca3fc20ca54fc2ca3c808d033a00e013a8ed0da8b14f69cf7bee",
-        "signature": "f08c01f758a5d71db51309e60c6ddd0777c0d52f313117164da8904ac9ee62a0"
+        "version": "753bdf38a0b2d0b2c3534cc428659a422efce26189da83375a39a75d2ff70a89",
+        "signature": "db36ccb2d12b9c09fb402b2e2479971dfb6529662f5a3e06cd13386dffe0a742"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "19a36e2b5fc90a56246fa4e80d472df8e95acd94780e7ae6bba1a3ab3959dc8b",
-        "signature": "914ab2ce77a65efcf434f0859cb189421f90e486884e52c5570a95b40568b653"
+        "version": "e90eadb2fb4b7fbb4ae9454245b87a62359f6ad6440c7b3bbca9c678e51e4e23",
+        "signature": "b15b9d58f89857aefe6c132e04ce7db5c5541ccafa823f3b9255e2cc00d866c6"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "9e8f1a0918647388f79f409bdd22f8c859bd38c274b1e904a08075bef85d2679",
+        "version": "2502b262d125412a65551aa2695c957a31260a2d04af3184547eae3d860f9ff0",
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
@@ -1178,11 +1178,11 @@
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
-        "version": "1de5eaf569fd84d4d5d2121cf70465de8fc030f488cfbeb74f660203767532f8",
-        "signature": "4b6abf33a86c7d341ed53751aa526a2632cc493a20d6510366cc771ec0de760b"
+        "version": "b067d6a79b100f7831359e944228079f9916d8ab88caf8529a5cb9d31e60bd1b",
+        "signature": "9467d5a37817c694024a00dc279c3ba6347ac2477631be24bf65aef5e082929a"
       },
       "../src/lib/ast-parser.test.ts": {
-        "version": "c6ba7662bef5e2efd39f48433865e9fc026edb05b8fed1d58ca47d4ae3997931",
+        "version": "afa5a6b2fadc0bd2fca54a70f8299b4a82e365dcfa3d9eb41eebdbadb8fbe524",
         "signature": "a833bb98cf5ebff4e4581d468f9dcdefb29da4c37e6e95973e8bedf0570ba0b5"
       },
       "../src/lib/common-types.d.ts": {
@@ -6463,17 +6463,17 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
       "../src/lib/ast-parser.ts",
+      "../src/lib/hbs-transform.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
+      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/hbs-transform.ts",
-      "../src/index.ts",
-      "../src/lib/hbs-converter.ts",
-      "../src/lib/hbs-extractor.ts"
+      "../src/lib/hbs-extractor.ts",
+      "../src/lib/hbs-converter.ts"
     ]
   },
   "version": "3.7.3"

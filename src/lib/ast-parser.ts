@@ -7,7 +7,7 @@ import {
 
 export function getClassMeta(source) {
   const nodes: any = [];
-
+  const comments: any = [];
   try {
     const node = parse(source);
 
@@ -16,6 +16,11 @@ export function getClassMeta(source) {
         //@ts-ignore
         if (!node.isIgnored) {
           nodes.push([node]);
+        }
+      },
+      MustacheCommentStatement(node) {
+        if (node.loc) {
+          comments.push([node.loc.end.line + 1, node.value]);
         }
       },
       BlockStatement(node) {
@@ -41,5 +46,7 @@ export function getClassMeta(source) {
       // 
   }
 
-  return nodes;
+  return {
+    nodes, comments
+  };
 }

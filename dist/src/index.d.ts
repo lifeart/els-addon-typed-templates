@@ -5,6 +5,7 @@ export declare function onDefinition(root: any, { results, focusPath, server, ty
     type: any;
     textDocument: any;
 }): Promise<any>;
+export declare function onInit(server: any, item: any): void;
 export declare function onComplete(root: any, { results, focusPath, server, type, textDocument }: {
     results: any;
     focusPath: any;

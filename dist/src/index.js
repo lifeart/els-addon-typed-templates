@@ -18,11 +18,15 @@ const virtual_documents_1 = require("./lib/virtual-documents");
 const hbs_transform_1 = require("./lib/hbs-transform");
 const ls_utils_1 = require("./lib/ls-utils");
 let hasLinter = false;
-let knownFiles = new Set();
+// let knownFiles: any = new Set();
+/* */
 function lintFile(root, textDocument, server) {
-    if (!knownFiles.has(textDocument.uri)) {
+    if (!textDocument.uri.endsWith('.hbs')) {
         return;
     }
+    // if (!knownFiles.has(textDocument.uri)) {
+    //   return;
+    // }
     const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
     const service = ts_service_1.serviceForRoot(projectRoot);
     const componentsMap = ts_service_1.componentsForService(service, true);
@@ -73,7 +77,7 @@ function onDefinition(root, { results, focusPath, server, type, textDocument }) 
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
-        knownFiles.add(textDocument.uri);
+        // knownFiles.add(textDocument.uri);
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);
             const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
@@ -105,13 +109,17 @@ function onDefinition(root, { results, focusPath, server, type, textDocument }) 
     });
 }
 exports.onDefinition = onDefinition;
+function onInit(server, item) {
+    setupLinter(item.root, 'template', server, '');
+}
+exports.onInit = onInit;
 function onComplete(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
         setupLinter(root, type, server, textDocument.uri);
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
-        knownFiles.add(textDocument.uri);
+        // knownFiles.add(textDocument.uri);
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);
             const projectRoot = vscode_uri_1.URI.parse(root).fsPath;

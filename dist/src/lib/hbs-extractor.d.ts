@@ -3,7 +3,6 @@ export declare function extractRelationships(items: any): {
     parents: {};
     scopes: {};
     klass: {};
-    methods: {};
     blockPaths: any;
 };
 //# sourceMappingURL=hbs-extractor.d.ts.map

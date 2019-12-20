@@ -5,7 +5,6 @@ export function extractRelationships(items) {
   const parents = {};
   const scopes = {};
   const klass = {};
-  const methods = {};
   const blockPaths: any = [];
   function addChilds(items, key) {
     items.forEach(item => {
@@ -39,18 +38,6 @@ export function extractRelationships(items) {
       }
 
       klass[key] = exp;
-
-      let struct: any = {
-        path: {
-          key: keyForItem(exp.path),
-          item: exp.path
-        },
-        item: exp,
-        methods: [],
-        hash: {},
-        key: key
-      };
-
       klass[keyForItem(exp.path)] = exp.path;
       if (exp.type === "BlockStatement") {
         blockPaths.push(keyForItem(exp.path));
@@ -59,35 +46,14 @@ export function extractRelationships(items) {
         }
       }
       parents[pointer].push(keyForItem(exp.path));
-
       exp.params.forEach(p => {
         klass[keyForItem(p)] = p;
         parents[pointer].push(keyForItem(p));
-        struct.methods.push([keyForItem(p), p]);
       });
       exp.hash.pairs.forEach(p => {
         klass[keyForItem(p.value)] = p.value;
         parents[pointer].push(keyForItem(p.value));
-        struct.hash[p.key] = {
-          item: p.value,
-          key: keyForItem(p.value)
-        };
       });
-
-      if (exp.type !== "SubExpression") {
-        methods[key] = struct;
-      } else {
-        methods[pointer].item.params.forEach(el => {
-          if (el === struct.item) {
-            methods[pointer].methods.push(struct);
-          }
-        });
-        methods[pointer].item.hash.pairs.forEach(el => {
-          if (el.value === struct.item) {
-            methods[pointer].hash[el.key] = struct;
-          }
-        });
-      }
     }
   });
 
@@ -96,7 +62,6 @@ export function extractRelationships(items) {
     parents,
     scopes,
     klass,
-    methods,
     blockPaths
-  }
+  };
 }

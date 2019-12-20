@@ -34,11 +34,11 @@ function registerTemplateKlassForFile(
   `;
   try {
     let source = fs.readFileSync(templateFileName, "utf8");
-    let items = getClassMeta(source);
+    const { nodes, comments } = getClassMeta(source);
     klass = getClass(
       componentsMap,
       virtualFileName,
-      items,
+      { nodes, comments },
       scriptFileName ? relativeImport(templateFileName, scriptFileName) : null,
       registry,
       depth
@@ -58,14 +58,14 @@ function registerTemplateKlassForFile(
 export function getClass(
   componentsMap,
   fileName,
-  items,
+  { nodes, comments },
   componentImport: string | null,
   globalRegistry: any,
   depth: number = 1
 ) {
   const yields: string[] = [];
   const imports: string[] = [];
- 
+  const items = nodes;
 
   if (depth < 0) {
     return `export default class UnreachedComponent { args: any; defaultYield() { return []; } };`;
@@ -116,6 +116,28 @@ export function getClass(
     ["concat"]: "ConcatHelper",
     ["and"]: "AndHelper"
   };
+
+  let typeDeclarations = `
+
+  type YieldHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
+  type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
+  type LetHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
+  type AbstractHelper = <T>([items]:T[], hash?) => T;
+  type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
+  type HashHelper = <T>(items: any[], hash: T) => T;
+  type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
+  type OnModifer = ([event, handler]: [string, Function], hash?) => void;
+  type FnHelper = <T extends AnyFn>([func, ...params]:[T,Parameters<T>]) => T;
+  type ConcatHelper = (...args: (number|string)[]) => string;
+  type AndHelper = <T,U>([a,b]:[T,U])=> boolean;
+  
+
+  function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
+    return !!a ? b : c;
+  }
+  
+  
+  `;
 
   const pathsForGlobalScope = {
     each: "<T>(params: ArrayLike<T>[], hash?)",
@@ -172,7 +194,7 @@ export function getClass(
 
   Object.keys(klass).forEach(key => {
     let node = klass[key];
-    if (transform.support(node.type)) {
+    if (transform.support(node)) {
       klass[key] = transform.transform(node, key);
     } else if (node.type === "PathExpression") {
       klass[key] = transformPathExpression(node, key, {
@@ -193,21 +215,26 @@ export function getClass(
     }
   });
 
-  Object.keys(klass).forEach(key => {
-    let hashLike = ['SubExpression','MustacheStatement','ElementModifierStatement','BlockStatement'];
-    if (hashLike.includes(klass[key].type)) {
-      klass[key] = transform.transform(klass[key], key);
-    }
-  });
-
-  return makeClass({ imports, yields, klass, componentImport, globalScope });
+  return makeClass({ imports, yields, klass, comments, typeDeclarations, componentImport, globalScope });
 }
 
 function serializeKey(key) {
   return key.split(" - ")[0];
 }
 
-function makeClass({ imports, yields, klass, componentImport, globalScope }) {
+function makeClass({ imports, yields, klass, comments, typeDeclarations, componentImport, globalScope }) {
+  const hasNocheck = comments.find(([_, el])=>el.includes('@ts-nocheck'));
+  function commentForNode(rawPos) {
+    let pos = parseInt(rawPos.split(':')[0].split(',')[0], 10);
+    let comment = comments.find(([commentPos])=>commentPos === pos);
+    if (comment) {
+      let value = comment[1].trim();
+      return value.includes('/') ? value : '// ' + value;
+    } else {
+      return '';
+    }
+  }
+
   const componentKlassImport = componentImport
     ? `import Component from "${componentImport}";`
     : "";
@@ -221,29 +248,11 @@ function makeClass({ imports, yields, klass, componentImport, globalScope }) {
     args: any;
   `;
 
-  let typeDeclarations = `
-
-  type YieldHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
-  type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
-  type LetHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
-  type AbstractHelper = <T>([items]:T[], hash?) => T;
-  type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
-  type HashHelper = <T>(items: any[], hash: T) => T;
-  type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
-  type OnModifer = ([event, handler]: [string, Function], hash?) => void;
-  type FnHelper = <T extends AnyFn>([func, ...params]:[T,Parameters<T>]) => T;
-  type ConcatHelper = (...args: (number|string)[]) => string;
-  type AndHelper = <T,U>([a,b]:[T,U])=> boolean;
   
-
-  function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
-    return !!a ? b : c;
-  }
-  
-  
-  `;
 
   let klssTpl = `
+
+  ${hasNocheck ? '// @ts-nocheck': ''}
 
   ${componentKlassImport}
 
@@ -275,7 +284,7 @@ function makeClass({ imports, yields, klass, componentImport, globalScope }) {
       //@mark-meaningful-issues-start
       ${Object.keys(klass)
         .map(key => {
-          return `
+          return `${commentForNode(serializeKey(key))}
           //@mark [${serializeKey(key)}]
           "${key}"${klass[key]};`;
         })

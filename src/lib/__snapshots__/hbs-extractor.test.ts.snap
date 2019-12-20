@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getClassMeta <MyComponent as |ctx|> {{ctx.result}} </MyComponent> 1`] = `
+Object {
+  "blockPaths": Array [
+    "1,0:1,52 - PathExpression",
+  ],
+  "componentsForImport": Array [
+    "my-component",
+  ],
+  "parents": Object {
+    "1,0:1,52 - BlockStatement": Array [
+      "1,23:1,37 - MustacheStatement",
+      "1,0:1,52 - PathExpression",
+    ],
+    "1,23:1,37 - MustacheStatement": Array [
+      "1,25:1,35 - PathExpression",
+    ],
+  },
+  "scopes": Object {
+    "1,0:1,52 - BlockStatement": Array [
+      "ctx",
+    ],
+    "1,23:1,37 - MustacheStatement": Array [],
+  },
+}
+`;
+
+exports[`getClassMeta <MyComponent as |ctx|>{{#let ctx.result as |bar|}}{{bar}}{{/let}}</MyComponent> 1`] = `
+Object {
+  "blockPaths": Array [
+    "1,0:1,79 - PathExpression",
+    "1,25:1,28 - PathExpression",
+  ],
+  "componentsForImport": Array [
+    "my-component",
+  ],
+  "parents": Object {
+    "1,0:1,79 - BlockStatement": Array [
+      "1,22:1,65 - BlockStatement",
+      "1,50:1,57 - MustacheStatement",
+      "1,0:1,79 - PathExpression",
+    ],
+    "1,22:1,65 - BlockStatement": Array [
+      "1,50:1,57 - MustacheStatement",
+      "1,25:1,28 - PathExpression",
+      "1,29:1,39 - PathExpression",
+    ],
+    "1,50:1,57 - MustacheStatement": Array [
+      "1,52:1,55 - PathExpression",
+    ],
+  },
+  "scopes": Object {
+    "1,0:1,79 - BlockStatement": Array [
+      "ctx",
+    ],
+    "1,22:1,65 - BlockStatement": Array [
+      "bar",
+    ],
+    "1,50:1,57 - MustacheStatement": Array [],
+  },
+}
+`;
+
+exports[`getClassMeta <input {{foo-bar this.baz a="1"}}> 1`] = `
+Object {
+  "blockPaths": Array [],
+  "componentsForImport": Array [],
+  "parents": Object {
+    "1,7:1,33 - ElementModifierStatement": Array [
+      "1,9:1,16 - PathExpression",
+      "1,17:1,25 - PathExpression",
+      "1,28:1,31 - StringLiteral",
+    ],
+  },
+  "scopes": Object {
+    "1,7:1,33 - ElementModifierStatement": Array [],
+  },
+}
+`;
+
+exports[`getClassMeta {{"1"}} 1`] = `
+Object {
+  "blockPaths": Array [],
+  "componentsForImport": Array [],
+  "parents": Object {
+    "1,0:1,7 - MustacheStatement": Array [
+      "1,2:1,5 - StringLiteral",
+    ],
+  },
+  "scopes": Object {
+    "1,0:1,7 - MustacheStatement": Array [],
+  },
+}
+`;
+
+exports[`getClassMeta {{#let foo as |bar|}}{{bar}}{{/let}} 1`] = `
+Object {
+  "blockPaths": Array [
+    "1,3:1,6 - PathExpression",
+  ],
+  "componentsForImport": Array [],
+  "parents": Object {
+    "1,0:1,36 - BlockStatement": Array [
+      "1,21:1,28 - MustacheStatement",
+      "1,3:1,6 - PathExpression",
+      "1,7:1,10 - PathExpression",
+    ],
+    "1,21:1,28 - MustacheStatement": Array [
+      "1,23:1,26 - PathExpression",
+    ],
+  },
+  "scopes": Object {
+    "1,0:1,36 - BlockStatement": Array [
+      "bar",
+    ],
+    "1,21:1,28 - MustacheStatement": Array [],
+  },
+}
+`;
+
+exports[`getClassMeta {{1}} 1`] = `
+Object {
+  "blockPaths": Array [],
+  "componentsForImport": Array [],
+  "parents": Object {
+    "1,0:1,5 - MustacheStatement": Array [
+      "1,2:1,3 - NumberLiteral",
+    ],
+  },
+  "scopes": Object {
+    "1,0:1,5 - MustacheStatement": Array [],
+  },
+}
+`;
+
+exports[`getClassMeta {{foo this.bar baz=this.boo}} 1`] = `
+Object {
+  "blockPaths": Array [],
+  "componentsForImport": Array [],
+  "parents": Object {
+    "1,0:1,29 - MustacheStatement": Array [
+      "1,2:1,5 - PathExpression",
+      "1,6:1,14 - PathExpression",
+      "1,19:1,27 - PathExpression",
+    ],
+  },
+  "scopes": Object {
+    "1,0:1,29 - MustacheStatement": Array [],
+  },
+}
+`;
+
+exports[`getClassMeta {{foo}} 1`] = `
+Object {
+  "blockPaths": Array [],
+  "componentsForImport": Array [],
+  "parents": Object {
+    "1,0:1,7 - MustacheStatement": Array [
+      "1,2:1,5 - PathExpression",
+    ],
+  },
+  "scopes": Object {
+    "1,0:1,7 - MustacheStatement": Array [],
+  },
+}
+`;

@@ -56,14 +56,14 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
     const document = server.documents.get(uri);
     const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
     content = content ? content : document.getText();
-    const templateTokens = ast_parser_1.getClassMeta(content);
+    const { nodes, comments } = ast_parser_1.getClassMeta(content);
     const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
     let relComponentImport = null;
     if (scriptForComponent) {
         relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     }
     // console.log('scriptForComponent', scriptForComponent);
-    componentsMap[fileName] = hbs_converter_1.getClass(componentsMap, fileName, templateTokens, relComponentImport, getValidRegistryItems(registry, fileName));
+    componentsMap[fileName] = hbs_converter_1.getClass(componentsMap, fileName, { nodes, comments }, relComponentImport, getValidRegistryItems(registry, fileName));
     console.log("===============");
     console.log(componentsMap[fileName]);
     console.log("===============");

@@ -1,4 +1,8 @@
-import { getClassMeta } from './ast-parser';
+import { getClassMeta as classMeta } from './ast-parser';
+
+function getClassMeta(src) {
+    return classMeta(src).nodes;
+}
 
 describe('getClassMeta', () => {
     it('able to hande wrong hbs', ()=>{

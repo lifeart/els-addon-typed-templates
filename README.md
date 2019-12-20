@@ -1,7 +1,6 @@
 # els-addon-typed-templates
 Ember Language Server Typed Templates Addon
 
-
 How to use?
 
 Install this addon as `dev-dependency` inside your ember project.
@@ -42,11 +41,30 @@ Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/i
 
 * Restart `VSCode`.
 
+
 ## Usage
+
 
 Try type `{{this.}}` or `{{@}}` inside component template.
 
 [UELS](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable) >= `0.2.54` required.
+
+
+### Ignore line?
+
+ - use handlebars comments
+
+```hbs
+ {{!-- @ts-ignore --}} 
+ {{this.line.to.ignore}}
+```
+
+### Ignore file?
+
+```hbs
+{{!-- @ts-nocheck --}}
+```
+
 
 QA:
 

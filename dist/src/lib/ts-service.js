@@ -36,6 +36,7 @@ function serviceForRoot(uri) {
                     allowJs: true,
                     allowSyntheticDefaultImports: true,
                     skipLibCheck: true,
+                    experimentalDecorators: true,
                     noImplicitAny: false,
                     moduleResolution: ts.ModuleResolutionKind.NodeJs,
                     strictPropertyInitialization: false,
