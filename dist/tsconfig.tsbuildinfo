@@ -1158,15 +1158,15 @@
         "signature": "6832c824d2c9108d9070798657e3901a7a2645b758ddd8d78123e8d8a4a4ac2b"
       },
       "../src/lib/hbs-transform.ts": {
-        "version": "35e10686ef3a244f95b8ad78f34fd3fe262404755f3a63ffe2774e84e68b8d51",
-        "signature": "bd5b5a2ec46344c80468efe4dd4f8dad4f651de1df9331ce71b2b4eb10b4d489"
+        "version": "30c0c9c327fbb8290b51f7c997f2a0f18a5437b42cc461332cff99862590c7fd",
+        "signature": "1218da90da7b48f0e2270141e427fc5d39396af86f0ed2f881bfa27ebbd60010"
       },
       "../src/lib/hbs-extractor.ts": {
         "version": "753bdf38a0b2d0b2c3534cc428659a422efce26189da83375a39a75d2ff70a89",
         "signature": "db36ccb2d12b9c09fb402b2e2479971dfb6529662f5a3e06cd13386dffe0a742"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "49ee4279c52fa8eb995fb0f6b0e882845241809c9457e7dd1118b442f2645737",
+        "version": "4b3920ba383e98abe1005755f3f3aa53f1083964dc50d20f1e60f3d5d7935ea0",
         "signature": "b15b9d58f89857aefe6c132e04ce7db5c5541ccafa823f3b9255e2cc00d866c6"
       },
       "../src/lib/virtual-documents.ts": {
@@ -6306,6 +6306,7 @@
       "../src/lib/ast-helpers.ts",
       "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
+      "../src/lib/ts-service.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -6486,7 +6487,6 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
-      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
       "../src/index.ts",
@@ -6497,7 +6497,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ts-service.ts"
+      "../src/lib/hbs-converter.ts"
     ]
   },
   "version": "3.7.4"

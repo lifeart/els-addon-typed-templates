@@ -26,7 +26,7 @@ function normalizePathOriginal(node) {
         return node.original;
     }
 }
-function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }) {
+function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, declaredInScope, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }) {
     let result = "";
     if (node.data === true) {
         result = exports.transform.wrapToFunction(normalizePathOriginal(node), key);
@@ -39,7 +39,12 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
         if (foundKey === "globalScope") {
             if (!(scopeKey in globalScope)) {
                 if (blockPaths.includes(key)) {
-                    globalScope[scopeKey] = "AbstractBlockHelper";
+                    if (declaredInScope(scopeKey)) {
+                        globalScope[scopeKey] = "AbstractBlockHelper";
+                    }
+                    else {
+                        globalScope[scopeKey] = 'undefined';
+                    }
                     if (scopeKey in globalRegistry &&
                         componentsForImport.includes(scopeKey)) {
                         addComponentImport(scopeKey, globalRegistry[scopeKey]);
@@ -51,7 +56,12 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
                         globalScope[scopeKey] = importNameForItem(scopeKey);
                     }
                     else {
-                        globalScope[scopeKey] = "AbstractHelper";
+                        if (declaredInScope(scopeKey)) {
+                            globalScope[scopeKey] = "AbstractHelper";
+                        }
+                        else {
+                            globalScope[scopeKey] = 'undefined';
+                        }
                     }
                 }
             }

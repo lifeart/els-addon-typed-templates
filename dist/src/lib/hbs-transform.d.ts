@@ -1,11 +1,12 @@
 export declare function keyForItem(item: any): string;
 export declare function positionForItem(item: any): string;
-export declare function transformPathExpression(node: any, key: any, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }: {
+export declare function transformPathExpression(node: any, key: any, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, declaredInScope, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }: {
     getItemScopes: any;
     tailForGlobalScope: any;
     pathsForGlobalScope: any;
     importNameForItem: any;
     componentImport: any;
+    declaredInScope: any;
     addImport: any;
     addComponentImport: any;
     getPathScopes: any;

@@ -7,6 +7,32 @@ const resolvers_1 = require("./resolvers");
 const ast_parser_1 = require("./ast-parser");
 const hbs_extractor_1 = require("./hbs-extractor");
 const hbs_transform_1 = require("./hbs-transform");
+const BUILTIN_GLOBAL_SCOPE = [
+    'mut', 'fn', 'action',
+    'if', 'else', 'outlet', 'yield', '-in-element', 'in-element',
+    'each-in', 'each',
+    'log', 'debugger',
+    'input', 'textarea', 'component',
+    'unbound', 'let', 'with', 'loc', 'hash', 'array',
+    'query-params',
+    'v-get',
+    'identity',
+    'render-inverse',
+    'link-to',
+    'in-unless',
+    'unless',
+    'get', 'concat',
+    'readonly'
+];
+function declaredInScope(name, resolvedScope) {
+    if (BUILTIN_GLOBAL_SCOPE.includes(name)) {
+        return true;
+    }
+    if (name in resolvedScope) {
+        return true;
+    }
+    return false;
+}
 function importNameForItem(item) {
     return ("TemplateImported_" +
         camelcase(item, { pascalCase: true })
@@ -159,6 +185,9 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
                 componentImport,
                 getPathScopes,
                 globalScope,
+                declaredInScope: (name) => {
+                    return declaredInScope(name, globalRegistry);
+                },
                 blockPaths,
                 globalRegistry,
                 tailForGlobalScope,

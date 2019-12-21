@@ -9,6 +9,35 @@ import {
   transformPathExpression
 } from "./hbs-transform";
 
+const BUILTIN_GLOBAL_SCOPE = [
+  'mut', 'fn', 'action',
+  'if', 'else', 'outlet', 'yield', '-in-element', 'in-element',
+  'each-in', 'each',
+  'log', 'debugger', 
+  'input', 'textarea', 'component',
+  'unbound', 'let', 'with', 'loc', 'hash', 'array',
+  'query-params',
+  'v-get', 
+  'identity',
+  'render-inverse',
+  'link-to',
+  'in-unless',
+  'unless', 
+  'get', 'concat',
+  'readonly'
+]
+
+
+function declaredInScope(name, resolvedScope) {
+  if (BUILTIN_GLOBAL_SCOPE.includes(name)) {
+    return true;
+  }
+  if (name in resolvedScope) {
+    return true;
+  }
+  return false;
+}
+
 function importNameForItem(item) {
   return (
     "TemplateImported_" +
@@ -214,6 +243,9 @@ export function getClass(
         componentImport,
         getPathScopes,
         globalScope,
+        declaredInScope: (name) => {
+          return declaredInScope(name, globalRegistry);
+        },
         blockPaths,
         globalRegistry,
         tailForGlobalScope,

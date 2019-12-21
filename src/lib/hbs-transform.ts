@@ -33,6 +33,7 @@ export function transformPathExpression(
     pathsForGlobalScope,
     importNameForItem,
     componentImport,
+    declaredInScope,
     addImport,
     addComponentImport,
     getPathScopes,
@@ -57,7 +58,11 @@ export function transformPathExpression(
     if (foundKey === "globalScope") {
       if (!(scopeKey in globalScope)) {
         if (blockPaths.includes(key)) {
-          globalScope[scopeKey] = "AbstractBlockHelper";
+          if (declaredInScope(scopeKey)) {
+            globalScope[scopeKey] = "AbstractBlockHelper";
+          } else {
+            globalScope[scopeKey] = 'undefined';
+          }
           if (
             scopeKey in globalRegistry &&
             componentsForImport.includes(scopeKey)
@@ -69,7 +74,11 @@ export function transformPathExpression(
             addImport(scopeKey, globalRegistry[scopeKey]);
             globalScope[scopeKey] = importNameForItem(scopeKey);
           } else {
-            globalScope[scopeKey] = "AbstractHelper";
+            if (declaredInScope(scopeKey)) {
+              globalScope[scopeKey] = "AbstractHelper";
+            } else {
+              globalScope[scopeKey] = 'undefined';
+            }
           }
         }
       }
