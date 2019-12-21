@@ -9,7 +9,7 @@ import {
   normalizeArgumentName
 } from "./lib/ast-helpers";
 import { virtualTemplateFileName, virtualComponentTemplateFileName } from "./lib/resolvers";
-import { serviceForRoot, componentsForService } from "./lib/ts-service";
+import { serviceForRoot, componentsForService, registerProject } from "./lib/ts-service";
 import { createVirtualTemplate, createFullVirtualTemplate } from "./lib/virtual-documents";
 import { positionForItem } from './lib/hbs-transform';
 import {
@@ -93,6 +93,7 @@ export async function onDefinition(
 }
 
 export function onInit(server, item) {
+  registerProject(item);
   setupLinter(item.root, item, server);
 }
 

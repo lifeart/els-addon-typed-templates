@@ -47,7 +47,7 @@ Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/i
 
 Try type `{{this.}}` or `{{@}}` inside component template.
 
-[UELS](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable) >= `0.2.56` required.
+[UELS](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable) >= `0.2.57` required.
 
 
 ### Ignore line?

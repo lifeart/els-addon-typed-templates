@@ -1,4 +1,3 @@
-
 import * as ts from "typescript";
 import * as path from "path";
 import * as fs from "fs";
@@ -14,9 +13,30 @@ export function componentsForService(service, clean = false) {
   return components.get(service);
 }
 
+type ProjectFile = { version: number };
+type TSMeta = { version: number; snapshot: ts.IScriptSnapshot };
+
+interface ProjectMirror {
+  project: {
+    files: Map<string, ProjectFile>;
+  };
+  files: WeakMap<ProjectFile, TSMeta>;
+}
+
+const STABLE_FILES: Map<string, TSMeta> = new Map();
+const PROJECTS_MAP: Map<string, ProjectMirror> = new Map();
+
+export function registerProject(item) {
+  PROJECTS_MAP.set(item.root.split(":").pop(), {
+    project: item,
+    files: new WeakMap()
+  });
+}
+
 export function serviceForRoot(uri): ts.LanguageService {
   if (!services[uri]) {
     const registry: ts.DocumentRegistry = ts.createDocumentRegistry(false, uri);
+    const project = PROJECTS_MAP.get(uri) as ProjectMirror;
     let tsConfig: any = {};
     if (fs.existsSync(path.join(uri, "tsconfig.json"))) {
       try {
@@ -30,6 +50,41 @@ export function serviceForRoot(uri): ts.LanguageService {
         //
       }
     }
+    function initialProjectFileStructure() {
+      let walkParams = {
+        directories: true,
+        globs: ["**/*.{js,ts,d.ts}"]
+      };
+      let appEntry = path.join(uri, "app");
+      let addonEntry = path.join(uri, "addon");
+      let typesEntry = path.join(uri, "types");
+      let commonTypes = path.join(
+        __dirname,
+        "./../../../src/lib/common-types.d.ts"
+      );
+      let projectTypes = safeWalkSync(
+        path.join(uri, "types"),
+        walkParams
+      ).map(el => path.resolve(path.join(typesEntry, el)));
+      let projectAppFiles = safeWalkSync(
+        path.join(uri, "app"),
+        walkParams
+      ).map(el => path.resolve(path.join(appEntry, el)));
+      let projectAddonFiles = safeWalkSync(
+        path.join(uri, "addon"),
+        walkParams
+      ).map(el => path.resolve(path.join(addonEntry, el)));
+
+      return Array.from(
+        new Set([
+          commonTypes,
+          ...projectTypes,
+          ...projectAppFiles,
+          ...projectAddonFiles
+        ])
+      ) as string[];
+    }
+    const initialFiles = initialProjectFileStructure();
     // console.log('tsConfig', tsConfig);
     const host: ts.LanguageServiceHost = {
       getCompilationSettings() {
@@ -46,60 +101,79 @@ export function serviceForRoot(uri): ts.LanguageService {
         });
       },
       getScriptFileNames() {
-        let els = [
-          ...Object.keys(componentsForService(services[uri]))
-        ];
-        // console.log('els', els);
-        let walkParams = {
-          directories: true,
-          globs: ["**/*.{js,ts,d.ts}"]
-        };
-        let appEntry = path.join(uri, "app");
-        let addonEntry = path.join(uri, "addon");
-        let typesEntry = path.join(uri, "types");
-        let commonTypes = path.join(__dirname, './../../../src/lib/common-types.d.ts');
-        let projectTypes = safeWalkSync(
-          path.join(uri, "types"),
-          walkParams
-        ).map(el => path.resolve(path.join(typesEntry, el)));
-        let projectAppFiles = safeWalkSync(
-          path.join(uri, "app"),
-          walkParams
-        ).map(el => path.resolve(path.join(appEntry, el)));
-        let projectAddonFiles = safeWalkSync(
-          path.join(uri, "addon"),
-          walkParams
-        ).map(el => path.resolve(path.join(addonEntry, el)));
-        return [
-          ...Array.from(
-            new Set([
-              commonTypes,
-              ...els,
-              ...projectAppFiles,
-              ...projectAddonFiles,
-              ...projectTypes
-            ])
-          )
-        ];
+        let els = [...Object.keys(componentsForService(services[uri]))];
+        return Array.from(
+          new Set([...initialFiles, ...els, ...project.project.files.keys()])
+        );
       },
-      getScriptVersion(_fileName) {
+      getScriptVersion(fileName: string) {
+        const _fileName = path.resolve(fileName);
+        if (project.project.files.has(_fileName)) {
+          return project.project.files.get(_fileName)!.version.toString();
+        }
+        if (STABLE_FILES.has(_fileName)) {
+          return STABLE_FILES.get(_fileName)!.version.toString();
+        }
         if (fs.existsSync(_fileName)) {
           let stats = fs.statSync(_fileName);
           return stats.mtime.getTime().toString();
         }
         return Date.now().toString();
       },
-      getScriptSnapshot(fileName) {
-        const maybeVirtualFile = componentsForService(services[uri])[path.resolve(fileName)];
+      getScriptSnapshot(rawFileName) {
+        const maybeVirtualFile = componentsForService(services[uri])[
+          path.resolve(rawFileName)
+        ];
         if (maybeVirtualFile) {
+          // if file is virtual (constructed template) -> return fresh snapshot
           return ts.ScriptSnapshot.fromString(maybeVirtualFile);
         } else {
-          let name = path.basename(fileName, path.extname(fileName));
-          if (fs.existsSync(fileName)) {
-            return ts.ScriptSnapshot.fromString(
-              fs.readFileSync(fileName).toString()
-            );
+          let fileName = path.resolve(path.normalize(rawFileName));
+          // if project has changed files
+          if (project.project.files.has(fileName)) {
+            // project changed file
+            let mirror = project.project.files.get(fileName) as ProjectFile;
+            // ts mirrors
+            if (project.files.has(mirror)) {
+              let tsMeta = project.files.get(mirror);
+              // if no ts-mirror - we must create it;
+              if (!tsMeta) {
+                tsMeta = {
+                  version: -1,
+                  snapshot: ts.ScriptSnapshot.fromString("")
+                };
+                project.files.set(mirror, tsMeta);
+              }
+              if (tsMeta.version !== mirror.version) {
+                // if versions different - we need to update file
+                tsMeta.snapshot = ts.ScriptSnapshot.fromString(
+                  fs.readFileSync(fileName).toString()
+                );
+                if (STABLE_FILES.has(fileName)) {
+                  const stableItem = STABLE_FILES.get(fileName) as TSMeta;
+                  stableItem.snapshot = tsMeta.snapshot;
+                  stableItem.version = tsMeta.version;
+                }
+              }
+              return tsMeta.snapshot;
+            }
           } else {
+            // if file is not marked as changed, we count it as stable
+            if (!STABLE_FILES.has(fileName) && fs.existsSync(fileName)) {
+              // if no stable record, but file exists - we must create it.
+              STABLE_FILES.set(fileName, {
+                version: 0,
+                snapshot: ts.ScriptSnapshot.fromString(
+                  fs.readFileSync(fileName).toString()
+                )
+              });
+            }
+            if (STABLE_FILES.has(fileName)) {
+              return (STABLE_FILES.get(fileName) as TSMeta).snapshot;
+            }
+
+            // file not exists
+            let name = path.basename(fileName, path.extname(fileName));
             let libName = "lib." + name.toLowerCase() + ".d.ts";
             let libFileNmae = path.join(path.dirname(fileName), libName);
             if (fs.existsSync(libFileNmae)) {
@@ -107,9 +181,8 @@ export function serviceForRoot(uri): ts.LanguageService {
                 fs.readFileSync(libFileNmae).toString()
               );
             }
+            return ts.ScriptSnapshot.fromString("");
           }
-          // console.log("getScriptSnapshot:unknownFileName", fileName);
-          return ts.ScriptSnapshot.fromString("");
         }
       },
       getCurrentDirectory: () => {

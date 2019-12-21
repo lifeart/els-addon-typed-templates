@@ -18,12 +18,8 @@ const virtual_documents_1 = require("./lib/virtual-documents");
 const hbs_transform_1 = require("./lib/hbs-transform");
 const ls_utils_1 = require("./lib/ls-utils");
 let hasLinter = false;
-// let knownFiles: any = new Set();
 /* */
 function lintFile(root, textDocument, server) {
-    // if (!knownFiles.has(textDocument.uri)) {
-    //   return;
-    // }
     const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
     const service = ts_service_1.serviceForRoot(projectRoot);
     const componentsMap = ts_service_1.componentsForService(service);
@@ -54,7 +50,6 @@ function onDefinition(root, { results, focusPath, type, textDocument }) {
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
-        // knownFiles.add(textDocument.uri);
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);
             const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
@@ -67,7 +62,6 @@ function onDefinition(root, { results, focusPath, type, textDocument }) {
                 isArg = true;
                 realPath = ast_helpers_1.normalizeArgumentName(realPath);
             }
-            // console.log('realPath', realPath);
             const fileName = resolvers_1.virtualTemplateFileName(templatePath);
             const { pos } = virtual_documents_1.createVirtualTemplate(projectRoot, componentsMap, fileName, {
                 templatePath,
@@ -87,6 +81,7 @@ function onDefinition(root, { results, focusPath, type, textDocument }) {
 }
 exports.onDefinition = onDefinition;
 function onInit(server, item) {
+    ts_service_1.registerProject(item);
     setupLinter(item.root, item, server);
 }
 exports.onInit = onInit;
@@ -95,7 +90,6 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
-        // knownFiles.add(textDocument.uri);
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);
             const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
@@ -121,9 +115,7 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
             let tsResults = null;
             try {
                 let markId = `; /*@path-mark ${hbs_transform_1.positionForItem(focusPath.node)}*/`;
-                // console.log('markId', markId);
                 let tpl = virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, focusPath.content);
-                // console.log('tpl', tpl);
                 tsResults = service.getCompletionsAtPosition(fullFileName, tpl.indexOf(markId), {
                     includeInsertTextCompletions: true
                 });
