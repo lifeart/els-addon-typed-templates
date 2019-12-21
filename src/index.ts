@@ -19,78 +19,50 @@ import {
 } from "./lib/ls-utils";
 
 let hasLinter: any = false;
-// let knownFiles: any = new Set();
 /* */
 function lintFile(root, textDocument, server) {
-  if (!textDocument.uri.endsWith('.hbs')) {
-    return;
-  }
-  // if (!knownFiles.has(textDocument.uri)) {
-  //   return;
-  // }
   const projectRoot = URI.parse(root).fsPath;
   const service = serviceForRoot(projectRoot);
-  const componentsMap = componentsForService(service, true);
+  const componentsMap = componentsForService(service);
   const templatePath = URI.parse(textDocument.uri).fsPath;
   const fullFileName = virtualComponentTemplateFileName(templatePath);
   createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
   return getFullSemanticDiagnostics(service, fullFileName);
 }
 
-function setupLinter(root, type: string, server, uri: string) {
-  if (type !== 'template') {
-    return;
-  }
+function setupLinter(root, project, server) {
   if (hasLinter) {
     return;
   }
 
-  if (Array.isArray(server.linters)) {
-    server.linters.push(async (document: any)=>{
-      let results: any = [];
-      try {
-        results = await lintFile(root, document, server)
-        return results;
-      } catch(e) {
-        console.log(e);
-      }
-      return null;
-    });
-  } else {
-    // will owerride templat-lint
-    server.documents.onDidChangeContent((change: any)=>{
-      try {
-        let diagnostics = lintFile(root, change.document, server);
-        server.connection.sendDiagnostics({ uri: change.document.uri, diagnostics });
-      } catch(e) {
-        console.log(e);
-      }
-    });
-  }
-
-  let diagnostics = lintFile(root, { uri }, server);
-  server.connection.sendDiagnostics({ uri, diagnostics });
+  project.addLinter(async (document: any)=>{
+    let results: any = [];
+    try {
+      results = await lintFile(root, document, server)
+      return results;
+    } catch(e) {
+      console.log(e);
+    }
+    return null;
+  });
 
   hasLinter = true;
 }
 
 export async function onDefinition(
   root,
-  { results, focusPath, server, type, textDocument }
+  { results, focusPath, type, textDocument }
 ) {
-  setupLinter(root, type, server, textDocument.uri);
 
   if (!canHandle(type, focusPath)) {
     return results;
   }
-  // knownFiles.add(textDocument.uri);
-
 
   try {
     const isParam = isParamPath(focusPath);
     const projectRoot = URI.parse(root).fsPath;
     const service = serviceForRoot(projectRoot);
-    const componentsMap = componentsForService(service, true);
+    const componentsMap = componentsForService(service);
     const templatePath = URI.parse(textDocument.uri).fsPath;
     let isArg = false;
     let realPath = realPathName(focusPath);
@@ -98,7 +70,6 @@ export async function onDefinition(
       isArg = true;
       realPath = normalizeArgumentName(realPath);
     }
-    // console.log('realPath', realPath);
 
     const fileName = virtualTemplateFileName(templatePath);
     const { pos } = createVirtualTemplate(
@@ -122,19 +93,17 @@ export async function onDefinition(
 }
 
 export function onInit(server, item) {
-  setupLinter(item.root, 'template', server, '');
+  setupLinter(item.root, item, server);
 }
 
 export async function onComplete(
   root,
   { results, focusPath, server, type, textDocument }
 ) {
-  setupLinter(root, type, server, textDocument.uri);
 
   if (!canHandle(type, focusPath)) {
     return results;
   }
-  // knownFiles.add(textDocument.uri);
 
   try {
     const isParam = isParamPath(focusPath);
@@ -170,9 +139,7 @@ export async function onComplete(
     let tsResults: any = null;
     try {
       let markId = `; /*@path-mark ${positionForItem(focusPath.node)}*/`;
-      // console.log('markId', markId);
       let tpl = createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, focusPath.content as string);
-      // console.log('tpl', tpl);
       tsResults = service.getCompletionsAtPosition(fullFileName, tpl.indexOf(markId), {
         includeInsertTextCompletions: true
       });

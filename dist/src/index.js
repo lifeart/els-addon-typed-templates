@@ -21,59 +21,36 @@ let hasLinter = false;
 // let knownFiles: any = new Set();
 /* */
 function lintFile(root, textDocument, server) {
-    if (!textDocument.uri.endsWith('.hbs')) {
-        return;
-    }
     // if (!knownFiles.has(textDocument.uri)) {
     //   return;
     // }
     const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
     const service = ts_service_1.serviceForRoot(projectRoot);
-    const componentsMap = ts_service_1.componentsForService(service, true);
+    const componentsMap = ts_service_1.componentsForService(service);
     const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
     const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
     virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
     return ls_utils_1.getFullSemanticDiagnostics(service, fullFileName);
 }
-function setupLinter(root, type, server, uri) {
-    if (type !== 'template') {
-        return;
-    }
+function setupLinter(root, project, server) {
     if (hasLinter) {
         return;
     }
-    if (Array.isArray(server.linters)) {
-        server.linters.push((document) => __awaiter(this, void 0, void 0, function* () {
-            let results = [];
-            try {
-                results = yield lintFile(root, document, server);
-                return results;
-            }
-            catch (e) {
-                console.log(e);
-            }
-            return null;
-        }));
-    }
-    else {
-        // will owerride templat-lint
-        server.documents.onDidChangeContent((change) => {
-            try {
-                let diagnostics = lintFile(root, change.document, server);
-                server.connection.sendDiagnostics({ uri: change.document.uri, diagnostics });
-            }
-            catch (e) {
-                console.log(e);
-            }
-        });
-    }
-    let diagnostics = lintFile(root, { uri }, server);
-    server.connection.sendDiagnostics({ uri, diagnostics });
+    project.addLinter((document) => __awaiter(this, void 0, void 0, function* () {
+        let results = [];
+        try {
+            results = yield lintFile(root, document, server);
+            return results;
+        }
+        catch (e) {
+            console.log(e);
+        }
+        return null;
+    }));
     hasLinter = true;
 }
-function onDefinition(root, { results, focusPath, server, type, textDocument }) {
+function onDefinition(root, { results, focusPath, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
-        setupLinter(root, type, server, textDocument.uri);
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
@@ -82,7 +59,7 @@ function onDefinition(root, { results, focusPath, server, type, textDocument }) 
             const isParam = ast_helpers_1.isParamPath(focusPath);
             const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
             const service = ts_service_1.serviceForRoot(projectRoot);
-            const componentsMap = ts_service_1.componentsForService(service, true);
+            const componentsMap = ts_service_1.componentsForService(service);
             const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
             let isArg = false;
             let realPath = ast_helpers_1.realPathName(focusPath);
@@ -110,12 +87,11 @@ function onDefinition(root, { results, focusPath, server, type, textDocument }) 
 }
 exports.onDefinition = onDefinition;
 function onInit(server, item) {
-    setupLinter(item.root, 'template', server, '');
+    setupLinter(item.root, item, server);
 }
 exports.onInit = onInit;
 function onComplete(root, { results, focusPath, server, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
-        setupLinter(root, type, server, textDocument.uri);
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }

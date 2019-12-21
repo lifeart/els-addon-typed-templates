@@ -434,7 +434,7 @@
         "signature": "0144b1a677874370a1fe1adfa58c0d6c3f0f014dccfa7c09698f5b59256fec9c"
       },
       "../src/lib/resolvers.ts": {
-        "version": "0a763bf10e80ae7023d8bbf7da2b2312ad6bf0cc4dc0a4e5db0ff7fd18c89e3e",
+        "version": "f93ddfb50a179413ec0cfdbc7c89b48baa3c4dfa910818a53242d7de82956693",
         "signature": "74a17c2b746dd368c8d44ae5fb2833f8fcf3223dc728799150720e8c4b944ab5"
       },
       "../node_modules/typescript/lib/typescript.d.ts": {
@@ -1178,8 +1178,8 @@
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
-        "version": "b067d6a79b100f7831359e944228079f9916d8ab88caf8529a5cb9d31e60bd1b",
-        "signature": "9467d5a37817c694024a00dc279c3ba6347ac2477631be24bf65aef5e082929a"
+        "version": "7105c17ccec3d4bccae9a5dde9a81e6764de05e44beba4aff7068147851087b2",
+        "signature": "b16e75556a6b560c33f03232a40eb2827920d6f8ca40dd482ce83c748f06f6d5"
       },
       "../src/lib/ast-parser.test.ts": {
         "version": "afa5a6b2fadc0bd2fca54a70f8299b4a82e365dcfa3d9eb41eebdbadb8fbe524",
@@ -6306,6 +6306,7 @@
       "../src/lib/ast-helpers.ts",
       "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
+      "../src/lib/ts-service.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -6496,7 +6497,6 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ts-service.ts",
       "../src/index.ts"
     ]
   },

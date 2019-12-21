@@ -6,14 +6,14 @@ function virtualTemplateFileName(fsPath) {
     const extName = path.extname(fsPath);
     return path
         .resolve(fsPath)
-        .replace(extName, "_" + Date.now() + "_template.ts");
+        .replace(extName, "_" + "_typed_template.ts");
 }
 exports.virtualTemplateFileName = virtualTemplateFileName;
 function virtualComponentTemplateFileName(fsPath) {
     const extName = path.extname(fsPath);
     return path
         .resolve(fsPath)
-        .replace(extName, "_" + Date.now() + "_component_template.ts");
+        .replace(extName, "_" + "_typed_component_template.ts");
 }
 exports.virtualComponentTemplateFileName = virtualComponentTemplateFileName;
 function relativeImport(templateFile, scriptFile) {
