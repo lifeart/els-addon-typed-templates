@@ -22,7 +22,14 @@ const BUILTIN_GLOBAL_SCOPE = [
     'in-unless',
     'unless',
     'get', 'concat',
-    'readonly'
+    'readonly',
+    'action',
+    'hasBlock',
+    'hasBlockParams',
+    'mount',
+    'on',
+    'partial',
+    'yield'
 ];
 function declaredInScope(name, resolvedScope) {
     if (BUILTIN_GLOBAL_SCOPE.includes(name)) {
