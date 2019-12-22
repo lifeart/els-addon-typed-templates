@@ -85,6 +85,8 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
         addImport(name, resolvers_1.relativeImport(fileName, virtualFileName));
     }
     const { componentsForImport, parents, scopes, klass, blockPaths } = hbs_extractor_1.extractRelationships(items);
+    // console.log('parents', parents);
+    // console.log('scopes', scopes);
     // console.log('componentsForImport', componentsForImport);
     // console.log('globalRegistry', globalRegistry);
     const definedScope = {
@@ -248,7 +250,7 @@ ${templateComponentDeclaration} {
     return ${yields.length ? `this['${yields[0]}']()` : "[]"};
   }
   //@mark-meaningful-issues-start
-  ${Object.keys(klass)
+  ${Object.keys(klass).filter((name) => !name.endsWith('_simple'))
         .map(key => {
         return `${commentForNode(serializeKey(key))}
   //@mark [${serializeKey(key)}]

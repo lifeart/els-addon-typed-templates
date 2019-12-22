@@ -16,6 +16,18 @@ function extractRelationships(items) {
                 item.modifiers.forEach(mod => {
                     parents[key].push(hbs_transform_1.keyForItem(mod));
                 });
+                item.attributes.forEach((attr) => {
+                    if (attr.value.type === 'ConcatStatement') {
+                        attr.value.parts.forEach((part) => {
+                            if (part.type === 'MustacheStatement') {
+                                parents[key].push(hbs_transform_1.keyForItem(part));
+                            }
+                        });
+                    }
+                    else if (attr.value.type === 'MustacheStatement') {
+                        parents[key].push(hbs_transform_1.keyForItem(attr.value));
+                    }
+                });
             }
             addChilds(item.program ? item.program.body : item.children || [], key);
             if (item.inverse) {

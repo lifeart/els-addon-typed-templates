@@ -139,6 +139,9 @@ export function getClass(
   } = extractRelationships(items);
 
 
+  // console.log('parents', parents);
+  // console.log('scopes', scopes);
+
   // console.log('componentsForImport', componentsForImport);
   // console.log('globalRegistry', globalRegistry);
 
@@ -321,7 +324,7 @@ ${templateComponentDeclaration} {
     return ${yields.length ? `this['${yields[0]}']()` : "[]"};
   }
   //@mark-meaningful-issues-start
-  ${Object.keys(klass)
+  ${Object.keys(klass).filter((name)=>!name.endsWith('_simple'))
     .map(key => {
   return `${commentForNode(serializeKey(key))}
   //@mark [${serializeKey(key)}]

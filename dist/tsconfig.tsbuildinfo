@@ -1162,11 +1162,11 @@
         "signature": "4c7c921e7851bb706f2830e0298f88b26a0e7decf15d60a6c82bbabd3fe16b57"
       },
       "../src/lib/hbs-extractor.ts": {
-        "version": "753bdf38a0b2d0b2c3534cc428659a422efce26189da83375a39a75d2ff70a89",
+        "version": "1fdc274423e6752099cf5f6fe33baef79bc10c0889592a147f81ba859cbf8856",
         "signature": "db36ccb2d12b9c09fb402b2e2479971dfb6529662f5a3e06cd13386dffe0a742"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "1ebe97894b89972be806d454afff2bb03b0864ce62e3a59ea81170843a833f2c",
+        "version": "877b6c59270f00bf7f3ae1c60e082531f77f5ecd323b01610179adf282c2ba9a",
         "signature": "b15b9d58f89857aefe6c132e04ce7db5c5541ccafa823f3b9255e2cc00d866c6"
       },
       "../src/lib/virtual-documents.ts": {
