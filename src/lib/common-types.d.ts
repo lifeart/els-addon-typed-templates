@@ -29,12 +29,12 @@ declare module "@ember/modifier" {
 
 declare module "ember-typed-templates" {
   type YieldHelper = <A, B, C, D, E>(
-    items: [A, B, C, D, E],
+    items?: [A, B?, C?, D?, E?],
     hash?
   ) => [A, B, C, D, E];
-  type EachHelper = <T>([items]: ArrayLike<T>[], hash?) => [T, number];
+  type EachHelper = <T extends any>([items]: ArrayLike<T>[], hash?) => [T, number];
   type LetHelper = <A, B, C, D, E>(
-    items: [A, B, C, D, E],
+    items: [A, B?, C?, D?, E?],
     hash?
   ) => [A, B, C, D, E];
   type AbstractHelper = <T>([items]: T[], hash?) => T;
@@ -44,7 +44,7 @@ declare module "ember-typed-templates" {
   type AnyFn = (...args) => any;
   type OnModifer = ([event, handler]: [string, Function], hash?) => void;
   type FnHelper = AnyFn;
-  type ConcatHelper = (...args: (number | string)[]) => string;
+  type ConcatHelper = (...args: any[]) => string;
   type AndHelper = <A, B, C, D, E>(items: [A, B, C?, D?, E?]) => boolean;
   type EventCatcherHelper = <A, B, C, D, E>(
     items?: [A?, B?, C?, D?, E?]
@@ -66,7 +66,7 @@ declare module "ember-typed-templates" {
     ["prevent-default"]: EventCatcherHelper;
     ["stop-propagation"]: EventCatcherHelper;
     ["lazy-mount"]: (params?, hash?) => [{ isLoading: boolean; error: any }];
-    ["v-get"]: ([ctx, prop]: [Object, string], hash?) => any;
+    ["v-get"]: ([ctx, prop, propTwo]: [any, any, any?], hash?) => any;
     ["and"]: AndHelper;
   }
 }

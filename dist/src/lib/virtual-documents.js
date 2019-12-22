@@ -47,6 +47,12 @@ function getValidRegistryItems(registry, templateFile) {
                         script: hasScriptTs || hasScriptJs || null
                     };
                 }
+                else {
+                    items[name] = {
+                        template: null,
+                        script: hasScriptTs || hasScriptJs || null
+                    };
+                }
             });
         });
     }

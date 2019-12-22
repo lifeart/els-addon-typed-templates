@@ -80,10 +80,42 @@ declare module "ember-typed-templates" {
 ```
 
 
-QA:
- 
+### Is it support JSDoc?
+
+- yes
+
+### How to get block autocomplete / js files typings support ?
+
+
+`components/cart.js`
+```js
+/**
+* @typedef {import('./../services/cart').default} CartService
+*/
+export default class CartComponent extends Component {
+     /**
+     * CartService
+     * @type {CartService}
+     */
+    @service('cart') cart;
+}
+```
+
+`components/cart.hbs`
+```hbs
+{{#each this.cart.items as |item|}}
+    {{item.name}} 
+    // ^ will support autocomplete and linting
+{{/each}}
+```
+
+
+### QA:
+
+``` 
 	- Would it be possible to add these as dependencies to the language server or somesuch?
 	- Nope, because it's "experimental" and "heavy" functionality, adding it into language server itself may decrease DX for other users. UELS has addon API, using this addon API you able add functionality into langserver. All addons scoped inside projects (to allow users have multple addon versions for different ember projects and versions).
+```
 
 ## Is it stable?
 

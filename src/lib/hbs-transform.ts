@@ -108,6 +108,7 @@ export function transformPathExpression(
           scopeKey in globalRegistry &&
           componentsForImport.includes(scopeKey)
         ) {
+          addComponentImport(scopeKey, globalRegistry[scopeKey]);
           result = transform.fn(
             "_?, hash?",
             `let klass = new ${importNameForItem(

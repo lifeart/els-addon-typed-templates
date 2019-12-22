@@ -53,6 +53,11 @@ function getValidRegistryItems(registry: any, templateFile: string) {
             template: hasScriptHbs,
             script: hasScriptTs || hasScriptJs || null
           }
+        } else {
+          items[name] = {
+            template: null,
+            script: hasScriptTs || hasScriptJs || null
+          }
         }
         
       });

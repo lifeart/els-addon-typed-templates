@@ -85,6 +85,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
             else {
                 if (scopeKey in globalRegistry &&
                     componentsForImport.includes(scopeKey)) {
+                    addComponentImport(scopeKey, globalRegistry[scopeKey]);
                     result = exports.transform.fn("_?, hash?", `let klass = new ${importNameForItem(scopeKey)}(); klass.args = hash; return klass.defaultYield()`, key);
                 }
                 else {

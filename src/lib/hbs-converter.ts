@@ -114,20 +114,31 @@ export function getClass(
   }
 
   function addComponentImport(name, filePath) {
-    let virtualFileName = virtualComponentTemplateFileName(filePath.template);
-    registerTemplateKlassForFile(
-      componentsMap,
-      globalRegistry,
-      virtualFileName,
-      filePath.template,
-      filePath.script,
-      depth - 1
-    );
-    // todo - we need to resolve proper template and compile it :)
-    addImport(name, relativeImport(
-      fileName,
-      virtualFileName
-    ));
+    if (filePath.template) {
+      let virtualFileName = virtualComponentTemplateFileName(filePath.template);
+      registerTemplateKlassForFile(
+        componentsMap,
+        globalRegistry,
+        virtualFileName,
+        filePath.template,
+        filePath.script,
+        depth - 1
+      );
+      // todo - we need to resolve proper template and compile it :)
+      addImport(name, relativeImport(
+        fileName,
+        virtualFileName
+      ));
+    } else if (filePath.script) {
+      // todo - we need to resolve proper template and compile it :)
+      addImport(name, relativeImport(
+        fileName,
+        filePath.script
+      ));
+    } else {
+      imports.push(`class ${importNameForItem(name)} { args: any; defaultYield() { return []; } };`);
+    }
+   
   }
   
   const {
@@ -262,7 +273,7 @@ export function getClass(
 
   
 
-  return makeClass({ imports, yields, klass, comments, componentImport, globalScope, definedScope });
+  return makeClass({ imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
 }
 
 function serializeKey(key) {
@@ -276,7 +287,7 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
     let comment = comments.find(([commentPos])=>commentPos === pos);
     if (comment) {
       let value = comment[1].trim();
-      return value.includes('/') ? value : '// ' + value;
+      return (value.includes('//') || value.includes('/*'))  ? value : '// ' + value;
     } else {
       return '';
     }

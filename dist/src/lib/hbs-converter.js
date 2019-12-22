@@ -79,10 +79,19 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
         imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
     }
     function addComponentImport(name, filePath) {
-        let virtualFileName = resolvers_1.virtualComponentTemplateFileName(filePath.template);
-        registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script, depth - 1);
-        // todo - we need to resolve proper template and compile it :)
-        addImport(name, resolvers_1.relativeImport(fileName, virtualFileName));
+        if (filePath.template) {
+            let virtualFileName = resolvers_1.virtualComponentTemplateFileName(filePath.template);
+            registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script, depth - 1);
+            // todo - we need to resolve proper template and compile it :)
+            addImport(name, resolvers_1.relativeImport(fileName, virtualFileName));
+        }
+        else if (filePath.script) {
+            // todo - we need to resolve proper template and compile it :)
+            addImport(name, resolvers_1.relativeImport(fileName, filePath.script));
+        }
+        else {
+            imports.push(`class ${importNameForItem(name)} { args: any; defaultYield() { return []; } };`);
+        }
     }
     const { componentsForImport, parents, scopes, klass, blockPaths } = hbs_extractor_1.extractRelationships(items);
     // console.log('parents', parents);
@@ -193,7 +202,7 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
             klass[key] = hbs_transform_1.transform.transform(node, key, klass);
         }
     });
-    return makeClass({ imports, yields, klass, comments, componentImport, globalScope, definedScope });
+    return makeClass({ imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
 }
 exports.getClass = getClass;
 function serializeKey(key) {
@@ -206,7 +215,7 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
         let comment = comments.find(([commentPos]) => commentPos === pos);
         if (comment) {
             let value = comment[1].trim();
-            return value.includes('/') ? value : '// ' + value;
+            return (value.includes('//') || value.includes('/*')) ? value : '// ' + value;
         }
         else {
             return '';
