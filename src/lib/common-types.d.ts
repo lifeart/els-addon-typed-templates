@@ -24,3 +24,8 @@ declare module "@ember/modifier" {
     export function setModifierManager<T,U>(Manager: T,Modifier: U): U;
 }
 
+declare module "ember-typed-templates" {
+    export interface GlobalRegistry {
+
+    }
+}

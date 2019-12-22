@@ -20,10 +20,15 @@ const ls_utils_1 = require("./lib/ls-utils");
 let hasLinter = false;
 /* */
 function lintFile(root, textDocument, server) {
+    const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
+    const marks = ['components', 'component'];
+    const foundMarks = marks.filter((mark) => templatePath.includes(mark));
+    if (foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
+        return [];
+    }
     const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
     const service = ts_service_1.serviceForRoot(projectRoot);
     const componentsMap = ts_service_1.componentsForService(service);
-    const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
     const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
     virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
     return ls_utils_1.getFullSemanticDiagnostics(service, fullFileName);

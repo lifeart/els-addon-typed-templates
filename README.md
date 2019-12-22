@@ -65,6 +65,21 @@ Try type `{{this.}}` or `{{@}}` inside component template.
 {{!-- @ts-nocheck --}}
 ```
 
+
+### Owerride/Extend global typings?
+
+```ts
+// + project/types/index.d.ts
+declare module "ember-typed-templates" {
+    interface GlobalRegistry {
+		// helper, component, modifier name -> result
+        'unknown-helper': (params: string[], hash?)=> string,
+        'block': (params?, hash?) => [ { someFirstBlockParamProperty: 42 } ]
+    }
+}
+```
+
+
 QA:
  
 	- Would it be possible to add these as dependencies to the language server or somesuch?
@@ -72,5 +87,5 @@ QA:
 
 ## Is it stable?
 
-* Sometimes it may crash your language server, don't worry.
+* Sometimes it may crash your language server, don't worry it will awake automatically.
 

@@ -21,10 +21,15 @@ import {
 let hasLinter: any = false;
 /* */
 function lintFile(root, textDocument, server) {
+  const templatePath = URI.parse(textDocument.uri).fsPath;
+  const marks = ['components', 'component'];
+  const foundMarks = marks.filter((mark) => templatePath.includes(mark));
+  if (foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
+    return [];
+  }
   const projectRoot = URI.parse(root).fsPath;
   const service = serviceForRoot(projectRoot);
   const componentsMap = componentsForService(service);
-  const templatePath = URI.parse(textDocument.uri).fsPath;
   const fullFileName = virtualComponentTemplateFileName(templatePath);
   createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
   return getFullSemanticDiagnostics(service, fullFileName);

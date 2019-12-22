@@ -310,25 +310,24 @@ function makeClass({ imports, yields, klass, comments, typeDeclarations, compone
   ${imports.join("\n")}
 
   ${typeDeclarations}
+
+  import { GlobalRegistry } from "ember-typed-templates";
   
-  interface IKnownScope {
+  interface TemplateScopeRegistry {
     ${Object.keys(globalScope)
       .map(key => {
         return `["${key}"]:${globalScope[key]};`;
       })
       .join("\n")}
   }
-  
-  interface IGlobalScope {
-    [key: string ]: AbstractHelper | AbstractBlockHelper
-  }
-  
-  type GlobalScope = IGlobalScope & IKnownScope;
 
+  type Modify<T, R> = Omit<T, keyof R> & R;
+
+  type EmberTemplateScopeRegistry = Modify<TemplateScopeRegistry, GlobalRegistry>;
 
   ${templateComponentDeclaration} {
       ${componentExtraProperties}
-      globalScope:  GlobalScope;
+      globalScope:  EmberTemplateScopeRegistry;
       defaultYield() {
         return ${yields.length ? `this['${yields[0]}']()` : "[]"};
       }

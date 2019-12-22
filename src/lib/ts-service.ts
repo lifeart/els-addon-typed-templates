@@ -109,9 +109,11 @@ export function serviceForRoot(uri): ts.LanguageService {
       getScriptVersion(fileName: string) {
         const _fileName = path.resolve(fileName);
         if (project.project.files.has(_fileName)) {
+          // return Date.now().toString();
           return project.project.files.get(_fileName)!.version.toString();
         }
         if (STABLE_FILES.has(_fileName)) {
+          // return Date.now().toString();
           return STABLE_FILES.get(_fileName)!.version.toString();
         }
         if (fs.existsSync(_fileName)) {
@@ -129,11 +131,21 @@ export function serviceForRoot(uri): ts.LanguageService {
           return ts.ScriptSnapshot.fromString(maybeVirtualFile);
         } else {
           let fileName = path.resolve(path.normalize(rawFileName));
+          // console.log(fileName);
+          // console.log(project.project.files);
           // if project has changed files
+          // console.log('project.project.files', project.project.files);
+          // console.log('has file?' , project.project.files.has(fileName));
           if (project.project.files.has(fileName)) {
             // project changed file
             let mirror = project.project.files.get(fileName) as ProjectFile;
             // ts mirrors
+            if (!project.files.has(mirror)) {
+              project.files.set(mirror, {
+                version: -1,
+                snapshot: ts.ScriptSnapshot.fromString("")
+              });
+            }
             if (project.files.has(mirror)) {
               let tsMeta = project.files.get(mirror);
               // if no ts-mirror - we must create it;
@@ -161,11 +173,10 @@ export function serviceForRoot(uri): ts.LanguageService {
             // if file is not marked as changed, we count it as stable
             if (!STABLE_FILES.has(fileName) && fs.existsSync(fileName)) {
               // if no stable record, but file exists - we must create it.
+              let text = fs.readFileSync(fileName).toString();
               STABLE_FILES.set(fileName, {
                 version: 0,
-                snapshot: ts.ScriptSnapshot.fromString(
-                  fs.readFileSync(fileName).toString()
-                )
+                snapshot: ts.ScriptSnapshot.fromString(text)
               });
             }
             if (STABLE_FILES.has(fileName)) {
