@@ -84,6 +84,22 @@ declare module "ember-typed-templates" {
 
 - yes
 
+
+### How to get args checking for template-only components?
+
+- add typings (even in an `.js` project) to template!
+
+```hbs
+{{!-- 
+    interface Args {
+        foo: {
+            bar: string
+        }
+    }
+--}}
+{{@foo.bar}}
+```
+
 ### How to get block autocomplete / js files typings support ?
 
 

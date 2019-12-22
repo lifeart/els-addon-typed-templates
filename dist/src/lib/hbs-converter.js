@@ -210,6 +210,7 @@ function serializeKey(key) {
 }
 function makeClass({ imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
     const hasNocheck = comments.find(([_, el]) => el.includes('@ts-nocheck'));
+    const hasArgsTypings = comments.find(([_, el]) => el.includes('interface Args'));
     function commentForNode(rawPos) {
         let pos = parseInt(rawPos.split(':')[0].split(',')[0], 10);
         let comment = comments.find(([commentPos]) => commentPos === pos);
@@ -230,7 +231,7 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
     const componentExtraProperties = componentImport
         ? ""
         : `
-    args: any;
+    args: ${hasArgsTypings ? 'Args' : 'any'};
   `;
     let klssTpl = `
 
@@ -251,6 +252,8 @@ ${Object.keys(globalScope)
 type Modify<T, R> = Omit<T, keyof R> & R;
 
 type EmberTemplateScopeRegistry = Modify<TemplateScopeRegistry, GlobalRegistry>;
+
+${hasArgsTypings ? hasArgsTypings[1] : ''}
 
 ${templateComponentDeclaration} {
   ${componentExtraProperties}
