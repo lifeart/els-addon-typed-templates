@@ -4,3 +4,6 @@ node_modules
 ember-cli-build.js
 index.ts
 src
+types
+previews
+tsconfig.json

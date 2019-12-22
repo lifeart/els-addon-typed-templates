@@ -17,6 +17,7 @@ const BUILTIN_GLOBAL_SCOPE = [
     'query-params',
     'v-get',
     'identity',
+    'has-block',
     'render-inverse',
     'link-to',
     'in-unless',
