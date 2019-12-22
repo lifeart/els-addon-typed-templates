@@ -28,6 +28,7 @@ function normalizePathOriginal(node) {
 }
 function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, declaredInScope, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }) {
     let result = "";
+    let simpleResult = "";
     if (node.data === true) {
         result = exports.transform.wrapToFunction(normalizePathOriginal(node), key);
     }
@@ -66,6 +67,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
                 }
             }
             if (pathsForGlobalScope[scopeKey]) {
+                simpleResult = `this.globalScope["${scopeKey}"]`;
                 result = exports.transform.fn(pathsForGlobalScope[scopeKey], `this.globalScope["${scopeKey}"]${tailForGlobalScope[scopeKey]
                     ? tailForGlobalScope[scopeKey]
                     : "(params, hash)"}`, key);
@@ -86,6 +88,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
                     result = exports.transform.fn("_?, hash?", `let klass = new ${importNameForItem(scopeKey)}(); klass.args = hash; return klass.defaultYield()`, key);
                 }
                 else {
+                    simpleResult = `this.globalScope["${scopeKey}"]`;
                     result = exports.transform.fn("params?, hash?", `this.globalScope["${scopeKey}"](params, hash)`, key);
                 }
             }
@@ -99,14 +102,18 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
             }
         }
     }
-    return result;
+    return { result, simpleResult };
 }
 exports.transformPathExpression = transformPathExpression;
 exports.transform = {
+    klass: {},
     support(node) {
         return node.type in this;
     },
-    transform(node, key) {
+    transform(node, key, klass) {
+        if (klass) {
+            this.klass = klass;
+        }
         return this._wrap(this[node.type](node), key);
     },
     wrapToFunction(str, key) {
@@ -135,6 +142,17 @@ exports.transform = {
     TextNode(node) {
         return `"${node.chars}"`;
     },
+    pathCall(node) {
+        let key = keyForItem(node);
+        let simpleKey = key + '_simple';
+        if (this.klass && this.klass[simpleKey]) {
+            let value = this.klass[simpleKey];
+            delete this.klass[simpleKey];
+            delete this.klass[key];
+            return value;
+        }
+        return `this["${keyForItem(node)}"]`;
+    },
     hashedExp(node) {
         let result = "";
         const params = node.params
@@ -148,16 +166,16 @@ exports.transform = {
         })
             .join(",");
         if (hash.length && params.length) {
-            result = `this["${keyForItem(node.path)}"]([${params}],{${hash}})`;
+            result = `${this.pathCall(node.path)}([${params}],{${hash}})`;
         }
         else if (!hash.length && params.length) {
-            result = `this["${keyForItem(node.path)}"]([${params}])`;
+            result = `${this.pathCall(node.path)}([${params}])`;
         }
         else if (hash.length && !params.length) {
-            result = `this["${keyForItem(node.path)}"]([],{${hash}})`;
+            result = `${this.pathCall(node.path)}([],{${hash}})`;
         }
         else {
-            result = `this["${keyForItem(node.path)}"]()`;
+            result = `${this.pathCall(node.path)}()`;
         }
         return result;
     },
