@@ -45,6 +45,7 @@ export function transformPathExpression(
   }
 ) {
   let result: string = "";
+  let simpleResult: string = "";
   if (node.data === true) {
     result = transform.wrapToFunction(normalizePathOriginal(node), key);
   } else if (node.this === true) {
@@ -83,6 +84,7 @@ export function transformPathExpression(
         }
       }
       if (pathsForGlobalScope[scopeKey]) {
+        simpleResult = `this.globalScope["${scopeKey}"]`;
         result = transform.fn(
           pathsForGlobalScope[scopeKey],
           `this.globalScope["${scopeKey}"]${
@@ -114,6 +116,7 @@ export function transformPathExpression(
             key
           );
         } else {
+          simpleResult = `this.globalScope["${scopeKey}"]`;
           result = transform.fn(
             "params?, hash?",
             `this.globalScope["${scopeKey}"](params, hash)`,
@@ -137,14 +140,18 @@ export function transformPathExpression(
       }
     }
   }
-  return result;
+  return {result, simpleResult};
 }
 
 export const transform = {
+  klass: {},
   support(node) {
     return node.type in this;
   },
-  transform(node: any, key: string) {
+  transform(node: any, key: string, klass?: any) {
+    if (klass) {
+      this.klass = klass;
+    }
     return this._wrap(this[node.type](node), key);
   },
   wrapToFunction(str: string, key: string) {
@@ -173,6 +180,17 @@ export const transform = {
   TextNode(node) {
     return `"${node.chars}"`;
   },
+  pathCall(node) {
+    let key = keyForItem(node);
+    let simpleKey = key + '_simple';
+    if (this.klass && this.klass[simpleKey]) {
+      let value = this.klass[simpleKey];
+      delete this.klass[simpleKey];
+      delete this.klass[key];
+      return value;
+    }
+    return `this["${keyForItem(node)}"]`;
+  },
   hashedExp(node) {
     let result = "";
     const params = node.params
@@ -186,13 +204,13 @@ export const transform = {
       })
       .join(",");
     if (hash.length && params.length) {
-      result = `this["${keyForItem(node.path)}"]([${params}],{${hash}})`;
+      result = `${this.pathCall(node.path)}([${params}],{${hash}})`;
     } else if (!hash.length && params.length) {
-      result = `this["${keyForItem(node.path)}"]([${params}])`;
+      result = `${this.pathCall(node.path)}([${params}])`;
     } else if (hash.length && !params.length) {
-      result = `this["${keyForItem(node.path)}"]([],{${hash}})`;
+      result = `${this.pathCall(node.path)}([],{${hash}})`;
     } else {
-      result = `this["${keyForItem(node.path)}"]()`;
+      result = `${this.pathCall(node.path)}()`;
     }
     return result;
   },

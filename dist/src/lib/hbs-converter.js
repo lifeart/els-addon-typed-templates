@@ -86,7 +86,7 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
     const { componentsForImport, parents, scopes, klass, blockPaths } = hbs_extractor_1.extractRelationships(items);
     // console.log('componentsForImport', componentsForImport);
     // console.log('globalRegistry', globalRegistry);
-    const globalScope = {
+    const definedScope = {
         ["each"]: "EachHelper",
         ["let"]: "LetHelper",
         ["hash"]: "HashHelper",
@@ -102,28 +102,7 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
         ["v-get"]: "([ctx, prop]: [Object, string], hash?) => any",
         ["and"]: "AndHelper"
     };
-    let typeDeclarations = `
-
-  type YieldHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
-  type EachHelper = <T>([items]:ArrayLike<T>[], hash?) =>  [T, number];
-  type LetHelper = <A,B,C,D,E>(items: [A,B,C,D,E], hash?) => [A,B,C,D,E];
-  type AbstractHelper = <T>([items]:T[], hash?) => T;
-  type AbstractBlockHelper = <T>([items]:ArrayLike<T>[], hash?) => [T];
-  type HashHelper = <T>(items: any[], hash: T) => T;
-  type ArrayHelper =  <T>(items:ArrayLike<T>, hash?) => ArrayLike<T>;
-  type AnyFn = (...args) => any;
-  type OnModifer = ([event, handler]: [string, Function], hash?) => void;
-  type FnHelper =  AnyFn;
-  type ConcatHelper = (...args: (number|string)[]) => string;
-  type AndHelper = <A,B,C,D,E>(items: [A,B,C?,D?,E?]) => boolean;
-  type EventCatcherHelper = <A,B,C,D,E>(items?:[A?,B?,C?,D?,E?]) => AnyFn;
-
-  function TIfHeper<T,U,Y>([a,b,c]:[T,U?,Y?], hash?) {
-    return !!a ? b : c;
-  }
-  
-  
-  `;
+    const globalScope = Object.assign({}, definedScope);
     const pathsForGlobalScope = {
         each: "<T>(params: ArrayLike<T>[], hash?)",
         let: "<A,B,C,D,E>(params: [A,B?,C?,D?,E?], hash?)",
@@ -179,39 +158,45 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
             foundKey
         };
     }
-    Object.keys(klass).forEach(key => {
+    const tokensToProcess = Object.keys(klass).sort();
+    const pathTokens = tokensToProcess.filter((name) => name.includes('PathExpression'));
+    const otherTokens = tokensToProcess.filter((name) => !pathTokens.includes(name));
+    pathTokens.forEach((key) => {
+        let node = klass[key];
+        const { result, simpleResult } = hbs_transform_1.transformPathExpression(node, key, {
+            yields,
+            importNameForItem,
+            componentImport,
+            getPathScopes,
+            globalScope,
+            declaredInScope: (name) => {
+                return declaredInScope(name, globalRegistry);
+            },
+            blockPaths,
+            globalRegistry,
+            tailForGlobalScope,
+            getItemScopes,
+            addComponentImport,
+            pathsForGlobalScope,
+            addImport,
+            componentsForImport
+        });
+        klass[key] = result;
+        klass[key + '_simple'] = simpleResult;
+    });
+    otherTokens.forEach(key => {
         let node = klass[key];
         if (hbs_transform_1.transform.support(node)) {
-            klass[key] = hbs_transform_1.transform.transform(node, key);
-        }
-        else if (node.type === "PathExpression") {
-            klass[key] = hbs_transform_1.transformPathExpression(node, key, {
-                yields,
-                importNameForItem,
-                componentImport,
-                getPathScopes,
-                globalScope,
-                declaredInScope: (name) => {
-                    return declaredInScope(name, globalRegistry);
-                },
-                blockPaths,
-                globalRegistry,
-                tailForGlobalScope,
-                getItemScopes,
-                addComponentImport,
-                pathsForGlobalScope,
-                addImport,
-                componentsForImport
-            });
+            klass[key] = hbs_transform_1.transform.transform(node, key, klass);
         }
     });
-    return makeClass({ imports, yields, klass, comments, typeDeclarations, componentImport, globalScope });
+    return makeClass({ imports, yields, klass, comments, componentImport, globalScope, definedScope });
 }
 exports.getClass = getClass;
 function serializeKey(key) {
     return key.split(" - ")[0];
 }
-function makeClass({ imports, yields, klass, comments, typeDeclarations, componentImport, globalScope }) {
+function makeClass({ imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
     const hasNocheck = comments.find(([_, el]) => el.includes('@ts-nocheck'));
     function commentForNode(rawPos) {
         let pos = parseInt(rawPos.split(':')[0].split(',')[0], 10);
@@ -237,45 +222,40 @@ function makeClass({ imports, yields, klass, comments, typeDeclarations, compone
   `;
     let klssTpl = `
 
-  ${hasNocheck ? '// @ts-nocheck' : ''}
+${hasNocheck ? '// @ts-nocheck' : ''}
+${componentKlassImport}
+${imports.join("\n")}
+import { GlobalRegistry } from "ember-typed-templates";
 
-  ${componentKlassImport}
-
-  ${imports.join("\n")}
-
-  ${typeDeclarations}
-
-  import { GlobalRegistry } from "ember-typed-templates";
-  
-  interface TemplateScopeRegistry {
-    ${Object.keys(globalScope)
+interface TemplateScopeRegistry {
+${Object.keys(globalScope)
+        .filter((key) => !(key in definedScope))
         .map(key => {
-        return `["${key}"]:${globalScope[key]};`;
+        return `  ["${key}"]:${globalScope[key]};`;
     })
         .join("\n")}
+}
+
+type Modify<T, R> = Omit<T, keyof R> & R;
+
+type EmberTemplateScopeRegistry = Modify<TemplateScopeRegistry, GlobalRegistry>;
+
+${templateComponentDeclaration} {
+  ${componentExtraProperties}
+  globalScope:  EmberTemplateScopeRegistry;
+  defaultYield() {
+    return ${yields.length ? `this['${yields[0]}']()` : "[]"};
   }
-
-  type Modify<T, R> = Omit<T, keyof R> & R;
-
-  type EmberTemplateScopeRegistry = Modify<TemplateScopeRegistry, GlobalRegistry>;
-
-  ${templateComponentDeclaration} {
-      ${componentExtraProperties}
-      globalScope:  EmberTemplateScopeRegistry;
-      defaultYield() {
-        return ${yields.length ? `this['${yields[0]}']()` : "[]"};
-      }
-      //@mark-meaningful-issues-start
-      ${Object.keys(klass)
+  //@mark-meaningful-issues-start
+  ${Object.keys(klass)
         .map(key => {
         return `${commentForNode(serializeKey(key))}
-          //@mark [${serializeKey(key)}]
-          "${key}"${klass[key]};`;
-    })
-        .join("\n")}
-  }
-      
-  `;
-    return klssTpl;
+  //@mark [${serializeKey(key)}]
+  "${key}"${klass[key]};`;
+    }).join("\n")}
+}
+    
+`;
+    return klssTpl.trim();
 }
 //# sourceMappingURL=hbs-converter.js.map

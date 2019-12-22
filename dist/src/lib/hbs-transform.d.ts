@@ -15,16 +15,21 @@ export declare function transformPathExpression(node: any, key: any, { getItemSc
     globalScope: any;
     blockPaths: any;
     globalRegistry: any;
-}): string;
+}): {
+    result: string;
+    simpleResult: string;
+};
 export declare const transform: {
+    klass: {};
     support(node: any): boolean;
-    transform(node: any, key: string): string;
+    transform(node: any, key: string, klass?: any): string;
     wrapToFunction(str: string, key: string): string;
     addMark(key: string): string;
     _wrap(str: string, key: string): string;
     fn(args: string, body: string, key: string): string;
     _makeFn(rawArgs: string, rawBody: string, key: string): string;
     TextNode(node: any): string;
+    pathCall(node: any): any;
     hashedExp(node: any): string;
     SubExpression(node: any): string;
     MustacheStatement(node: any): string;
