@@ -15,6 +15,10 @@ import { getClassMeta} from './ast-parser';
 //   `;
 // }
 
+function normalizePath(name: string) {
+  return name.split('\\').join('/');
+}
+
 function getValidRegistryItems(registry: any, templateFile: string) {
   const items: any = {};
   if (registry === null) {
@@ -39,24 +43,23 @@ function getValidRegistryItems(registry: any, templateFile: string) {
     const componentKeys = ["component"];
     componentKeys.forEach(keyName => {
       Object.keys(registry[keyName]).forEach(name => {
-        const componentTemplates = registry[keyName][name].filter(
-          p => p.endsWith(".hbs")
-        );
-        const hasScriptHbs = componentTemplates.find(name=>name.endsWith('.hbs'));
+        const hasScriptHbs = registry[keyName][name].find(name=>name.endsWith('.hbs'));
         const componentScripts = registry[keyName][name].filter(
-          p => !p.endsWith(".hbs")
+          p => !p.endsWith(".hbs") && !p.includes('/tests/')
         ).sort();
         const hasScriptTs = componentScripts.find(name=>name.endsWith('.ts'));
         const hasScriptJs = componentScripts.find(name=>name.endsWith('.js'));
+        const hasAddonTs = componentScripts.find(name=>name.endsWith('.ts') && normalizePath(name).includes('/addon/'));
+        const hasAddonJs = componentScripts.find(name=>name.endsWith('.js') && normalizePath(name).includes('/addon/'));
         if (hasScriptHbs) {
           items[name] = {
             template: hasScriptHbs,
-            script: hasScriptTs || hasScriptJs || null
+            script: hasAddonTs || hasAddonJs || hasScriptTs || hasScriptJs || null
           }
         } else {
           items[name] = {
             template: null,
-            script: hasScriptTs || hasScriptJs || null
+            script: hasAddonTs || hasAddonJs || hasScriptTs || hasScriptJs || null
           }
         }
         
