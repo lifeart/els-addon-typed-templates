@@ -68,7 +68,7 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
     console.log("--------------------------");
     componentsMap[virtualFileName] = klass;
 }
-function getClass(componentsMap, fileName, { nodes, comments }, componentImport, globalRegistry, depth = 1) {
+function getClass(componentsMap, fileName, { nodes, comments }, componentImport, globalRegistry, depth = 3) {
     const yields = [];
     const imports = [];
     const items = nodes;

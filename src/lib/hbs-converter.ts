@@ -99,7 +99,7 @@ export function getClass(
   { nodes, comments },
   componentImport: string | null,
   globalRegistry: any,
-  depth: number = 1
+  depth: number = 3
 ) {
   const yields: string[] = [];
   const imports: string[] = [];

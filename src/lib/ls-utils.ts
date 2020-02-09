@@ -7,7 +7,7 @@ import {
   Diagnostic
 } from "vscode-languageserver";
 import * as fs from "fs";
-
+import * as path from "path";
 import { itemKind } from './utils';
 import { serializeArgumentName } from './ast-helpers';
 
@@ -63,9 +63,10 @@ export function offsetToRange(start, limit, source) {
 
 export function tsDefinitionToLocation(el) {
   let scope = el.textSpan;
+  let fullPath = path.resolve(el.fileName);
   let file = fs.readFileSync(el.fileName, "utf8");
   return Location.create(
-    URI.file(el.fileName).toString(),
+    URI.file(fullPath).toString(),
     offsetToRange(scope.start, scope.length, file)
   );
 }

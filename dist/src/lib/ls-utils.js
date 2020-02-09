@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const vscode_uri_1 = require("vscode-uri");
 const vscode_languageserver_1 = require("vscode-languageserver");
 const fs = require("fs");
+const path = require("path");
 const utils_1 = require("./utils");
 const ast_helpers_1 = require("./ast-helpers");
 function normalizeDefinitions(results) {
@@ -57,8 +58,9 @@ function offsetToRange(start, limit, source) {
 exports.offsetToRange = offsetToRange;
 function tsDefinitionToLocation(el) {
     let scope = el.textSpan;
+    let fullPath = path.resolve(el.fileName);
     let file = fs.readFileSync(el.fileName, "utf8");
-    return vscode_languageserver_1.Location.create(vscode_uri_1.URI.file(el.fileName).toString(), offsetToRange(scope.start, scope.length, file));
+    return vscode_languageserver_1.Location.create(vscode_uri_1.URI.file(fullPath).toString(), offsetToRange(scope.start, scope.length, file));
 }
 exports.tsDefinitionToLocation = tsDefinitionToLocation;
 function toFullDiagnostic(err) {
