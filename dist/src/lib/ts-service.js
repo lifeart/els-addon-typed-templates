@@ -127,6 +127,13 @@ function serviceForRoot(uri) {
                                 project.files.set(mirror, tsMeta);
                             }
                             if (tsMeta.version !== mirror.version) {
+                                if (!fs.existsSync(fileName)) {
+                                    // @to-do - figure out why remove event don't touch it
+                                    console.log(`typed-template: unable to get file ${fileName}, fix watcher`);
+                                    project.files.delete(mirror);
+                                    project.project.files.delete(fileName);
+                                    return ts.ScriptSnapshot.fromString("");
+                                }
                                 // if versions different - we need to update file
                                 tsMeta.snapshot = ts.ScriptSnapshot.fromString(fs.readFileSync(fileName).toString());
                                 if (STABLE_FILES.has(fileName)) {
