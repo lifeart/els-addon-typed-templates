@@ -434,8 +434,8 @@
         "signature": "0144b1a677874370a1fe1adfa58c0d6c3f0f014dccfa7c09698f5b59256fec9c"
       },
       "../src/lib/resolvers.ts": {
-        "version": "90d328eabb5287e1e3fc67e7f9718f1a814dffa5842461b869efc50f64e185c3",
-        "signature": "a9fe5e7eb7c5c47b19ef3f4470401478bb433da2922cf3e32007c789f22106f3"
+        "version": "6765c6cec4355e0bd7f2a3eefabdf75843753933cba5beef2710629d39a3205d",
+        "signature": "d87d297143c843f171320f4fcdfd941928e222155abbcc568cc91e5636f20f03"
       },
       "../node_modules/typescript/lib/typescript.d.ts": {
         "version": "a999e6b184852e7b868234aca57e9eef8faed858f483166aebb6763d8f04abf5",
@@ -6305,6 +6305,7 @@
       "../node_modules/vscode-languageserver/lib/main.d.ts",
       "../src/lib/utils.ts",
       "../src/lib/ast-helpers.ts",
+      "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
       "../src/lib/ts-service.ts",
       "../node_modules/camelcase/index.d.ts",
@@ -6487,41 +6488,17 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
+      "../src/lib/hbs-converter.ts",
+      "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
+      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
-      "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
       "../src/lib/hbs-extractor.test.ts",
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      [
-        "../src/lib/resolvers.ts",
-        [
-          {
-            "file": "../src/lib/resolvers.ts",
-            "start": 2587,
-            "length": 65,
-            "code": 2322,
-            "category": 1,
-            "messageText": {
-              "messageText": "Type 'string | null' is not assignable to type 'string'.",
-              "category": 1,
-              "code": 2322,
-              "next": [
-                {
-                  "messageText": "Type 'null' is not assignable to type 'string'.",
-                  "category": 1,
-                  "code": 2322
-                }
-              ]
-            }
-          }
-        ]
-      ],
-      "../src/index.ts",
-      "../src/lib/virtual-documents.ts",
-      "../src/lib/hbs-converter.ts"
+      "../src/lib/common-types.d.ts"
     ]
   },
   "version": "3.7.4"

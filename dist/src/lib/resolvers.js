@@ -45,7 +45,11 @@ function ralativeAddonImport(templateFileName, addonItemFileName) {
             .split(searchPref)[0];
         let addonName = addonFolderName;
         try {
-            let item = require(path.join(normalizedEntry, "node_modules", addonFolderName, "index.js"));
+            let entry = path.join(normalizedEntry, "node_modules", addonFolderName, "index.js");
+            if (!fs.existsSync(entry)) {
+                return null;
+            }
+            let item = require(entry);
             if (item.name) {
                 addonName = item.name;
             }

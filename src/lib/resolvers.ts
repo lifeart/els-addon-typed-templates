@@ -85,7 +85,7 @@ export function ralativeAddonImport(
 export function relativeComponentImport(
   templateFileName: string,
   scriptForComponent: string
-): string {
+): string | null {
   return ralativeAddonImport(templateFileName, scriptForComponent);
 }
 
