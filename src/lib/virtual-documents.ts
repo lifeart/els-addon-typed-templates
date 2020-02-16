@@ -38,6 +38,9 @@ function getValidRegistryItems(registry: any, templateFile: string) {
             items[name] = ralativeAddonImport(templateFile, itemPaths.sort()[0]);
           }
         }
+        if (items[name] === null) {
+          delete items[name];
+        }
       });
     });
     const componentKeys = ["component"];
@@ -45,7 +48,7 @@ function getValidRegistryItems(registry: any, templateFile: string) {
       Object.keys(registry[keyName]).forEach(name => {
         const hasScriptHbs = registry[keyName][name].find(name=>name.endsWith('.hbs'));
         const componentScripts = registry[keyName][name].filter(
-          p => !p.endsWith(".hbs") && !p.includes('/tests/')
+          p => !p.endsWith(".hbs") && !p.includes('/tests/') && !p.includes('/dist/')
         ).sort();
         const hasScriptTs = componentScripts.find(name=>name.endsWith('.ts'));
         const hasScriptJs = componentScripts.find(name=>name.endsWith('.js'));

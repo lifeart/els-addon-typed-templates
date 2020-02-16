@@ -434,8 +434,8 @@
         "signature": "0144b1a677874370a1fe1adfa58c0d6c3f0f014dccfa7c09698f5b59256fec9c"
       },
       "../src/lib/resolvers.ts": {
-        "version": "f93ddfb50a179413ec0cfdbc7c89b48baa3c4dfa910818a53242d7de82956693",
-        "signature": "74a17c2b746dd368c8d44ae5fb2833f8fcf3223dc728799150720e8c4b944ab5"
+        "version": "90d328eabb5287e1e3fc67e7f9718f1a814dffa5842461b869efc50f64e185c3",
+        "signature": "a9fe5e7eb7c5c47b19ef3f4470401478bb433da2922cf3e32007c789f22106f3"
       },
       "../node_modules/typescript/lib/typescript.d.ts": {
         "version": "a999e6b184852e7b868234aca57e9eef8faed858f483166aebb6763d8f04abf5",
@@ -1170,7 +1170,7 @@
         "signature": "b15b9d58f89857aefe6c132e04ce7db5c5541ccafa823f3b9255e2cc00d866c6"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "d014c5e70688d983ceac568395cdf1c269989e3086b76c2523a6f6dbc2eae636",
+        "version": "0246e40107c761ed62b2db1c076eab6504f437bc79ba9309c2d073032ab31a05",
         "signature": "ab29443e4305cf4734ad9fbe04c2b632b1889bb22e155d5eee39f74f48516ea4"
       },
       "../src/lib/ls-utils.ts": {
@@ -6305,8 +6305,8 @@
       "../node_modules/vscode-languageserver/lib/main.d.ts",
       "../src/lib/utils.ts",
       "../src/lib/ast-helpers.ts",
-      "../src/lib/resolvers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
+      "../src/lib/ts-service.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -6487,10 +6487,7 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
-      "../src/lib/hbs-converter.ts",
-      "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
-      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -6498,7 +6495,33 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ts-service.ts"
+      [
+        "../src/lib/resolvers.ts",
+        [
+          {
+            "file": "../src/lib/resolvers.ts",
+            "start": 2587,
+            "length": 65,
+            "code": 2322,
+            "category": 1,
+            "messageText": {
+              "messageText": "Type 'string | null' is not assignable to type 'string'.",
+              "category": 1,
+              "code": 2322,
+              "next": [
+                {
+                  "messageText": "Type 'null' is not assignable to type 'string'.",
+                  "category": 1,
+                  "code": 2322
+                }
+              ]
+            }
+          }
+        ]
+      ],
+      "../src/index.ts",
+      "../src/lib/virtual-documents.ts",
+      "../src/lib/hbs-converter.ts"
     ]
   },
   "version": "3.7.4"

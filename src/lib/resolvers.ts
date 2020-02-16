@@ -28,7 +28,7 @@ export function relativeImport(templateFile, scriptFile) {
 export function ralativeAddonImport(
   templateFileName: string,
   addonItemFileName: string
-): string {
+): string | null {
   let extname = path.extname(addonItemFileName);
   let subRelative = relativeImport(templateFileName, addonItemFileName);
   // ./../../../node_modules/@ember/render-modifiers/app/modifiers/did-insert
@@ -47,12 +47,16 @@ export function ralativeAddonImport(
       .split(searchPref)[0];
     let addonName = addonFolderName;
     try {
-      let item = require(path.join(
+      let entry = path.join(
         normalizedEntry,
         "node_modules",
         addonFolderName,
         "index.js"
-      ));
+      );
+      if (!fs.existsSync(entry)) {
+        return null;
+      }
+      let item = require(entry);
       if (item.name) {
         addonName = item.name;
       }
