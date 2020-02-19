@@ -99,7 +99,7 @@ export function getClass(
   { nodes, comments },
   componentImport: string | null,
   globalRegistry: any,
-  depth: number = 3
+  depth: number = 4
 ) {
   const yields: string[] = [];
   const imports: string[] = [];
@@ -286,6 +286,9 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
   function commentForNode(rawPos) {
     let pos = parseInt(rawPos.split(':')[0].split(',')[0], 10);
     let comment = comments.find(([commentPos])=>commentPos === pos);
+    if (comment && comment[1].includes(' Args') && comment[1].includes('interface ')) {
+      return '';
+    }
     if (comment) {
       let value = comment[1].trim();
       return (value.includes('//') || value.includes('/*'))  ? value : '// ' + value;
@@ -301,7 +304,7 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
     ? `export default class Template extends Component`
     : `export default class TemplateOnlyComponent`;
 
-  const componentExtraProperties = componentImport
+  const componentExtraProperties = componentImport && !hasArgsTypings
     ? ""
     : `
     args: ${hasArgsTypings ? 'Args' : 'any'};

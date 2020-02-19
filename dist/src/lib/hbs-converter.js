@@ -68,7 +68,7 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
     console.log("--------------------------");
     componentsMap[virtualFileName] = klass;
 }
-function getClass(componentsMap, fileName, { nodes, comments }, componentImport, globalRegistry, depth = 3) {
+function getClass(componentsMap, fileName, { nodes, comments }, componentImport, globalRegistry, depth = 4) {
     const yields = [];
     const imports = [];
     const items = nodes;
@@ -214,6 +214,9 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
     function commentForNode(rawPos) {
         let pos = parseInt(rawPos.split(':')[0].split(',')[0], 10);
         let comment = comments.find(([commentPos]) => commentPos === pos);
+        if (comment && comment[1].includes(' Args') && comment[1].includes('interface ')) {
+            return '';
+        }
         if (comment) {
             let value = comment[1].trim();
             return (value.includes('//') || value.includes('/*')) ? value : '// ' + value;
@@ -228,7 +231,7 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
     const templateComponentDeclaration = componentImport
         ? `export default class Template extends Component`
         : `export default class TemplateOnlyComponent`;
-    const componentExtraProperties = componentImport
+    const componentExtraProperties = componentImport && !hasArgsTypings
         ? ""
         : `
     args: ${hasArgsTypings ? 'Args' : 'any'};
