@@ -1,6 +1,6 @@
 {
   "name": "els-addon-typed-templates",
-  "version": "2.2.15",
+  "version": "2.2.16",
   "description": "Ember Language Server Typed Templates",
   "main": "dist/src/index.js",
   "scripts": {
