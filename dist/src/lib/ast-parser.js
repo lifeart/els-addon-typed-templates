@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const syntax_1 = require("@glimmer/syntax");
 const ast_helpers_1 = require("./ast-helpers");
+function cleanComment(text) {
+    return text.replace(/<\/?script[^>]*>/g, '');
+}
 function getClassMeta(source) {
     const nodes = [];
     const comments = [];
@@ -16,7 +19,7 @@ function getClassMeta(source) {
             },
             MustacheCommentStatement(node) {
                 if (node.loc) {
-                    comments.push([node.loc.end.line + 1, node.value]);
+                    comments.push([node.loc.end.line + 1, cleanComment(node.value)]);
                 }
             },
             BlockStatement(node) {
@@ -28,6 +31,12 @@ function getClassMeta(source) {
             ElementNode(node) {
                 if (ast_helpers_1.isSimpleBlockComponentElement(node)) {
                     nodes.push([ast_helpers_1.tagComponentToBlock(node)]);
+                }
+                else if (node.tag === 'script' && node.attributes.find(({ name }) => name === '@typedef')) {
+                    const text = node.children.find(({ type }) => type === 'TextNode');
+                    if (text) {
+                        comments.push([node.loc.end.line + 1, text.chars]);
+                    }
                 }
             },
             SubExpression(node) {

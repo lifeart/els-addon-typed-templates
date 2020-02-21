@@ -5,6 +5,10 @@ import {
   tagComponentToBlock
 } from "./ast-helpers";
 
+function cleanComment(text) {
+  return text.replace(/<\/?script[^>]*>/g,'');
+}
+
 export function getClassMeta(source) {
   const nodes: any = [];
   const comments: any = [];
@@ -20,7 +24,7 @@ export function getClassMeta(source) {
       },
       MustacheCommentStatement(node) {
         if (node.loc) {
-          comments.push([node.loc.end.line + 1, node.value]);
+          comments.push([node.loc.end.line + 1, cleanComment(node.value)]);
         }
       },
       BlockStatement(node) {
@@ -32,6 +36,11 @@ export function getClassMeta(source) {
       ElementNode(node) {
         if (isSimpleBlockComponentElement(node)) {
           nodes.push([tagComponentToBlock(node)]);
+        } else if (node.tag === 'script' && node.attributes.find(({name})=>name === '@typedef')) {
+          const text: any = node.children.find(({type})=> type === 'TextNode');
+          if (text) {
+            comments.push([node.loc.end.line + 1, text.chars]);
+          }
         }
       },
       SubExpression(node) {

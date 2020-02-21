@@ -84,6 +84,7 @@ function findComponentForTemplate(fsPath, projectRoot) {
     const fileName = path.basename(absPath, extName);
     const dir = path.dirname(absPath);
     const classicComponentTemplatesLocation = "app/templates/components";
+    const addonCliassicComponentTemplatesLocation = "addon/templates/components";
     const normalizedDirname = dir.split(path.sep).join("/");
     const fileNames = [
         fileName + ".ts",
@@ -109,6 +110,17 @@ function findComponentForTemplate(fsPath, projectRoot) {
         posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "index.js")));
         posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "component.ts")));
         posibleNames.push(path.resolve(path.join(projectRoot, "app", "components", pureName, "component.js")));
+    }
+    if (relativePath.startsWith(addonCliassicComponentTemplatesLocation)) {
+        // console.log('relativePath', relativePath);
+        const pureName = normalizedDirname.split(addonCliassicComponentTemplatesLocation).pop() +
+            fileName;
+        posibleNames.push(path.resolve(path.join(projectRoot, "addon", "components", pureName + ".ts")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "addon", "components", pureName + ".js")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "addon", "components", pureName, "index.ts")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "addon", "components", pureName, "index.js")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "addon", "components", pureName, "component.ts")));
+        posibleNames.push(path.resolve(path.join(projectRoot, "addon", "components", pureName, "component.js")));
     }
     // console.log('possibleComponentNames', posibleNames);
     return posibleNames.filter(fileLocation => fs.existsSync(fileLocation))[0];
