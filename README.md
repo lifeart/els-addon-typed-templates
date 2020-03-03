@@ -37,57 +37,23 @@ How typed template looks under the hood?
 
 ### VSCode
 
-Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable).
+Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable) (>= `0.2.57` required)
 
 * Restart `VSCode`.
 
-
 ## Usage
-
 
 Try type `{{this.}}` or `{{@}}` inside component template.
 
-[UELS](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable) >= `0.2.57` required.
+### Typescript Components
 
+A component.ts file will work with no changes needed.
 
-### Ignore line?
+### Template Only Components
 
- - use handlebars comments
+A template only component needs some additional information.
 
-```hbs
- {{!-- @ts-ignore --}} 
- {{this.line.to.ignore}}
-```
-
-### Ignore file?
-
-```hbs
-{{!-- @ts-nocheck --}}
-```
-
-
-### Owerride/Extend global typings?
-
-```ts
-// + project/types/index.d.ts
-declare module "ember-typed-templates" {
-    interface GlobalRegistry {
-		// helper, component, modifier name -> result
-        'unknown-helper': (params: string[], hash?)=> string,
-        'block': (params?, hash?) => [ { someFirstBlockParamProperty: 42 } ]
-    }
-}
-```
-
-
-### Is it support JSDoc?
-
-- yes
-
-
-### How to get args checking for template-only components?
-
-- add typings (even in an `.js` project) to template!
+Note: This is also how Javascript/ JSDoc template only components work.
 
 ```hbs
 {{!-- 
@@ -100,20 +66,30 @@ declare module "ember-typed-templates" {
 {{@foo.bar}}
 ```
 
-### How to get block autocomplete / js files typings support ?
+### Javsacript Component (JSDoc)
 
+A component.js file needs some additional information in the js file to work.
 
 `components/cart.js`
 ```js
 /**
-* @typedef {import('./../services/cart').default} CartService
-*/
+ * @typedef {import('./../services/cart').default} CartService
+ * 
+ * @typedef {Object} Args
+ * @property {string} foo
+ * @property {import('./../models/bar'} bar
+ */
 export default class CartComponent extends Component {
-     /**
+    /**
      * CartService
      * @type {CartService}
      */
     @service('cart') cart;
+
+    /** @return {Args} */
+    get args() {
+        return this.super(...arguments);
+    }
 }
 ```
 
@@ -123,17 +99,45 @@ export default class CartComponent extends Component {
     {{item.name}} 
     // ^ will support autocomplete and linting
 {{/each}}
+
+{{@bar.price}}
+// ^ will support autocomplete and linting
 ```
 
+## FAQ
 
-### QA:
+### How can I ignore lines?
 
-``` 
-	- Would it be possible to add these as dependencies to the language server or somesuch?
-	- Nope, because it's "experimental" and "heavy" functionality, adding it into language server itself may decrease DX for other users. UELS has addon API, using this addon API you able add functionality into langserver. All addons scoped inside projects (to allow users have multple addon versions for different ember projects and versions).
+ - use handlebars comments
+
+```hbs
+{{!-- @ts-ignore --}} 
+{{this.line.to.ignore}}
 ```
 
-## Is it stable?
+### How can I ignore a file?
 
-* Sometimes it may crash your language server, don't worry it will awake automatically.
+```hbs
+{{!-- @ts-nocheck --}}
+```
 
+### How can I override/ extend global typings?
+
+```ts
+// + project/types/index.d.ts
+declare module "ember-typed-templates" {
+    interface GlobalRegistry {
+		// helper, component, modifier name -> result
+        'unknown-helper': (params: string[], hash?)=> string,
+        'block': (params?, hash?) => [ { someFirstBlockParamProperty: 42 } ]
+    }
+}
+```
+
+### Would it be possible to add these as dependencies to the language server or something similar?
+
+Nope, because it's "experimental" and "heavy" functionality, adding it into language server itself may decrease DX for other users. UELS has addon API, using this addon API you able add functionality into langserver. All addons scoped inside projects (to allow users have multple addon versions for different ember projects and versions).
+
+### Is it stable?
+
+Sometimes it may crash your language server, don't worry it will awake automatically.
