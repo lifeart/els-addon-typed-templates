@@ -17,13 +17,16 @@ const ts_service_1 = require("./lib/ts-service");
 const virtual_documents_1 = require("./lib/virtual-documents");
 const hbs_transform_1 = require("./lib/hbs-transform");
 const ls_utils_1 = require("./lib/ls-utils");
+function isTestFile(uri) {
+    return uri.includes('tests');
+}
 let hasLinter = false;
 /* */
 function lintFile(root, textDocument, server) {
     const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
     const marks = ['components', 'component'];
     const foundMarks = marks.filter((mark) => templatePath.includes(mark));
-    if (foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
+    if (isTestFile(templatePath) || foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
         return [];
     }
     const projectRoot = vscode_uri_1.URI.parse(root).fsPath;

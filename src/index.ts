@@ -17,6 +17,9 @@ import {
   getFullSemanticDiagnostics,
   normalizeCompletions
 } from "./lib/ls-utils";
+function isTestFile(uri) {
+  return uri.includes('tests');
+}
 
 let hasLinter: any = false;
 /* */
@@ -24,7 +27,7 @@ function lintFile(root, textDocument, server) {
   const templatePath = URI.parse(textDocument.uri).fsPath;
   const marks = ['components', 'component'];
   const foundMarks = marks.filter((mark) => templatePath.includes(mark));
-  if (foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
+  if (isTestFile(templatePath) || foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
     return [];
   }
   const projectRoot = URI.parse(root).fsPath;

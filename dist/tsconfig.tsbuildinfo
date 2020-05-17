@@ -1178,7 +1178,7 @@
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
-        "version": "7ec8d469557fe4e5696cf4cbc758d941b80646eb9185d33d3b5cb2de7b986cae",
+        "version": "170e729c5ba2e8c119386895770cd34917f9680e751ce2ca7d1a4189cd8c761e",
         "signature": "b16e75556a6b560c33f03232a40eb2827920d6f8ca40dd482ce83c748f06f6d5"
       },
       "../src/lib/ast-parser.test.ts": {
@@ -6485,12 +6485,12 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
+      "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
       "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
-      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -6498,7 +6498,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ast-parser.ts"
+      "../src/index.ts"
     ]
   },
   "version": "3.7.3"
