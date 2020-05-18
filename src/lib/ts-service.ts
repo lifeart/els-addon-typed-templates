@@ -15,10 +15,29 @@ export function componentsForService(service, clean = false) {
 
 type ProjectFile = { version: number };
 type TSMeta = { version: number; snapshot: ts.IScriptSnapshot };
+type MatchResultType =
+  | 'helper'
+  | 'service'
+  | 'route'
+  | 'controller'
+  | 'modifier'
+  | 'template'
+  | 'component'
+  | 'model'
+  | 'transform'
+  | 'adapter'
+  | 'serializer';
+
+interface MatchResult {
+  type: MatchResultType;
+  name: string;
+  className?: string;
+}
 
 interface ProjectMirror {
   project: {
     files: Map<string, ProjectFile>;
+    matchPathToType(filePath: string): null | MatchResult
   };
   files: WeakMap<ProjectFile, TSMeta>;
 }
@@ -31,6 +50,41 @@ export function registerProject(item) {
     project: item,
     files: new WeakMap()
   });
+}
+
+
+export function normalizeToAngleBracketName(name) {
+  const SIMPLE_DASHERIZE_REGEXP = /[a-z]|\/|-/g;
+  const ALPHA = /[A-Za-z0-9]/;
+
+  if (name.includes(".")) {
+    return name;
+  }
+
+  return name.replace(SIMPLE_DASHERIZE_REGEXP, (char, index) => {
+    if (char === "/") {
+      return "";
+    }
+
+    if (index === 0 || !ALPHA.test(name[index - 1])) {
+      return char.toUpperCase();
+    }
+
+    // Remove all occurrences of '-'s from the name that aren't starting with `-`
+    return char === "-" ? "" : char.toLowerCase();
+  });
+}
+
+
+
+export function typeForPath(root: string, uri: string) {
+  const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
+  let result =  projectMirror.project.matchPathToType(uri);
+  if (result === null) {
+    return null;
+  }
+  result.className = normalizeToAngleBracketName(result.name) +  result.type.charAt(0).toUpperCase() + result.type.slice(1);
+  return result;
 }
 
 export function serviceForRoot(uri): ts.LanguageService {

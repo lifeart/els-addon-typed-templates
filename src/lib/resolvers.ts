@@ -1,6 +1,8 @@
 import * as path from "path";
 import * as fs from "fs";
 
+import { typeForPath } from './ts-service';
+
 export function virtualTemplateFileName(fsPath) {
   const extName = path.extname(fsPath);
   return path
@@ -89,7 +91,7 @@ export function relativeComponentImport(
   return ralativeAddonImport(templateFileName, scriptForComponent);
 }
 
-export function findComponentForTemplate(fsPath, projectRoot) {
+export function findComponentForTemplate(fsPath, projectRoot) {  
   const extName = path.extname(fsPath);
   if (extName !== '.hbs') {
     return fsPath;

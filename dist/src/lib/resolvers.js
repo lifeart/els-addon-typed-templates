@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const fs = require("fs");
+const ts_service_1 = require("./ts-service");
 function virtualTemplateFileName(fsPath) {
     const extName = path.extname(fsPath);
     return path
@@ -76,6 +77,7 @@ function relativeComponentImport(templateFileName, scriptForComponent) {
 }
 exports.relativeComponentImport = relativeComponentImport;
 function findComponentForTemplate(fsPath, projectRoot) {
+    console.log('findComponentForTemplate', fsPath, JSON.stringify(ts_service_1.typeForPath(projectRoot, fsPath)));
     const extName = path.extname(fsPath);
     if (extName !== '.hbs') {
         return fsPath;
