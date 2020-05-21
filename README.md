@@ -78,6 +78,8 @@ A component.js file needs some additional information in the js file to work.
  * @typedef {Object} Args
  * @property {string} foo
  * @property {import('./../models/bar'} bar
+ * @extends Component<Args>
+
  */
 export default class CartComponent extends Component {
     /**
@@ -85,11 +87,6 @@ export default class CartComponent extends Component {
      * @type {CartService}
      */
     @service('cart') cart;
-
-    /** @return {Args} */
-    get args() {
-        return this.super(...arguments);
-    }
 }
 ```
 
