@@ -23,11 +23,17 @@ declare module "@ember/component" {
       super(...arguments);
       this.args = args;
     }
+    static extend(args) {
+      return class ExtendedComponent extends Component<typeof args> {
+
+      }
+    }
     args: Args;
     willDestroy: () => void;
     toString: () => string;
   }
 }
+
 
 declare module "@ember/component/helper" {
   export function helper<T>(Helper: T): T;
@@ -62,12 +68,16 @@ declare module "ember-typed-templates" {
   function TIfHeper<T, U, Y>([a, b, c]: [T, U?, Y?], hash?) {
     return !!a ? b : c;
   }
+  function TUnlessHeper<T, U, Y>([a, b, c]: [T, U?, Y?], hash?) {
+    return !TIfHeper(a,b,c, hash);
+  }
   export interface GlobalRegistry {
     ["each"]: EachHelper;
     ["let"]: LetHelper;
     ["hash"]: HashHelper;
     ["array"]: ArrayHelper;
     ["if"]: typeof TIfHeper;
+    ["unless"]: typeof TUnlessHeper;
     ["on"]: OnModifer;
     ["fn"]: FnHelper;
     ["yield"]: YieldHelper;
