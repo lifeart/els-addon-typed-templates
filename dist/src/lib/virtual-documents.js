@@ -16,8 +16,11 @@ const ast_parser_1 = require("./ast-parser");
 function normalizePath(name) {
     return name.split('\\').join('/');
 }
-function getValidRegistryItems(registry, templateFile) {
+function getValidRegistryItems(registry, templateFile, projectRoot) {
     const items = {};
+    if (!projectRoot) {
+        return items;
+    }
     if (registry === null) {
         return items;
     }
@@ -42,9 +45,10 @@ function getValidRegistryItems(registry, templateFile) {
         });
         const componentKeys = ["component"];
         componentKeys.forEach(keyName => {
+            // @to-do - fix this creepy stuff
             Object.keys(registry[keyName]).forEach(name => {
                 const hasScriptHbs = registry[keyName][name].find(name => name.endsWith('.hbs'));
-                const componentScripts = registry[keyName][name].filter(p => !p.endsWith(".hbs") && !p.includes('/tests/') && !p.includes('/dist/')).sort();
+                const componentScripts = registry[keyName][name].filter(p => !p.endsWith(".hbs") && !normalizePath(p).includes('/tests/') && !normalizePath(p).includes('/dist/')).sort();
                 const hasScriptTs = componentScripts.find(name => name.endsWith('.ts'));
                 const hasScriptJs = componentScripts.find(name => name.endsWith('.js'));
                 const hasAddonTs = componentScripts.find(name => name.endsWith('.ts') && normalizePath(name).includes('/addon/'));
@@ -80,8 +84,8 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
         relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
     }
     // console.log('scriptForComponent', scriptForComponent);
-    componentsMap[fileName] = hbs_converter_1.getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, relComponentImport, getValidRegistryItems(registry, fileName));
-    let debug = false;
+    componentsMap[fileName] = hbs_converter_1.getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, relComponentImport, getValidRegistryItems(registry, fileName, projectRoot));
+    let debug = true;
     if (debug) {
         console.log("===============");
         console.log(componentsMap[fileName]);

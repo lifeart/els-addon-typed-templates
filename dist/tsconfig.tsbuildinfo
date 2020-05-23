@@ -442,7 +442,7 @@
         "signature": "31c0b7f146d8a999f3285856ff6d2ee67afdb18b9177b358cb3cce0c43c5208d"
       },
       "../src/lib/resolvers.ts": {
-        "version": "ed1d8827ade26e7491a774eb6793f3b6b3311b081a53b507c7edd214f0b1e2b2",
+        "version": "e899caaadc6e0cde7ea07b4c5ae28d8a444550176b8f252f0a906636dc528e0e",
         "signature": "e82637cbbebe81f6640be57049c857fcc05eac6d187ae3b5e6c3e644db1d844e"
       },
       "../node_modules/camelcase/index.d.ts": {
@@ -786,11 +786,11 @@
         "signature": "db36ccb2d12b9c09fb402b2e2479971dfb6529662f5a3e06cd13386dffe0a742"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "61cf5b3d13345201e40b21320dcc5817955aeb2d23b19e8d42428a07296277ad",
+        "version": "bafa2cdc8c765b98b431536973639a4a3f4864bff2a0e0b26213884bc85c22d6",
         "signature": "e167eeff9edfb3d97ba60fd53a8683cd2b471d21484805160b12da6fd38853ed"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "2bc8ad3e2ae24e8636156608df41b23a1e96ff39c2de5953472b1eac3b040384",
+        "version": "69a09056fed815eb36d2927270e79352c7b4587ae42b24e5ec969ac4d524189b",
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
       "../src/lib/ls-utils.ts": {
@@ -4320,8 +4320,8 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
-      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
+      "../src/lib/ls-utils.ts",
       "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
@@ -4330,7 +4330,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ls-utils.ts"
+      "../src/lib/hbs-converter.ts"
     ]
   },
   "version": "3.7.3"

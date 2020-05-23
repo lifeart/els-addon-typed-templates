@@ -63,7 +63,7 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
     catch (e) {
         console.log(e);
     }
-    let debug = false;
+    let debug = true;
     if (debug) {
         console.log("--------------------------");
         console.log(virtualFileName);
@@ -236,6 +236,7 @@ function makeClass({ meta, builtinImports, imports, yields, klass, comments, com
             return '';
         }
     }
+    let isTemplateOnlyComponent = !componentImport;
     const componentKlassImport = componentImport
         ? `import Component from "${componentImport}";`
         : "";
@@ -271,6 +272,7 @@ ${hasArgsTypings ? hasArgsTypings[1] : ''}
 
 ${templateComponentDeclaration} {
   ${componentExtraProperties}
+  ${isTemplateOnlyComponent ? `constructor(owner:unknown, args: ${hasArgsTypings ? 'Args' : 'any'}) { this.args = args; }` : ''}
   globalScope:  EmberTemplateScopeRegistry;
   defaultYield() {
     return ${yields.length ? `this['${yields[0]}']()` : "[]"};

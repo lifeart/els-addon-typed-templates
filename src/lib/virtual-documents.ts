@@ -20,8 +20,11 @@ function normalizePath(name: string) {
   return name.split('\\').join('/');
 }
 
-function getValidRegistryItems(registry: any, templateFile: string) {
+function getValidRegistryItems(registry: any, templateFile: string, projectRoot: string) {
   const items: any = {};
+  if (!projectRoot) {
+    return items;
+  }
   if (registry === null) {
     return items;
   } else {
@@ -46,10 +49,11 @@ function getValidRegistryItems(registry: any, templateFile: string) {
     });
     const componentKeys = ["component"];
     componentKeys.forEach(keyName => {
+      // @to-do - fix this creepy stuff
       Object.keys(registry[keyName]).forEach(name => {
         const hasScriptHbs = registry[keyName][name].find(name=>name.endsWith('.hbs'));
         const componentScripts = registry[keyName][name].filter(
-          p => !p.endsWith(".hbs") && !p.includes('/tests/') && !p.includes('/dist/')
+          p => !p.endsWith(".hbs") && !normalizePath(p).includes('/tests/') && !normalizePath(p).includes('/dist/') 
         ).sort();
         const hasScriptTs = componentScripts.find(name=>name.endsWith('.ts'));
         const hasScriptJs = componentScripts.find(name=>name.endsWith('.js'));
@@ -102,9 +106,9 @@ export function createFullVirtualTemplate(
     fileName,
     {nodes, comments, projectRoot, meta},
     relComponentImport,
-    getValidRegistryItems(registry, fileName)
+    getValidRegistryItems(registry, fileName, projectRoot)
   );
-  let debug = false;
+  let debug = true;
   if (debug) {
     console.log("===============");
     console.log(componentsMap[fileName]);

@@ -110,7 +110,7 @@ export function findComponentForTemplate(fsPath, projectRoot) {
     });
   } else {
     possibleScripts = (registry.component[componentMeta.name] || []).filter((el)=>{
-      return typeForPath(projectRoot, el)?.kind === 'script';
+      return typeForPath(projectRoot, el)?.kind === 'script'
     });
   }
 
