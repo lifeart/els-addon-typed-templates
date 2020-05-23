@@ -1,16 +1,19 @@
 import { URI } from "vscode-uri";
-import { mergeResults } from "./lib/utils";
+import { mergeResults, normalizeAngleTagName } from "./lib/utils";
 import {
   isParamPath,
   isArgumentName,
   realPathName,
   canHandle,
+  isExternalComponentArgument,
+  relplaceFocusPathForExternalComponentArgument,
   isEachArgument,
   normalizeArgumentName
 } from "./lib/ast-helpers";
 import { virtualTemplateFileName, virtualComponentTemplateFileName } from "./lib/resolvers";
 import { serviceForRoot, componentsForService, registerProject, typeForPath, serverForProject } from './lib/ts-service';
 import { createVirtualTemplate, createFullVirtualTemplate } from "./lib/virtual-documents";
+import { getFirstASTNode } from './lib/ast-parser';
 import { positionForItem } from './lib/hbs-transform';
 import {
   normalizeDefinitions,
@@ -120,11 +123,25 @@ export async function onComplete(
 
   try {
     const isParam = isParamPath(focusPath);
+    const isExternalComponentArg = isExternalComponentArgument(focusPath);
+    let originalComponentName = '';
+    if (isExternalComponentArg) {
+      focusPath = relplaceFocusPathForExternalComponentArgument(focusPath);
+      originalComponentName = normalizeAngleTagName(focusPath.parent.tag);
+    }
     const projectRoot = URI.parse(root).fsPath;
     const service = serviceForRoot(projectRoot);
     const server = serverForProject(projectRoot);
     const componentsMap = componentsForService(service, true);
-    const templatePath = URI.parse(textDocument.uri).fsPath;
+    let templatePath = URI.parse(textDocument.uri).fsPath;
+    if (isExternalComponentArg) {
+      let possibleTemplates = server.getRegistry(projectRoot).component[originalComponentName] || [];
+      possibleTemplates.forEach((el)=>{
+        if (el.endsWith('.hbs')) {
+          templatePath = el;
+        }
+      })
+    }
     const componentMeta = typeForPath(projectRoot, templatePath);
     if (!componentMeta) {
       return;
@@ -132,9 +149,15 @@ export async function onComplete(
     let isArg = false;
     const isArrayCase = isEachArgument(focusPath);
     let realPath = realPathName(focusPath);
-    if (isArgumentName(realPath)) {
+    let content = focusPath.content;
+    if (isArgumentName(realPath) || isExternalComponentArg) {
       isArg = true;
-      realPath = normalizeArgumentName(realPath);
+      if (isExternalComponentArg) {
+        realPath = normalizeArgumentName(focusPath.node.name);
+        content = `{{${realPath}}}`;
+      } else {
+        realPath = normalizeArgumentName(realPath);
+      }
     }
 
     const fileName = virtualTemplateFileName(templatePath);
@@ -154,10 +177,15 @@ export async function onComplete(
       }
     );
 
+    let nodePosition = positionForItem(focusPath.node);
+
     let tsResults: any = null;
     try {
-      let markId = `; /*@path-mark ${positionForItem(focusPath.node)}*/`;
-      let tpl = createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, focusPath.content as string, componentMeta);
+      if (isExternalComponentArg) {
+        nodePosition = positionForItem((getFirstASTNode(content) as any).path);
+      }
+      let markId = `; /*@path-mark ${nodePosition}*/`;
+      let tpl = createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, content as string, componentMeta);
       tsResults = service.getCompletionsAtPosition(fullFileName, tpl.indexOf(markId), {
         includeInsertTextCompletions: true
       });

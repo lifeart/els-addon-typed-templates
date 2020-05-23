@@ -5,6 +5,10 @@ const ast_helpers_1 = require("./ast-helpers");
 function cleanComment(text) {
     return text.replace(/<\/?script[^>]*>/g, '');
 }
+function getFirstASTNode(source) {
+    return syntax_1.preprocess(source).body[0];
+}
+exports.getFirstASTNode = getFirstASTNode;
 function getClassMeta(source) {
     const nodes = [];
     const comments = [];

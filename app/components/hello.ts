@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 
 interface Args  {
     foo: number;
+    boo: string;
 }
 
 

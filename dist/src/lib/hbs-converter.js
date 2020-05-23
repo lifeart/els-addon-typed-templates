@@ -63,11 +63,14 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
     catch (e) {
         console.log(e);
     }
-    console.log("--------------------------");
-    console.log(virtualFileName);
-    console.log("--------------------------");
-    console.log(klass);
-    console.log("--------------------------");
+    let debug = false;
+    if (debug) {
+        console.log("--------------------------");
+        console.log(virtualFileName);
+        console.log("--------------------------");
+        console.log(klass);
+        console.log("--------------------------");
+    }
     componentsMap[virtualFileName] = klass;
 }
 function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, componentImport, globalRegistry, depth = 4) {

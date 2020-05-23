@@ -98,6 +98,7 @@ function serviceForRoot(uri) {
                 return Object.assign({}, tsConfig, {
                     baseUrl: ".",
                     allowJs: true,
+                    checkJs: true,
                     allowSyntheticDefaultImports: true,
                     skipLibCheck: true,
                     experimentalDecorators: true,

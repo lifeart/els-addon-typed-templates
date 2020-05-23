@@ -2,6 +2,10 @@ declare module "@glimmer/component" {
   export default class Component<Args extends {} = {}> extends BaseComponent<
     Args
   > {
+    constructor(owner: unknown, args: Args) {
+      super(...arguments);
+      this.args = args;
+    }
     args: Args;
     willDestroy: () => void;
     toString: () => string;
@@ -11,9 +15,14 @@ declare module "@glimmer/component" {
 declare module "@ember/component" {
   export function setComponentTemplate<T, U>(Template: T, Klass: U): U;
 
+
   export default class Component<Args extends {} = {}> extends BaseComponent<
     Args
   > {
+    constructor(owner: unknown, args: Args) {
+      super(...arguments);
+      this.args = args;
+    }
     args: Args;
     willDestroy: () => void;
     toString: () => string;

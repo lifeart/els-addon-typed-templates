@@ -87,11 +87,15 @@ function registerTemplateKlassForFile(
   } catch (e) {
     console.log(e);
   }
-  console.log("--------------------------");
-  console.log(virtualFileName);
-  console.log("--------------------------");
-  console.log(klass);
-  console.log("--------------------------");
+
+  let debug = false;
+  if (debug) {
+    console.log("--------------------------");
+    console.log(virtualFileName);
+    console.log("--------------------------");
+    console.log(klass);
+    console.log("--------------------------");
+  }
 
   componentsMap[virtualFileName] = klass;
 }

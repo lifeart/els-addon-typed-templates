@@ -166,6 +166,7 @@ export function serviceForRoot(uri): ts.LanguageService {
         return Object.assign({}, tsConfig, {
           baseUrl: ".",
           allowJs: true,
+          checkJs: true,
           allowSyntheticDefaultImports: true,
           skipLibCheck: true,
           experimentalDecorators: true,
