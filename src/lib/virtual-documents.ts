@@ -5,6 +5,7 @@ import {
   relativeComponentImport,
   ralativeAddonImport
 } from "./resolvers";
+import { MatchResult, typeForPath } from './ts-service';
 import { getClass } from "./hbs-converter";
 import { getClassMeta} from './ast-parser';
 // function yieldedContext() {
@@ -79,20 +80,18 @@ export function createFullVirtualTemplate(
   fileName,
   server,
   uri,
-  content: string | boolean = false
+  content: string | boolean = false,
+  meta: MatchResult
 ) {
   const document = server.documents.get(uri);
   if (!document && !content) {
-    return `export default class Template {};`;
+    return `export default class ${meta.className}Template {};`;
   }
   const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
   content = content ? content : document.getText();
   const { nodes, comments } = getClassMeta(content);
-  const scriptForComponent = findComponentForTemplate(
-    templatePath,
-    projectRoot
-  );
-
+  
+  let scriptForComponent =  findComponentForTemplate(templatePath, projectRoot)
   let relComponentImport: string | null = null;
 
   if (scriptForComponent) {
@@ -101,7 +100,7 @@ export function createFullVirtualTemplate(
   // console.log('scriptForComponent', scriptForComponent);
   componentsMap[fileName] = getClass(componentsMap,
     fileName,
-    {nodes, comments},
+    {nodes, comments, projectRoot, meta},
     relComponentImport,
     getValidRegistryItems(registry, fileName)
   );
@@ -117,39 +116,38 @@ export function createVirtualTemplate(
   fileName,
   { templatePath, realPath, isArg, isArrayCase, isParam }: any
 ) {
-  // console.log('createVirtualTemplate')
+  
   const scriptForComponent = findComponentForTemplate(
     templatePath,
     projectRoot
   );
   let isTemplateOnly = false;
   let relComponentImport: any = undefined;
+  let className = 'Template';
+
+  const meta = typeForPath(projectRoot, templatePath);
+  if (meta) {
+    className = meta.className + 'Template';
+  }
 
   if (!scriptForComponent) {
     isTemplateOnly = true;
   } else {
     relComponentImport = relativeComponentImport(fileName, scriptForComponent);
   }
-  // console.log('scriptForComponent', scriptForComponent)
-
-  // console.log('relComponentImport', relComponentImport)
-
-  // componentsMap[scriptForComponent] = fs.readFileSync(
-  //   scriptForComponent,
-  //   "utf8"
-  // );
-  // console.log('fileName', fileName)
 
   componentsMap[fileName] = getBasicComponent(realPath, {
     relComponentImport,
     isArg,
     isParam,
+    className,
     isTemplateOnly,
     isArrayCase
   });
   let posStart = getBasicComponent(PLACEHOLDER, {
     relComponentImport,
     isParam,
+    className,
     isTemplateOnly,
     isArrayCase,
     isArg
@@ -162,6 +160,10 @@ export function getBasicComponent(pathExp = PLACEHOLDER, flags: any = {}) {
   let outputType = "string | number | void";
   let relImport = flags.relComponentImport || "./component";
   let templateOnly = "";
+  let className = "Template";
+  if (flags.className) {
+    className = flags.className;
+  }
   if (flags.isTemplateOnly) {
     templateOnly = "args: any;";
   }
@@ -171,9 +173,23 @@ export function getBasicComponent(pathExp = PLACEHOLDER, flags: any = {}) {
   if (flags.isParam) {
     outputType = "any";
   }
+
+  if (flags.isTemplateOnly) {
+    return [
+      `export default class ${className} {`,
+      `constructor(owner, args) {
+        this.args = args;
+      };`,
+      templateOnly,
+      `_template_PathExpresion(): ${outputType} {`,
+      "return " + pathExp,
+      "}",
+      "}"
+    ].join("");
+  }
   return [
     `import Component from "${relImport}";`,
-    "export default class Template extends Component {",
+    `export default class ${className} extends Component {`,
     templateOnly,
     `_template_PathExpresion(): ${outputType} {`,
     "return " + pathExp,

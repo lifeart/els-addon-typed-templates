@@ -28,9 +28,12 @@ type MatchResultType =
   | 'adapter'
   | 'serializer';
 
-interface MatchResult {
+// {"type":"component","name":"my-component","kind":"template","scope":"application","className":"MyComponentComponent"}
+export interface MatchResult {
   type: MatchResultType;
   name: string;
+  kind: string;
+  scope: string;
   className?: string;
 }
 
@@ -39,15 +42,23 @@ interface ProjectMirror {
     files: Map<string, ProjectFile>;
     matchPathToType(filePath: string): null | MatchResult
   };
+  server: {
+    getRegistry(root: string): {
+      [key: string]: {
+        [key: string]: string[]
+      }
+    }
+  },
   files: WeakMap<ProjectFile, TSMeta>;
 }
 
 const STABLE_FILES: Map<string, TSMeta> = new Map();
 const PROJECTS_MAP: Map<string, ProjectMirror> = new Map();
 
-export function registerProject(item) {
+export function registerProject(item, server) {
   PROJECTS_MAP.set(item.root.split(":").pop(), {
     project: item,
+    server: server,
     files: new WeakMap()
   });
 }
@@ -75,7 +86,10 @@ export function normalizeToAngleBracketName(name) {
   });
 }
 
-
+export function serverForProject(root: string) {
+  const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
+  return projectMirror.server;
+}
 
 export function typeForPath(root: string, uri: string) {
   const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;

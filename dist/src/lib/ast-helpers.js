@@ -62,7 +62,7 @@ function isEachArgument(focusPath) {
 }
 exports.isEachArgument = isEachArgument;
 function isSimpleBlockComponentElement(node) {
-    return node.blockParams.length && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
+    return !node.tag.startsWith('.') && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
 }
 exports.isSimpleBlockComponentElement = isSimpleBlockComponentElement;
 function positionForItem(item) {

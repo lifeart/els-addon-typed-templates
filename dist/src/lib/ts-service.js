@@ -15,9 +15,10 @@ function componentsForService(service, clean = false) {
 exports.componentsForService = componentsForService;
 const STABLE_FILES = new Map();
 const PROJECTS_MAP = new Map();
-function registerProject(item) {
+function registerProject(item, server) {
     PROJECTS_MAP.set(item.root.split(":").pop(), {
         project: item,
+        server: server,
         files: new WeakMap()
     });
 }
@@ -40,6 +41,11 @@ function normalizeToAngleBracketName(name) {
     });
 }
 exports.normalizeToAngleBracketName = normalizeToAngleBracketName;
+function serverForProject(root) {
+    const projectMirror = PROJECTS_MAP.get(root);
+    return projectMirror.server;
+}
+exports.serverForProject = serverForProject;
 function typeForPath(root, uri) {
     const projectMirror = PROJECTS_MAP.get(root);
     let result = projectMirror.project.matchPathToType(uri);

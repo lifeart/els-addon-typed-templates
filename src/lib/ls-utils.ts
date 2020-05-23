@@ -70,6 +70,22 @@ export function tsDefinitionToLocation(el) {
     offsetToRange(scope.start, scope.length, file)
   );
 }
+
+function censor(censor) {
+  var i = 0;
+
+  return function(_, value) {
+    if(i !== 0 && typeof(censor) === 'object' && typeof(value) == 'object' && censor == value) 
+      return '[Circular]'; 
+
+    if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
+      return '[Unknown]';
+
+    ++i; // so we know we aren't using the original object anymore
+
+    return value;  
+  }
+}
  
 function toFullDiagnostic(err) {
   let preErrorText = err.file.text.slice(0, err.start);
@@ -93,10 +109,8 @@ function toFullDiagnostic(err) {
   // console.log('preErrorText',preErrorText.slice(preErrorText.lastIndexOf('//@mark ') + 8, preErrorText.lastIndexOf('//@mark ') + 40));
   let [startCol, startRow] =  start.split(',').map((e)=>parseInt(e, 10));
   let [endCol, endRow] =  end.split(',').map((e)=>parseInt(e, 10));
-  let msgText = err.messageText;
-  if (msgText.messageText) {
-    msgText = msgText.messageText;
-  }
+  console.log(JSON.stringify(err, censor(err)));
+  let msgText = diagnosticToString(err.messageText);
   return {
     severity: DiagnosticSeverity.Error,
     range: Range.create(startCol - 1, startRow, endCol - 1, endRow),
@@ -104,6 +118,18 @@ function toFullDiagnostic(err) {
     source: "typed-templates"
   };
 }
+
+// regards to https://github.com/dfreeman/ember-typed-templates-vscode/blob/master/src/server/server.ts#L172
+function diagnosticToString(message: string | ts.DiagnosticMessageChain, indent = ''): string {
+  if (typeof message === 'string') {
+    return `${indent}${message}`;
+  } else if (message.next && message.next.length) {
+    return `${indent}${message.messageText}\n${diagnosticToString(message.next[0], `${indent}  `)}`;
+  } else {
+    return `${indent}${message.messageText}`;
+  }
+}
+
 
 export function getFullSemanticDiagnostics(service:  ts.LanguageService, fileName) {
   const tsDiagnostics = service.getSemanticDiagnostics(fileName);

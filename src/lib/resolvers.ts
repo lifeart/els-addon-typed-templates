@@ -1,20 +1,19 @@
 import * as path from "path";
 import * as fs from "fs";
-
-import { typeForPath } from './ts-service';
+import { serverForProject, typeForPath } from './ts-service';
 
 export function virtualTemplateFileName(fsPath) {
   const extName = path.extname(fsPath);
   return path
     .resolve(fsPath)
-    .replace(extName, "_" + "_typed_template.ts");
+    .replace(extName, "--virtual-typed-template.ts");
 }
 
 export function virtualComponentTemplateFileName(fsPath) {
   const extName = path.extname(fsPath);
   return path
     .resolve(fsPath)
-    .replace(extName, "_" + "_typed_component_template.ts");
+    .replace(extName, "--virtual-typed-component-template.ts");
 }
 
 export function relativeImport(templateFile, scriptFile) {
@@ -91,109 +90,34 @@ export function relativeComponentImport(
   return ralativeAddonImport(templateFileName, scriptForComponent);
 }
 
-export function findComponentForTemplate(fsPath, projectRoot) {  
+export function findComponentForTemplate(fsPath, projectRoot) { 
   const extName = path.extname(fsPath);
-  if (extName !== '.hbs') {
-    return fsPath;
-  }
-  const absPath = path.resolve(fsPath);
-  const fileName = path.basename(absPath, extName);
-  const dir = path.dirname(absPath);
-  const classicComponentTemplatesLocation = "app/templates/components";
-  const addonCliassicComponentTemplatesLocation =  "addon/templates/components";
-  const normalizedDirname = dir.split(path.sep).join("/");
-  const fileNames = [
-    fileName + ".ts",
-    fileName + ".js",
-    "component.ts",
-    "component.js"
-  ];
-  const relativePath = path
-  .relative(projectRoot, dir)
-  .split(path.sep)
-  .join("/");
-  if (!relativePath.startsWith(classicComponentTemplatesLocation) && fileName === 'template') {
-    fileNames.push('controller.ts');
-    fileNames.push('controller.js');
-  }
-  const posibleNames = fileNames.map(name => path.join(dir, name));
- 
-  if (relativePath.startsWith(classicComponentTemplatesLocation)) {
-    const pureName =
-      normalizedDirname.split(classicComponentTemplatesLocation).pop() +
-      fileName;
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "app", "components", pureName + ".ts")
-      )
-    );
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "app", "components", pureName + ".js")
-      )
-    );
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "app", "components", pureName, "index.ts")
-      )
-    );
+  const componentMeta = typeForPath(projectRoot, fsPath);
 
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "app", "components", pureName, "index.js")
-      )
-    );
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "app", "components", pureName, "component.ts")
-      )
-    );
+  if (extName !== '.hbs' || !componentMeta) {
+    // @to-do figure out this strategy
+    return null;
+  } 
 
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "app", "components", pureName, "component.js")
-      )
-    );
+  const server = serverForProject(projectRoot);
+
+  const registry = server.getRegistry(projectRoot);
+
+  let possibleScripts = registry['component'][componentMeta.name].filter((el)=>{
+    return typeForPath(projectRoot, el)?.kind === 'script';
+  });
+
+  if (possibleScripts.length > 1) {
+    possibleScripts = possibleScripts.filter((el)=> {
+      // to-do - add support for typed-templates in addons (we need to check is it addon or not and replace scope)
+      return typeForPath(projectRoot, el)?.scope === 'application';
+    })
+  }
+  if (possibleScripts.length > 1) {
+    possibleScripts = possibleScripts.filter((el)=> {
+      return el.endsWith('.ts');
+    })
   }
 
-  if (relativePath.startsWith(addonCliassicComponentTemplatesLocation)) {
-    // console.log('relativePath', relativePath);
-    const pureName =
-      normalizedDirname.split(addonCliassicComponentTemplatesLocation).pop() +
-      fileName;
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "addon", "components", pureName + ".ts")
-      )
-    );
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "addon", "components", pureName + ".js")
-      )
-    );
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "addon", "components", pureName, "index.ts")
-      )
-    );
-
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "addon", "components", pureName, "index.js")
-      )
-    );
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "addon", "components", pureName, "component.ts")
-      )
-    );
-
-    posibleNames.push(
-      path.resolve(
-        path.join(projectRoot, "addon", "components", pureName, "component.js")
-      )
-    );
-  }
-  // console.log('possibleComponentNames', posibleNames);
-  return posibleNames.filter(fileLocation => fs.existsSync(fileLocation))[0];
+  return possibleScripts.filter(fileLocation => fs.existsSync(fileLocation))[0];
 }

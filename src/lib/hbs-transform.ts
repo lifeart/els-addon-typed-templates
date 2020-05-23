@@ -110,10 +110,12 @@ export function transformPathExpression(
         ) {
           addComponentImport(scopeKey, globalRegistry[scopeKey]);
           result = transform.fn(
-            "_?, hash?",
+            `_, hash: typeof ${importNameForItem(
+              scopeKey
+            )}.prototype.args`,
             `let klass = new ${importNameForItem(
               scopeKey
-            )}(); klass.args = hash; return klass.defaultYield()`,
+            )}(this as unknown, hash); klass.args = hash; return klass.defaultYield()`,
             key
           );
         } else {

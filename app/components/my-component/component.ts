@@ -1,4 +1,7 @@
 export default class Foo {
+    constructor(a, b) {
+        this.args = b;
+    }
     username = 12;
     paets = {
         name: {

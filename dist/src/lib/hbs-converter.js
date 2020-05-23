@@ -6,6 +6,7 @@ const fs = require("fs");
 const resolvers_1 = require("./resolvers");
 const ast_parser_1 = require("./ast-parser");
 const hbs_extractor_1 = require("./hbs-extractor");
+const ts_service_1 = require("./ts-service");
 const hbs_transform_1 = require("./hbs-transform");
 const BUILTIN_GLOBAL_SCOPE = [
     'mut', 'fn', 'action',
@@ -46,7 +47,7 @@ function importNameForItem(item) {
             .split("/")
             .join("_"));
 }
-function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, templateFileName, scriptFileName, depth) {
+function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, templateFileName, scriptFileName, depth, projectRoot) {
     let klass = `
   export default EmptyKlass {
     args: any;
@@ -55,8 +56,9 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
   `;
     try {
         let source = fs.readFileSync(templateFileName, "utf8");
+        const meta = ts_service_1.typeForPath(projectRoot, templateFileName);
         const { nodes, comments } = ast_parser_1.getClassMeta(source);
-        klass = getClass(componentsMap, virtualFileName, { nodes, comments }, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry, depth);
+        klass = getClass(componentsMap, virtualFileName, { nodes, comments, projectRoot, meta }, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry, depth);
     }
     catch (e) {
         console.log(e);
@@ -68,12 +70,12 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
     console.log("--------------------------");
     componentsMap[virtualFileName] = klass;
 }
-function getClass(componentsMap, fileName, { nodes, comments }, componentImport, globalRegistry, depth = 4) {
+function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, componentImport, globalRegistry, depth = 4) {
     const yields = [];
     const imports = [];
     const items = nodes;
     if (depth < 0) {
-        return `export default class UnreachedComponent { args: any; defaultYield() { return []; } };`;
+        return `export default class ${meta.className}UnreachedComponent { args: any; defaultYield() { return []; } };`;
     }
     function addImport(name, filePath) {
         imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
@@ -81,7 +83,7 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
     function addComponentImport(name, filePath) {
         if (filePath.template) {
             let virtualFileName = resolvers_1.virtualComponentTemplateFileName(filePath.template);
-            registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script, depth - 1);
+            registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script, depth - 1, projectRoot);
             // todo - we need to resolve proper template and compile it :)
             addImport(name, resolvers_1.relativeImport(fileName, virtualFileName));
         }
@@ -202,13 +204,13 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
             klass[key] = hbs_transform_1.transform.transform(node, key, klass);
         }
     });
-    return makeClass({ imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
+    return makeClass({ meta, imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
 }
 exports.getClass = getClass;
 function serializeKey(key) {
     return key.split(" - ")[0];
 }
-function makeClass({ imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
+function makeClass({ meta, imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
     const hasNocheck = comments.find(([_, el]) => el.includes('@ts-nocheck'));
     const hasArgsTypings = comments.find(([_, el]) => el.includes('interface Args'));
     function commentForNode(rawPos) {
@@ -229,8 +231,8 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
         ? `import Component from "${componentImport}";`
         : "";
     const templateComponentDeclaration = componentImport
-        ? `export default class Template extends Component`
-        : `export default class TemplateOnlyComponent`;
+        ? `export default class ${meta.className}Template extends Component`
+        : `export default class ${meta.className}TemplateOnlyComponent`;
     const componentExtraProperties = componentImport && !hasArgsTypings
         ? ""
         : `
@@ -242,7 +244,6 @@ ${hasNocheck ? '// @ts-nocheck' : ''}
 ${componentKlassImport}
 ${imports.join("\n")}
 import { GlobalRegistry } from "ember-typed-templates";
-
 interface TemplateScopeRegistry {
 ${Object.keys(globalScope)
         .filter((key) => !(key in definedScope))

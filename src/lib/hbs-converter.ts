@@ -4,6 +4,7 @@ import * as fs from "fs";
 import { relativeImport, virtualComponentTemplateFileName } from "./resolvers";
 import { getClassMeta } from "./ast-parser";
 import { extractRelationships } from './hbs-extractor';
+import { typeForPath } from './ts-service';
 import {
   transform,
   transformPathExpression
@@ -62,7 +63,8 @@ function registerTemplateKlassForFile(
   virtualFileName,
   templateFileName,
   scriptFileName,
-  depth: number
+  depth: number,
+  projectRoot: string
 ) {
   let klass = `
   export default EmptyKlass {
@@ -72,11 +74,12 @@ function registerTemplateKlassForFile(
   `;
   try {
     let source = fs.readFileSync(templateFileName, "utf8");
+    const meta = typeForPath(projectRoot, templateFileName);
     const { nodes, comments } = getClassMeta(source);
     klass = getClass(
       componentsMap,
       virtualFileName,
-      { nodes, comments },
+      { nodes, comments, projectRoot, meta},
       scriptFileName ? relativeImport(templateFileName, scriptFileName) : null,
       registry,
       depth
@@ -96,17 +99,17 @@ function registerTemplateKlassForFile(
 export function getClass(
   componentsMap,
   fileName,
-  { nodes, comments },
+  { nodes, comments, projectRoot, meta },
   componentImport: string | null,
   globalRegistry: any,
   depth: number = 4
 ) {
   const yields: string[] = [];
   const imports: string[] = [];
-  const items = nodes;
+  const items = nodes; 
 
   if (depth < 0) {
-    return `export default class UnreachedComponent { args: any; defaultYield() { return []; } };`;
+    return `export default class ${meta.className}UnreachedComponent { args: any; defaultYield() { return []; } };`;
   }
 
   function addImport(name, filePath) {
@@ -122,7 +125,8 @@ export function getClass(
         virtualFileName,
         filePath.template,
         filePath.script,
-        depth - 1
+        depth - 1,
+        projectRoot
       );
       // todo - we need to resolve proper template and compile it :)
       addImport(name, relativeImport(
@@ -273,14 +277,14 @@ export function getClass(
 
   
 
-  return makeClass({ imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
+  return makeClass({ meta, imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
 }
 
 function serializeKey(key) {
   return key.split(" - ")[0];
 }
 
-function makeClass({ imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
+function makeClass({ meta, imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
   const hasNocheck = comments.find(([_, el])=>el.includes('@ts-nocheck'));
   const hasArgsTypings = comments.find(([_, el])=>el.includes('interface Args'));
   function commentForNode(rawPos) {
@@ -301,8 +305,8 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
     ? `import Component from "${componentImport}";`
     : "";
   const templateComponentDeclaration = componentImport
-    ? `export default class Template extends Component`
-    : `export default class TemplateOnlyComponent`;
+    ? `export default class ${meta.className}Template extends Component`
+    : `export default class ${meta.className}TemplateOnlyComponent`;
 
   const componentExtraProperties = componentImport && !hasArgsTypings
     ? ""
@@ -318,7 +322,6 @@ ${hasNocheck ? '// @ts-nocheck': ''}
 ${componentKlassImport}
 ${imports.join("\n")}
 import { GlobalRegistry } from "ember-typed-templates";
-
 interface TemplateScopeRegistry {
 ${Object.keys(globalScope)
     .filter((key)=>!(key in definedScope))
