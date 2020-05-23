@@ -77,6 +77,7 @@ function toFullDiagnostic(err: ts.Diagnostic) {
   }
   
   let preErrorText = err.file.text.slice(0, err.start);
+  let postErrorText = err.file.text.slice(err.start, err.file.text.length);
   // try {
   //   console.log('err.file.fileName', err.file.fileName);
   //   console.log('start', err.start);
@@ -93,9 +94,20 @@ function toFullDiagnostic(err: ts.Diagnostic) {
   if (err.start < err.file.text.indexOf('@mark-meaningful-issues-start')) {
     return null;
   }
-  let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
-  let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
-  let [start, end] = mark.split(':');
+
+  let closestLeftMark = postErrorText.indexOf('["');
+  let closestRightMarkOffset = postErrorText.indexOf('"]');
+  let maybeMark = err.file.text.slice(closestLeftMark + err.start, closestRightMarkOffset + err.start);
+  maybeMark = maybeMark.slice(maybeMark.indexOf('[') + 2, maybeMark.indexOf(']')).trim().split(' - ')[0];
+  let start, end;
+  if (maybeMark.includes(':')) {
+    [start, end] = maybeMark.split(':');
+  } else {
+    let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
+    let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
+    [start, end] = mark.split(':');
+  }
+
   if (! start || ! end) {
     let postError = err.file.text.slice(err.start, err.file.text.length);
     let postErrorMark = postError.slice(postError.indexOf('/*@path-mark ') + 13,postError.indexOf('*/'));

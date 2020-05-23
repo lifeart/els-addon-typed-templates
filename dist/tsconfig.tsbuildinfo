@@ -790,11 +790,11 @@
         "signature": "e167eeff9edfb3d97ba60fd53a8683cd2b471d21484805160b12da6fd38853ed"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "0d3b06498cfcfa4c510fa327f752033351017e41015e8f58621843ef79e6aa5b",
+        "version": "2bc8ad3e2ae24e8636156608df41b23a1e96ff39c2de5953472b1eac3b040384",
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "299d4e395116de9091c06ad3d676d32a1a2e2af568e4ffd7f636f91d1a157175",
+        "version": "89072af0e21327f880025e0404665293380bd44c3d4c403c2027acf89970cd98",
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
@@ -4317,11 +4317,12 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/errors/syntax-error.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
+      "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
       "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
-      "../src/lib/ls-utils.ts",
+      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -4329,8 +4330,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ast-parser.ts",
-      "../src/index.ts"
+      "../src/lib/ls-utils.ts"
     ]
   },
   "version": "3.7.3"
