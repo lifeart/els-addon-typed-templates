@@ -98,9 +98,10 @@ function toFullDiagnostic(err: ts.Diagnostic) {
   let closestLeftMark = postErrorText.indexOf('["');
   let closestRightMarkOffset = postErrorText.indexOf('"]');
   let maybeMark = err.file.text.slice(closestLeftMark + err.start, closestRightMarkOffset + err.start);
+  let hasNewline = err.file.text.slice(err.start, err.start + closestLeftMark).split('\n').length > 1;
   maybeMark = maybeMark.slice(maybeMark.indexOf('[') + 2, maybeMark.indexOf(']')).trim().split(' - ')[0];
   let start, end;
-  if (maybeMark.includes(':')) {
+  if (maybeMark.includes(':') && !hasNewline) {
     [start, end] = maybeMark.split(':');
   } else {
     let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);

@@ -794,7 +794,7 @@
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "89072af0e21327f880025e0404665293380bd44c3d4c403c2027acf89970cd98",
+        "version": "8f98f10fbac7b44bbc6e64b44b750a14087fa07d7df3647a1d3a5fc48cbb318f",
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
