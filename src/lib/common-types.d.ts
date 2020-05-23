@@ -38,7 +38,7 @@ declare module "ember-typed-templates" {
     hash?
   ) => [A, B, C, D, E];
   type AbstractHelper = <T>([items]: T[], hash?) => T;
-  type AbstractBlockHelper = <T>([items]: ArrayLike<T>[], hash?) => [T];
+  export type AbstractBlockHelper = <T>([items]: ArrayLike<T>[], hash?) => [T];
   type HashHelper = <T>(items: any[], hash: T) => T;
   type ArrayHelper = <T>(items: ArrayLike<T>, hash?) => ArrayLike<T>;
   type AnyFn = (...args) => any;

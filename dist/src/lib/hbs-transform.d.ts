@@ -18,6 +18,7 @@ export declare function transformPathExpression(node: any, key: any, { getItemSc
 }): {
     result: string;
     simpleResult: string;
+    builtinScopeImports: unknown[];
 };
 export declare const transform: {
     klass: {};
@@ -30,7 +31,7 @@ export declare const transform: {
     _makeFn(rawArgs: string, rawBody: string, key: string): string;
     TextNode(node: any): string;
     pathCall(node: any): any;
-    hashedExp(node: any): string;
+    hashedExp(node: any, nodeType?: string): string;
     SubExpression(node: any): string;
     MustacheStatement(node: any): string;
     ElementModifierStatement(node: any): string;

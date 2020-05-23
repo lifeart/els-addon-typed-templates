@@ -46,6 +46,7 @@ export function transformPathExpression(
 ) {
   let result: string = "";
   let simpleResult: string = "";
+  const builtinScopeImports = new Set();
   if (node.data === true) {
     result = transform.wrapToFunction(normalizePathOriginal(node), key);
   } else if (node.this === true) {
@@ -61,6 +62,7 @@ export function transformPathExpression(
         if (blockPaths.includes(key)) {
           if (declaredInScope(scopeKey)) {
             globalScope[scopeKey] = "AbstractBlockHelper";
+            builtinScopeImports.add('AbstractBlockHelper');
           } else {
             globalScope[scopeKey] = 'undefined';
           }
@@ -77,6 +79,7 @@ export function transformPathExpression(
           } else {
             if (declaredInScope(scopeKey)) {
               globalScope[scopeKey] = "AbstractHelper";
+              builtinScopeImports.add('AbstractHelper');
             } else {
               globalScope[scopeKey] = 'undefined';
             }
@@ -143,7 +146,7 @@ export function transformPathExpression(
       }
     }
   }
-  return {result, simpleResult};
+  return {result, simpleResult, builtinScopeImports: Array.from(builtinScopeImports)};
 }
 
 export const transform = {
@@ -194,7 +197,7 @@ export const transform = {
     }
     return `this["${keyForItem(node)}"]`;
   },
-  hashedExp(node) {
+  hashedExp(node, nodeType = 'DEFAULT') {
     let result = "";
     const params = node.params
       .map(p => {
@@ -213,7 +216,11 @@ export const transform = {
     } else if (hash.length && !params.length) {
       result = `${this.pathCall(node.path)}([],{${hash}})`;
     } else {
-      result = `${this.pathCall(node.path)}()`;
+      if (nodeType === 'BlockStatement') {
+        result = `${this.pathCall(node.path)}([], {})`;
+      } else {
+        result = `${this.pathCall(node.path)}()`;
+      }
     }
     return result;
   },
@@ -227,7 +234,7 @@ export const transform = {
     return this.hashedExp(node);
   },
   BlockStatement(node) {
-    return this.hashedExp(node);
+    return this.hashedExp(node, 'BlockStatement');
   },
   NumberLiteral(node) {
     return `${node.value}`;

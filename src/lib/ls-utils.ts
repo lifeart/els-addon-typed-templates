@@ -71,24 +71,25 @@ export function tsDefinitionToLocation(el) {
   );
 }
 
-function censor(censor) {
-  var i = 0;
-
-  return function(_, value) {
-    if(i !== 0 && typeof(censor) === 'object' && typeof(value) == 'object' && censor == value) 
-      return '[Circular]'; 
-
-    if(i >= 29) // seems to be a harded maximum of 30 serialized objects?
-      return '[Unknown]';
-
-    ++i; // so we know we aren't using the original object anymore
-
-    return value;  
+function toFullDiagnostic(err: ts.Diagnostic) {
+  if (!err.file || err.start === undefined) {
+    return null;
   }
-}
- 
-function toFullDiagnostic(err) {
+  
   let preErrorText = err.file.text.slice(0, err.start);
+  try {
+    console.log('err.file.fileName', err.file.fileName);
+    console.log('start', err.start);
+    console.log('err.slice', err.file.text.slice(err.start, 100));
+    console.log('err.code', err.code);
+    console.log('err.category', err.category);
+    console.log('err.related', err.relatedInformation);
+    console.log('err.source', err.source);
+    console.log('err.msg', err.messageText);
+  } catch(e) {
+    console.log('err:', e);
+  }
+
   if (err.start < err.file.text.indexOf('@mark-meaningful-issues-start')) {
     return null;
   }
@@ -109,7 +110,6 @@ function toFullDiagnostic(err) {
   // console.log('preErrorText',preErrorText.slice(preErrorText.lastIndexOf('//@mark ') + 8, preErrorText.lastIndexOf('//@mark ') + 40));
   let [startCol, startRow] =  start.split(',').map((e)=>parseInt(e, 10));
   let [endCol, endRow] =  end.split(',').map((e)=>parseInt(e, 10));
-  console.log(JSON.stringify(err, censor(err)));
   let msgText = diagnosticToString(err.messageText);
   return {
     severity: DiagnosticSeverity.Error,
@@ -124,7 +124,8 @@ function diagnosticToString(message: string | ts.DiagnosticMessageChain, indent 
   if (typeof message === 'string') {
     return `${indent}${message}`;
   } else if (message.next && message.next.length) {
-    return `${indent}${message.messageText}\n${diagnosticToString(message.next[0], `${indent}  `)}`;
+    let items = message.next.map((msg)=>diagnosticToString(msg, `${indent}  `))
+    return `${indent}${message.messageText}\n${items.join('\n')}`;
   } else {
     return `${indent}${message.messageText}`;
   }

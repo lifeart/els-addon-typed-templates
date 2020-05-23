@@ -8,13 +8,20 @@ export interface MatchResult {
     scope: string;
     className?: string;
 }
+interface RegistryItem {
+    [key: string]: string[];
+}
 export declare function registerProject(item: any, server: any): void;
 export declare function normalizeToAngleBracketName(name: any): any;
 export declare function serverForProject(root: string): {
     getRegistry(root: string): {
-        [key: string]: {
-            [key: string]: string[];
-        };
+        'transform': RegistryItem;
+        'helper': RegistryItem;
+        'component': RegistryItem;
+        'routePath': RegistryItem;
+        'model': RegistryItem;
+        'service': RegistryItem;
+        'modifier': RegistryItem;
     };
 };
 export declare function typeForPath(root: string, uri: string): MatchResult | null;

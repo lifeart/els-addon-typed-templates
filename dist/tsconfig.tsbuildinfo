@@ -438,11 +438,11 @@
         "signature": "a999e6b184852e7b868234aca57e9eef8faed858f483166aebb6763d8f04abf5"
       },
       "../src/lib/ts-service.ts": {
-        "version": "38329f0ce659c4c84abd4b42c2f1e2a0fc80b2c95091550574e8380f8f8033d3",
-        "signature": "1e3cabbcf39ef10c874075fac5dd3be0cf4686fe65ae2eb7e8e7fd964bdca22a"
+        "version": "3f1b6f8dbfeb4c1aaf2d4278355941e331afab51ee69bd8729faecc0bbcd5f3d",
+        "signature": "31c0b7f146d8a999f3285856ff6d2ee67afdb18b9177b358cb3cce0c43c5208d"
       },
       "../src/lib/resolvers.ts": {
-        "version": "a83439f5b063234da5ada075245cef114f6e685237226e68873cdd1306a3f86e",
+        "version": "ae14ac983b4113ee0592d473e99024e2777544c7307724ba77f37714b37e2382",
         "signature": "e82637cbbebe81f6640be57049c857fcc05eac6d187ae3b5e6c3e644db1d844e"
       },
       "../node_modules/camelcase/index.d.ts": {
@@ -778,15 +778,15 @@
         "signature": "6832c824d2c9108d9070798657e3901a7a2645b758ddd8d78123e8d8a4a4ac2b"
       },
       "../src/lib/hbs-transform.ts": {
-        "version": "09b7da5074da8912997cffd49279ab80b0aa5abd8b3d3b6b8b4aa52107abbeaa",
-        "signature": "4c7c921e7851bb706f2830e0298f88b26a0e7decf15d60a6c82bbabd3fe16b57"
+        "version": "3c1e66d8f215e17fb8cb979d56848a597d730af64e0123e45fdf8af762d0c1d0",
+        "signature": "6ab54c87192a681b696e7188b82e3cfc80f12db71a6a8308b2ec279f6369d476"
       },
       "../src/lib/hbs-extractor.ts": {
         "version": "1fdc274423e6752099cf5f6fe33baef79bc10c0889592a147f81ba859cbf8856",
         "signature": "db36ccb2d12b9c09fb402b2e2479971dfb6529662f5a3e06cd13386dffe0a742"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "1e4f220e8acabdf8a1a4298eb427f6e421850db456b5d6d7fb1bfc8b0bfbc0ba",
+        "version": "2b5cd729e658c60fa34c56fbc1d17f6ca2c783e2eafe74ed4c441afb7498d937",
         "signature": "e167eeff9edfb3d97ba60fd53a8683cd2b471d21484805160b12da6fd38853ed"
       },
       "../src/lib/virtual-documents.ts": {
@@ -794,7 +794,7 @@
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "88513d408d00baedcec1e9981da8461d1f55d12f3f71649cebdb403e147afe62",
+        "version": "d767d61da594112cc80a85ff3200e39e5a83a9a02a6b9c21c036ca346c2403fb",
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
@@ -806,8 +806,8 @@
         "signature": "a833bb98cf5ebff4e4581d468f9dcdefb29da4c37e6e95973e8bedf0570ba0b5"
       },
       "../src/lib/common-types.d.ts": {
-        "version": "dd67e9f6e757e4ebb118de467d6d2e658c442d80275e682e306f06ceef8aab2a",
-        "signature": "dd67e9f6e757e4ebb118de467d6d2e658c442d80275e682e306f06ceef8aab2a"
+        "version": "6ce0be252ef118c0ac132fe69bba30bbf39e04ae24178570ac05762bed3e4425",
+        "signature": "6ce0be252ef118c0ac132fe69bba30bbf39e04ae24178570ac05762bed3e4425"
       },
       "../src/lib/hbs-converter.test.ts": {
         "version": "5914c543583f8bd15a062bd4791c8ad7dc57bcda5aec6691f29aa69296e34f5e",
@@ -4229,8 +4229,6 @@
       "../src/lib/utils.ts",
       "../src/lib/ast-helpers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
-      "../src/lib/ts-service.ts",
-      "../src/lib/resolvers.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -4316,9 +4314,7 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
-      "../src/lib/hbs-converter.ts",
-      "../src/lib/virtual-documents.ts",
-      "../src/index.ts",
+      "../src/lib/ls-utils.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -4326,7 +4322,11 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ls-utils.ts"
+      "../src/lib/ts-service.ts",
+      "../src/index.ts",
+      "../src/lib/virtual-documents.ts",
+      "../src/lib/hbs-converter.ts",
+      "../src/lib/resolvers.ts"
     ]
   },
   "version": "3.7.3"

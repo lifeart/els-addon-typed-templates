@@ -93,6 +93,7 @@ export function relativeComponentImport(
 export function findComponentForTemplate(fsPath, projectRoot) { 
   const extName = path.extname(fsPath);
   const componentMeta = typeForPath(projectRoot, fsPath);
+  console.log(JSON.stringify(componentMeta));
 
   if (extName !== '.hbs' || !componentMeta) {
     // @to-do figure out this strategy
@@ -103,9 +104,16 @@ export function findComponentForTemplate(fsPath, projectRoot) {
 
   const registry = server.getRegistry(projectRoot);
 
-  let possibleScripts = registry['component'][componentMeta.name].filter((el)=>{
-    return typeForPath(projectRoot, el)?.kind === 'script';
-  });
+  let possibleScripts: string[] = [];
+  if (componentMeta.kind === 'template' && componentMeta.type === 'template') {
+    possibleScripts = (registry.routePath[componentMeta.name.split('/').join('.')]||[]).filter((el)=>{
+      return typeForPath(projectRoot, el)?.type === 'controller';
+    });
+  } else {
+    possibleScripts = (registry.component[componentMeta.name] || []).filter((el)=>{
+      return typeForPath(projectRoot, el)?.kind === 'script';
+    });
+  }
 
   if (possibleScripts.length > 1) {
     possibleScripts = possibleScripts.filter((el)=> {
@@ -117,6 +125,10 @@ export function findComponentForTemplate(fsPath, projectRoot) {
     possibleScripts = possibleScripts.filter((el)=> {
       return el.endsWith('.ts');
     })
+  }
+
+  if (possibleScripts.length === 0) {
+    return null;
   }
 
   return possibleScripts.filter(fileLocation => fs.existsSync(fileLocation))[0];

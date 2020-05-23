@@ -79,16 +79,26 @@ exports.relativeComponentImport = relativeComponentImport;
 function findComponentForTemplate(fsPath, projectRoot) {
     const extName = path.extname(fsPath);
     const componentMeta = ts_service_1.typeForPath(projectRoot, fsPath);
+    console.log(JSON.stringify(componentMeta));
     if (extName !== '.hbs' || !componentMeta) {
         // @to-do figure out this strategy
         return null;
     }
     const server = ts_service_1.serverForProject(projectRoot);
     const registry = server.getRegistry(projectRoot);
-    let possibleScripts = registry['component'][componentMeta.name].filter((el) => {
-        var _a;
-        return ((_a = ts_service_1.typeForPath(projectRoot, el)) === null || _a === void 0 ? void 0 : _a.kind) === 'script';
-    });
+    let possibleScripts = [];
+    if (componentMeta.kind === 'template' && componentMeta.type === 'template') {
+        possibleScripts = (registry.routePath[componentMeta.name.split('/').join('.')] || []).filter((el) => {
+            var _a;
+            return ((_a = ts_service_1.typeForPath(projectRoot, el)) === null || _a === void 0 ? void 0 : _a.type) === 'controller';
+        });
+    }
+    else {
+        possibleScripts = (registry.component[componentMeta.name] || []).filter((el) => {
+            var _a;
+            return ((_a = ts_service_1.typeForPath(projectRoot, el)) === null || _a === void 0 ? void 0 : _a.kind) === 'script';
+        });
+    }
     if (possibleScripts.length > 1) {
         possibleScripts = possibleScripts.filter((el) => {
             var _a;
@@ -100,6 +110,9 @@ function findComponentForTemplate(fsPath, projectRoot) {
         possibleScripts = possibleScripts.filter((el) => {
             return el.endsWith('.ts');
         });
+    }
+    if (possibleScripts.length === 0) {
+        return null;
     }
     return possibleScripts.filter(fileLocation => fs.existsSync(fileLocation))[0];
 }

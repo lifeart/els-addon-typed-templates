@@ -37,6 +37,9 @@ export interface MatchResult {
   className?: string;
 }
 
+interface RegistryItem {
+  [key: string]: string[]
+}
 interface ProjectMirror {
   project: {
     files: Map<string, ProjectFile>;
@@ -44,9 +47,13 @@ interface ProjectMirror {
   };
   server: {
     getRegistry(root: string): {
-      [key: string]: {
-        [key: string]: string[]
-      }
+      'transform': RegistryItem;
+      'helper': RegistryItem;
+      'component': RegistryItem;
+      'routePath': RegistryItem;
+      'model': RegistryItem;
+      'service': RegistryItem;
+      'modifier': RegistryItem;
     }
   },
   files: WeakMap<ProjectFile, TSMeta>;
@@ -93,11 +100,11 @@ export function serverForProject(root: string) {
 
 export function typeForPath(root: string, uri: string) {
   const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
-  let result =  projectMirror.project.matchPathToType(uri);
+  let result = projectMirror.project.matchPathToType(uri);
   if (result === null) {
     return null;
   }
-  result.className = normalizeToAngleBracketName(result.name) +  result.type.charAt(0).toUpperCase() + result.type.slice(1);
+  result.className = normalizeToAngleBracketName(result.name) + result.type.charAt(0).toUpperCase() + result.type.slice(1);
   return result;
 }
 

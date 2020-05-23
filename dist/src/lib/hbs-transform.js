@@ -29,6 +29,7 @@ function normalizePathOriginal(node) {
 function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, declaredInScope, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }) {
     let result = "";
     let simpleResult = "";
+    const builtinScopeImports = new Set();
     if (node.data === true) {
         result = exports.transform.wrapToFunction(normalizePathOriginal(node), key);
     }
@@ -42,6 +43,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
                 if (blockPaths.includes(key)) {
                     if (declaredInScope(scopeKey)) {
                         globalScope[scopeKey] = "AbstractBlockHelper";
+                        builtinScopeImports.add('AbstractBlockHelper');
                     }
                     else {
                         globalScope[scopeKey] = 'undefined';
@@ -59,6 +61,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
                     else {
                         if (declaredInScope(scopeKey)) {
                             globalScope[scopeKey] = "AbstractHelper";
+                            builtinScopeImports.add('AbstractHelper');
                         }
                         else {
                             globalScope[scopeKey] = 'undefined';
@@ -103,7 +106,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
             }
         }
     }
-    return { result, simpleResult };
+    return { result, simpleResult, builtinScopeImports: Array.from(builtinScopeImports) };
 }
 exports.transformPathExpression = transformPathExpression;
 exports.transform = {
@@ -154,7 +157,7 @@ exports.transform = {
         }
         return `this["${keyForItem(node)}"]`;
     },
-    hashedExp(node) {
+    hashedExp(node, nodeType = 'DEFAULT') {
         let result = "";
         const params = node.params
             .map(p => {
@@ -176,7 +179,12 @@ exports.transform = {
             result = `${this.pathCall(node.path)}([],{${hash}})`;
         }
         else {
-            result = `${this.pathCall(node.path)}()`;
+            if (nodeType === 'BlockStatement') {
+                result = `${this.pathCall(node.path)}([], {})`;
+            }
+            else {
+                result = `${this.pathCall(node.path)}()`;
+            }
         }
         return result;
     },
@@ -190,7 +198,7 @@ exports.transform = {
         return this.hashedExp(node);
     },
     BlockStatement(node) {
-        return this.hashedExp(node);
+        return this.hashedExp(node, 'BlockStatement');
     },
     NumberLiteral(node) {
         return `${node.value}`;

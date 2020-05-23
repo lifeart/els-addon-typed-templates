@@ -243,10 +243,11 @@ export function getClass(
   const pathTokens = tokensToProcess.filter((name)=>name.includes('PathExpression'));
   const otherTokens = tokensToProcess.filter((name)=>!pathTokens.includes(name));
 
+  let builtinImports: string[] = [];
 
   pathTokens.forEach((key)=>{
     let node = klass[key];
-    const { result, simpleResult } = transformPathExpression(node, key, {
+    const { result, simpleResult, builtinScopeImports  } = transformPathExpression(node, key, {
       yields,
       importNameForItem,
       componentImport,
@@ -265,6 +266,11 @@ export function getClass(
       componentsForImport
     });
     klass[key] = result;
+    builtinScopeImports.forEach((name: string)=>{
+      if (!builtinImports.includes(name)) {
+        builtinImports.push(name);
+      }
+    });
     klass[key + '_simple'] = simpleResult;
   });
 
@@ -277,14 +283,14 @@ export function getClass(
 
   
 
-  return makeClass({ meta, imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
+  return makeClass({ meta, imports: Array.from(new Set(imports)), builtinImports, yields, klass, comments, componentImport, globalScope, definedScope });
 }
 
 function serializeKey(key) {
   return key.split(" - ")[0];
 }
 
-function makeClass({ meta, imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
+function makeClass({ meta, builtinImports, imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
   const hasNocheck = comments.find(([_, el])=>el.includes('@ts-nocheck'));
   const hasArgsTypings = comments.find(([_, el])=>el.includes('interface Args'));
   function commentForNode(rawPos) {
@@ -315,13 +321,14 @@ function makeClass({ meta, imports, yields, klass, comments, componentImport, gl
   `;
 
   
+  builtinImports.push('GlobalRegistry');
 
   let klssTpl = `
 
 ${hasNocheck ? '// @ts-nocheck': ''}
 ${componentKlassImport}
 ${imports.join("\n")}
-import { GlobalRegistry } from "ember-typed-templates";
+import { ${builtinImports.join(', ')} } from "ember-typed-templates";
 interface TemplateScopeRegistry {
 ${Object.keys(globalScope)
     .filter((key)=>!(key in definedScope))

@@ -175,9 +175,10 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
     const tokensToProcess = Object.keys(klass).sort();
     const pathTokens = tokensToProcess.filter((name) => name.includes('PathExpression'));
     const otherTokens = tokensToProcess.filter((name) => !pathTokens.includes(name));
+    let builtinImports = [];
     pathTokens.forEach((key) => {
         let node = klass[key];
-        const { result, simpleResult } = hbs_transform_1.transformPathExpression(node, key, {
+        const { result, simpleResult, builtinScopeImports } = hbs_transform_1.transformPathExpression(node, key, {
             yields,
             importNameForItem,
             componentImport,
@@ -196,6 +197,11 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
             componentsForImport
         });
         klass[key] = result;
+        builtinScopeImports.forEach((name) => {
+            if (!builtinImports.includes(name)) {
+                builtinImports.push(name);
+            }
+        });
         klass[key + '_simple'] = simpleResult;
     });
     otherTokens.forEach(key => {
@@ -204,13 +210,13 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
             klass[key] = hbs_transform_1.transform.transform(node, key, klass);
         }
     });
-    return makeClass({ meta, imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
+    return makeClass({ meta, imports: Array.from(new Set(imports)), builtinImports, yields, klass, comments, componentImport, globalScope, definedScope });
 }
 exports.getClass = getClass;
 function serializeKey(key) {
     return key.split(" - ")[0];
 }
-function makeClass({ meta, imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
+function makeClass({ meta, builtinImports, imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
     const hasNocheck = comments.find(([_, el]) => el.includes('@ts-nocheck'));
     const hasArgsTypings = comments.find(([_, el]) => el.includes('interface Args'));
     function commentForNode(rawPos) {
@@ -238,12 +244,13 @@ function makeClass({ meta, imports, yields, klass, comments, componentImport, gl
         : `
     args: ${hasArgsTypings ? 'Args' : 'any'};
   `;
+    builtinImports.push('GlobalRegistry');
     let klssTpl = `
 
 ${hasNocheck ? '// @ts-nocheck' : ''}
 ${componentKlassImport}
 ${imports.join("\n")}
-import { GlobalRegistry } from "ember-typed-templates";
+import { ${builtinImports.join(', ')} } from "ember-typed-templates";
 interface TemplateScopeRegistry {
 ${Object.keys(globalScope)
         .filter((key) => !(key in definedScope))
