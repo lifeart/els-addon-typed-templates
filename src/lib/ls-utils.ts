@@ -77,18 +77,18 @@ function toFullDiagnostic(err: ts.Diagnostic) {
   }
   
   let preErrorText = err.file.text.slice(0, err.start);
-  try {
-    console.log('err.file.fileName', err.file.fileName);
-    console.log('start', err.start);
-    console.log('err.slice', err.file.text.slice(err.start, 100));
-    console.log('err.code', err.code);
-    console.log('err.category', err.category);
-    console.log('err.related', err.relatedInformation);
-    console.log('err.source', err.source);
-    console.log('err.msg', err.messageText);
-  } catch(e) {
-    console.log('err:', e);
-  }
+  // try {
+  //   console.log('err.file.fileName', err.file.fileName);
+  //   console.log('start', err.start);
+  //   console.log('err.slice', err.file.text.slice(err.start, 100));
+  //   console.log('err.code', err.code);
+  //   console.log('err.category', err.category);
+  //   console.log('err.related', err.relatedInformation);
+  //   console.log('err.source', err.source);
+  //   console.log('err.msg', err.messageText);
+  // } catch(e) {
+  //   console.log('err:', e);
+  // }
 
   if (err.start < err.file.text.indexOf('@mark-meaningful-issues-start')) {
     return null;

@@ -442,7 +442,7 @@
         "signature": "31c0b7f146d8a999f3285856ff6d2ee67afdb18b9177b358cb3cce0c43c5208d"
       },
       "../src/lib/resolvers.ts": {
-        "version": "ae14ac983b4113ee0592d473e99024e2777544c7307724ba77f37714b37e2382",
+        "version": "ed1d8827ade26e7491a774eb6793f3b6b3311b081a53b507c7edd214f0b1e2b2",
         "signature": "e82637cbbebe81f6640be57049c857fcc05eac6d187ae3b5e6c3e644db1d844e"
       },
       "../node_modules/camelcase/index.d.ts": {
@@ -794,7 +794,7 @@
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "d767d61da594112cc80a85ff3200e39e5a83a9a02a6b9c21c036ca346c2403fb",
+        "version": "299d4e395116de9091c06ad3d676d32a1a2e2af568e4ffd7f636f91d1a157175",
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
@@ -4229,6 +4229,7 @@
       "../src/lib/utils.ts",
       "../src/lib/ast-helpers.ts",
       "../node_modules/typescript/lib/typescript.d.ts",
+      "../src/lib/ts-service.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -4314,7 +4315,9 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
-      "../src/lib/ls-utils.ts",
+      "../src/lib/hbs-converter.ts",
+      "../src/lib/virtual-documents.ts",
+      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -4322,11 +4325,8 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ts-service.ts",
-      "../src/index.ts",
-      "../src/lib/virtual-documents.ts",
-      "../src/lib/hbs-converter.ts",
-      "../src/lib/resolvers.ts"
+      "../src/lib/resolvers.ts",
+      "../src/lib/ls-utils.ts"
     ]
   },
   "version": "3.7.3"
