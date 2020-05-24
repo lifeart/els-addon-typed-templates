@@ -1,4 +1,5 @@
 import { keyForItem } from "./hbs-transform";
+import { isSimpleBlockComponentElement } from "./ast-helpers";
 import { serverForProject } from "./ts-service";
 export function extractRelationships(items, projectRoot) {
 
@@ -27,6 +28,12 @@ export function extractRelationships(items, projectRoot) {
       if (item.type === "MustacheStatement" || item.type === "BlockStatement") {
         parents[key].push(keyForItem(item));
       } else if (item.type === "ElementNode") {
+        if (isSimpleBlockComponentElement(item)) {
+          parents[key].push(keyForItem({
+            type: 'BlockStatement',
+            loc: item.loc
+          }));
+        }
         item.modifiers.forEach(mod => {
           parents[key].push(keyForItem(mod));
         });
@@ -34,10 +41,12 @@ export function extractRelationships(items, projectRoot) {
           if (attr.value.type === 'ConcatStatement') {
             attr.value.parts.forEach((part)=>{
               if (part.type === 'MustacheStatement') {
+                addChilds([part], key);
                 parents[key].push(keyForItem(part));
               }
             })
           } else if (attr.value.type === 'MustacheStatement') {
+            addChilds([attr.value], key);
             parents[key].push(keyForItem(attr.value));
           }
         });
@@ -45,6 +54,21 @@ export function extractRelationships(items, projectRoot) {
       addChilds(item.program ? item.program.body : item.children || [], key);
       if (item.inverse) {
         addChilds(item.inverse.body || [], key);
+      }
+      if (item.hash) {
+        item.hash.pairs.forEach(attr => {
+          if (attr.value.type === 'ConcatStatement') {
+            attr.value.parts.forEach((part)=>{
+              if (part.type === 'MustacheStatement') {
+                addChilds([part], key);
+                parents[key].push(keyForItem(part));
+              }
+            })
+          } else if (attr.value.type === 'MustacheStatement') {
+            addChilds([attr.value], key);
+            parents[key].push(keyForItem(attr.value));
+          }
+        });
       }
     });
   }
@@ -59,11 +83,20 @@ export function extractRelationships(items, projectRoot) {
       if (!pointer) {
         pointer = key;
         parents[pointer] = [];
-        scopes[pointer] = exp.program ? exp.program.blockParams : [];
-        addChilds(exp.program ? exp.program.body : exp.children || [], pointer);
-        addChilds(exp.inverse ? exp.inverse.body : [], pointer);
+        if (exp.blockParams) {
+          scopes[pointer] = exp.blockParams;
+        } else {
+          scopes[pointer] = exp.program ? (exp.program.blockParams || []) : [];
+        }
+      }
+      if (!(key in parents)) {
+        parents[key] = [];
       }
 
+      addChilds(exp.program ? exp.program.body : exp.children || [], pointer);
+      addChilds(exp.inverse ? exp.inverse.body : [], pointer);
+
+      parents[key].push(keyForItem(exp.path));
       klass[key] = exp;
       klass[keyForItem(exp.path)] = exp.path;
       if (exp.type === "BlockStatement") {
@@ -78,12 +111,12 @@ export function extractRelationships(items, projectRoot) {
           }
         }
       }
-      parents[pointer].push(keyForItem(exp.path));
-      exp.params.forEach(p => {
+
+      exp.params && exp.params.forEach(p => {
         klass[keyForItem(p)] = p;
         parents[pointer].push(keyForItem(p));
       });
-      exp.hash.pairs.forEach(p => {
+      exp.hash && exp.hash.pairs.forEach(p => {
         klass[keyForItem(p.value)] = p.value;
         parents[pointer].push(keyForItem(p.value));
       });

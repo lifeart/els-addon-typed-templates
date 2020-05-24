@@ -73,7 +73,7 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
     }
     componentsMap[virtualFileName] = klass;
 }
-function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, componentImport, globalRegistry, depth = 4) {
+function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, componentImport, globalRegistry, depth = 5) {
     const yields = [];
     const imports = [];
     const items = nodes;
@@ -155,12 +155,12 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
         let p = Object.keys(parents);
         let parent = null;
         p.forEach(pid => {
-            if (parents[pid].includes(key)) {
+            if (pid !== key && parents[pid].includes(key)) {
                 parent = pid;
             }
         });
         if (parent) {
-            itemScopes.push([parent, scopes[parent]]);
+            itemScopes.push([parent, scopes[parent] || []]);
             return getItemScopes(parent, itemScopes);
         }
         return itemScopes;

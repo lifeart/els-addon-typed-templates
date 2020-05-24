@@ -40,22 +40,25 @@ export interface MatchResult {
 interface RegistryItem {
   [key: string]: string[]
 }
+
+interface LSRegistry {
+  'transform': RegistryItem;
+  'helper': RegistryItem;
+  'component': RegistryItem;
+  'routePath': RegistryItem;
+  'model': RegistryItem;
+  'service': RegistryItem;
+  'modifier': RegistryItem;
+}
+export interface LanguageServer {
+  getRegistry(root: string): LSRegistry
+}
 interface ProjectMirror {
   project: {
     files: Map<string, ProjectFile>;
     matchPathToType(filePath: string): null | MatchResult
   };
-  server: {
-    getRegistry(root: string): {
-      'transform': RegistryItem;
-      'helper': RegistryItem;
-      'component': RegistryItem;
-      'routePath': RegistryItem;
-      'model': RegistryItem;
-      'service': RegistryItem;
-      'modifier': RegistryItem;
-    }
-  },
+  server: LanguageServer,
   files: WeakMap<ProjectFile, TSMeta>;
 }
 
@@ -93,8 +96,26 @@ export function normalizeToAngleBracketName(name) {
   });
 }
 
+const serverMock: LanguageServer = {
+  getRegistry(_: string): LSRegistry {
+    return {
+      'transform': {},
+      'helper': {},
+      'component': {},
+      'routePath': {},
+      'model': {},
+      'service': {},
+      'modifier': {}
+    }
+  }
+}
+
 export function serverForProject(root: string) {
   const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
+  if (!projectMirror) {
+    console.log('server-mock used');
+    return serverMock as LanguageServer;
+  }
   return projectMirror.server;
 }
 

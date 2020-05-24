@@ -11,19 +11,21 @@ export interface MatchResult {
 interface RegistryItem {
     [key: string]: string[];
 }
+interface LSRegistry {
+    'transform': RegistryItem;
+    'helper': RegistryItem;
+    'component': RegistryItem;
+    'routePath': RegistryItem;
+    'model': RegistryItem;
+    'service': RegistryItem;
+    'modifier': RegistryItem;
+}
+export interface LanguageServer {
+    getRegistry(root: string): LSRegistry;
+}
 export declare function registerProject(item: any, server: any): void;
 export declare function normalizeToAngleBracketName(name: any): any;
-export declare function serverForProject(root: string): {
-    getRegistry(root: string): {
-        'transform': RegistryItem;
-        'helper': RegistryItem;
-        'component': RegistryItem;
-        'routePath': RegistryItem;
-        'model': RegistryItem;
-        'service': RegistryItem;
-        'modifier': RegistryItem;
-    };
-};
+export declare function serverForProject(root: string): LanguageServer;
 export declare function typeForPath(root: string, uri: string): MatchResult | null;
 export declare function serviceForRoot(uri: any): ts.LanguageService;
 export {};

@@ -106,7 +106,7 @@ export function getClass(
   { nodes, comments, projectRoot, meta },
   componentImport: string | null,
   globalRegistry: any,
-  depth: number = 4
+  depth: number = 5
 ) {
   const yields: string[] = [];
   const imports: string[] = [];
@@ -219,12 +219,12 @@ export function getClass(
     let p = Object.keys(parents);
     let parent: string | null = null;
     p.forEach(pid => {
-      if (parents[pid].includes(key)) {
+      if (pid !== key && parents[pid].includes(key)) {
         parent = pid;
       }
     });
     if (parent) {
-      itemScopes.push([parent, scopes[parent]]);
+      itemScopes.push([parent, scopes[parent] || []]);
       return getItemScopes(parent, itemScopes);
     }
     return itemScopes;

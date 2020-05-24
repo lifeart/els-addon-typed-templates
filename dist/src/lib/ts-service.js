@@ -41,8 +41,25 @@ function normalizeToAngleBracketName(name) {
     });
 }
 exports.normalizeToAngleBracketName = normalizeToAngleBracketName;
+const serverMock = {
+    getRegistry(_) {
+        return {
+            'transform': {},
+            'helper': {},
+            'component': {},
+            'routePath': {},
+            'model': {},
+            'service': {},
+            'modifier': {}
+        };
+    }
+};
 function serverForProject(root) {
     const projectMirror = PROJECTS_MAP.get(root);
+    if (!projectMirror) {
+        console.log('server-mock used');
+        return serverMock;
+    }
     return projectMirror.server;
 }
 exports.serverForProject = serverForProject;

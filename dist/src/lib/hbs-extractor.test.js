@@ -24,4 +24,20 @@ describe('getClassMeta', () => {
         });
     });
 });
+describe('getClassMeta - complex case', () => {
+    expect(results(`
+    {{#each @model.tagsList as |tag|}}
+  <LinkTo
+    @query={{hash tags=tag}}
+  >
+    {{tag}}
+  </LinkTo>
+{{/each}}
+    `)).toMatchSnapshot();
+});
+describe('getClassMeta - simple scope', () => {
+    expect(results(`{{#each @model.tagsList as |tag|}}
+    {{tag}}
+  {{/each}}`)).toMatchSnapshot();
+});
 //# sourceMappingURL=hbs-extractor.test.js.map
