@@ -178,6 +178,7 @@ export function getClass(
     ["on"]: "OnModifer",
     ["fn"]: "FnHelper",
     ["yield"]: "YieldHelper",
+    ["has-block"]: "YieldHelper",
     ["outlet"]: "YieldHelper",
     ["concat"]: "ConcatHelper",
     ["prevent-default"]: "EventCatcherHelper",

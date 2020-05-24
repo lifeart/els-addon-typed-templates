@@ -83,6 +83,7 @@ declare module "ember-typed-templates" {
     ["unless"]: typeof TUnlessHeper;
     ["on"]: OnModifer;
     ["fn"]: FnHelper;
+    ["has-block"]: YieldHelper;
     ["yield"]: YieldHelper;
     ["outlet"]: YieldHelper;
     ["concat"]: ConcatHelper;
