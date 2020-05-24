@@ -38,6 +38,7 @@ How typed template looks under the hood?
 ### VSCode
 
 For `els-addon-typed-templates` > `v2.2.18`, required `Unstable Ember Language Server` `>= v1.4.2`
+
 For `els-addon-typed-templates` <= `v2.2.18`, required `Unstable Ember Language Server` `>= v0.2.57`
 
 Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable)
