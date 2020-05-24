@@ -37,7 +37,10 @@ How typed template looks under the hood?
 
 ### VSCode
 
-Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable) (>= `0.2.57` required)
+For `els-addon-typed-templates` > `v2.2.18`, required `Unstable Ember Language Server` `>= v1.4.2`
+For `els-addon-typed-templates` <= `v2.2.18`, required `Unstable Ember Language Server` `>= v0.2.57`
+
+Install: [Unstable Ember Language Server](https://marketplace.visualstudio.com/items?itemName=lifeart.vscode-ember-unstable)
 
 * Restart `VSCode`.
 
@@ -133,6 +136,15 @@ declare module "ember-typed-templates" {
     }
 }
 ```
+
+
+### Errors and possible fixes:
+
+https://github.com/lifeart/els-addon-typed-templates/pull/20
+
+### Is it supposed to support Object.extend notation?
+
+Nope
 
 ### Would it be possible to add these as dependencies to the language server or something similar?
 
