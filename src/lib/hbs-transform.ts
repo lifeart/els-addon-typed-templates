@@ -206,7 +206,7 @@ export const transform = {
       .join(",");
     const hash = node.hash.pairs
       .map(p => {
-        return `${p.key}:this["${keyForItem(p.value)}"]()`;
+        return `'${p.key}':this["${keyForItem(p.value)}"]()`;
       })
       .join(",");
     if (hash.length && params.length) {

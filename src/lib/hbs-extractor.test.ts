@@ -2,7 +2,7 @@ import { getClassMeta } from './ast-parser';
 import { extractRelationships } from './hbs-extractor';
 
 function results(source) {
-    let items = extractRelationships(getClassMeta(source).nodes);
+    let items = extractRelationships(getClassMeta(source).nodes, '');
     delete items.klass;
     return items;
 }

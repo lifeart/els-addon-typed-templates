@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ast_parser_1 = require("./ast-parser");
 const hbs_extractor_1 = require("./hbs-extractor");
 function results(source) {
-    let items = hbs_extractor_1.extractRelationships(ast_parser_1.getClassMeta(source).nodes);
+    let items = hbs_extractor_1.extractRelationships(ast_parser_1.getClassMeta(source).nodes, '');
     delete items.klass;
     return items;
 }

@@ -1,6 +1,22 @@
 import { keyForItem } from "./hbs-transform";
+import { serverForProject } from "./ts-service";
+export function extractRelationships(items, projectRoot) {
 
-export function extractRelationships(items) {
+  let registry = {
+    component: {},
+    helper: {}
+  };
+
+  const server = serverForProject(projectRoot);
+  if (server) {
+    registry = server.getRegistry(projectRoot);
+  }
+
+  let isComponent = (name) => {
+    return name in registry.component;
+  }
+
+  // projectRoot
   const componentsForImport: string[] = [];
   const parents = {};
   const scopes = {};
@@ -54,6 +70,12 @@ export function extractRelationships(items) {
         blockPaths.push(keyForItem(exp.path));
         if (exp.isComponent) {
           componentsForImport.push(exp.path.original);
+        }
+      } else if (exp.type === "MustacheStatement") {
+        if (exp.path.type === 'PathExpression') {
+          if (isComponent(exp.path.original)) {
+            componentsForImport.push(exp.path.original);
+          }
         }
       }
       parents[pointer].push(keyForItem(exp.path));

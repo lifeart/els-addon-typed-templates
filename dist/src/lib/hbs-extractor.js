@@ -1,7 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const hbs_transform_1 = require("./hbs-transform");
-function extractRelationships(items) {
+const ts_service_1 = require("./ts-service");
+function extractRelationships(items, projectRoot) {
+    let registry = {
+        component: {},
+        helper: {}
+    };
+    const server = ts_service_1.serverForProject(projectRoot);
+    if (server) {
+        registry = server.getRegistry(projectRoot);
+    }
+    let isComponent = (name) => {
+        return name in registry.component;
+    };
+    // projectRoot
     const componentsForImport = [];
     const parents = {};
     const scopes = {};
@@ -54,6 +67,13 @@ function extractRelationships(items) {
                 blockPaths.push(hbs_transform_1.keyForItem(exp.path));
                 if (exp.isComponent) {
                     componentsForImport.push(exp.path.original);
+                }
+            }
+            else if (exp.type === "MustacheStatement") {
+                if (exp.path.type === 'PathExpression') {
+                    if (isComponent(exp.path.original)) {
+                        componentsForImport.push(exp.path.original);
+                    }
                 }
             }
             parents[pointer].push(hbs_transform_1.keyForItem(exp.path));

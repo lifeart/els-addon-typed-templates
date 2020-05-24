@@ -81,6 +81,12 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
         return `export default class ${meta.className}UnreachedComponent { args: any; defaultYield() { return []; } };`;
     }
     function addImport(name, filePath) {
+        // @to-do implement more elegant fix for mustache components, like `{{foo-bar}}`
+        // issue from hbs-transform addImport(scopeKey, globalRegistry[scopeKey]);
+        if (typeof filePath !== 'string') {
+            return;
+        }
+        console.log('addImport', JSON.stringify(filePath));
         imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
     }
     function addComponentImport(name, filePath) {
@@ -98,10 +104,11 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
             imports.push(`class ${importNameForItem(name)} { args: any; defaultYield() { return []; } };`);
         }
     }
-    const { componentsForImport, parents, scopes, klass, blockPaths } = hbs_extractor_1.extractRelationships(items);
-    // console.log('parents', parents);
-    // console.log('scopes', scopes);
-    // console.log('componentsForImport', componentsForImport);
+    const { componentsForImport, parents, scopes, klass, blockPaths } = hbs_extractor_1.extractRelationships(items, projectRoot);
+    console.log('parents', parents);
+    console.log('scopes', scopes);
+    console.log('blockPaths', blockPaths);
+    console.log('componentsForImport', componentsForImport);
     // console.log('globalRegistry', globalRegistry);
     const definedScope = {
         ["each"]: "EachHelper",
