@@ -69,6 +69,21 @@ Note: This is also how Javascript/ JSDoc template only components work.
 {{@foo.bar}}
 ```
 
+or 
+
+```hbs
+{{!--
+  <script @typedef>
+    interface Args {
+      foo: {
+        bar: string
+      }
+    }
+  </script>
+--}}
+{{@foo.bar}}
+```
+
 ### Javsacript Component (JSDoc)
 
 A component.js file needs some additional information in the js file to work.
