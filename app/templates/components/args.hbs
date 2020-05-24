@@ -1,6 +1,13 @@
-<Hello 
-    @boo="" 
-    @foo="" 
-      as |foo|> 
-     
-</Hello>  
+
+
+<div ...attributes>
+  {{#if (has-block)}}
+
+    {{yield this.isChatVisible this.currentChat.name this.currentChat.record}}
+
+  {{else}}
+
+    {{this.currentChat.name}}
+ 
+  {{/if}}
+</div>
