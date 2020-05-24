@@ -124,6 +124,20 @@ function toFullDiagnostic(err: ts.Diagnostic) {
   let [startCol, startRow] =  start.split(',').map((e)=>parseInt(e, 10));
   let [endCol, endRow] =  end.split(',').map((e)=>parseInt(e, 10));
   let msgText = diagnosticToString(err.messageText);
+
+  /*
+    since ember components in addons may be like 
+    ... export default Ember.Component.extend(Base, PromiseResolver, {
+    it's really tricky to get typings for it at all, and I prefer to skip warnings for it in next lines
+  */
+
+  if (msgText.startsWith("Property 'args' does not exist on type")) {
+    return null;
+  }
+  if (msgText.startsWith("Expected 0 arguments, but got 2.")) {
+    return null;
+  }
+
   return {
     severity: DiagnosticSeverity.Error,
     range: Range.create(startCol - 1, startRow, endCol - 1, endRow),
