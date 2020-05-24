@@ -63,7 +63,7 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
     catch (e) {
         console.log(e);
     }
-    let debug = true;
+    let debug = false;
     if (debug) {
         console.log("--------------------------");
         console.log(virtualFileName);
