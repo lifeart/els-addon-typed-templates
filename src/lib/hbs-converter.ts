@@ -122,7 +122,6 @@ export function getClass(
     if (typeof filePath !== 'string') {
       return;
     }
-    console.log('addImport', JSON.stringify(filePath));
     imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
   }
 

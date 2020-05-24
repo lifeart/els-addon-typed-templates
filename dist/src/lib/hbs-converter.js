@@ -86,7 +86,6 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
         if (typeof filePath !== 'string') {
             return;
         }
-        console.log('addImport', JSON.stringify(filePath));
         imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
     }
     function addComponentImport(name, filePath) {
