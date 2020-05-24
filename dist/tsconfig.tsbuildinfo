@@ -790,7 +790,7 @@
         "signature": "e167eeff9edfb3d97ba60fd53a8683cd2b471d21484805160b12da6fd38853ed"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "ae16cbefc05f7a324c16bc35afea04f0bedceddad75e5dfebdaf36ab8345e4c6",
+        "version": "6f501d953cc9bd03a52cd0fc13bb15232af8942bfee058fa4d70ee2816ba117a",
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
       "../src/lib/ls-utils.ts": {
@@ -4322,7 +4322,7 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
-      "../src/lib/virtual-documents.ts",
+      "../src/lib/hbs-converter.ts",
       "../src/lib/ls-utils.ts",
       "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
@@ -4332,7 +4332,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/hbs-converter.ts"
+      "../src/lib/virtual-documents.ts"
     ]
   },
   "version": "3.7.3"

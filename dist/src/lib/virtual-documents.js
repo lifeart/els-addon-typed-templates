@@ -28,7 +28,7 @@ function getValidRegistryItems(registry, templateFile, projectRoot) {
         const keys = ["helper", "modifier"];
         keys.forEach(keyName => {
             Object.keys(registry[keyName]).forEach(name => {
-                const itemPaths = registry[keyName][name].filter(p => !p.endsWith(".hbs"));
+                const itemPaths = registry[keyName][name].filter(p => !p.endsWith(".hbs") && !normalizePath(name).includes('/tests/') && !normalizePath(name).includes('/dist/'));
                 let primaryPath = itemPaths.find(p => p.endsWith(".ts"));
                 if (primaryPath) {
                     items[name] = resolvers_1.ralativeAddonImport(templateFile, primaryPath);
