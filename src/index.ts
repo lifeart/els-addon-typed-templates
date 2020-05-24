@@ -28,7 +28,7 @@ let hasLinter: any = false;
 /* */
 function lintFile(root, textDocument, server) {
   const templatePath = URI.parse(textDocument.uri).fsPath;
-  const marks = ['components', 'component'];
+  const marks = ['components', 'component', 'templates'];
   const foundMarks = marks.filter((mark) => templatePath.includes(mark));
   if (isTestFile(templatePath) || foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
     return [];

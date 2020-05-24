@@ -25,7 +25,6 @@ declare module "@ember/component" {
     constructor(owner: unknown, args: Args = {  }) {
       super(...arguments);
       this.args = args;
-      return this;
     }
     static extend(args) {
       return class ExtendedComponent extends Component<typeof args> {

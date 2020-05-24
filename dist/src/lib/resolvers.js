@@ -88,8 +88,11 @@ function findComponentForTemplate(fsPath, projectRoot) {
     let possibleScripts = [];
     if (componentMeta.kind === 'template' && componentMeta.type === 'template') {
         possibleScripts = (registry.routePath[componentMeta.name.split('/').join('.')] || []).filter((el) => {
-            var _a;
-            return ((_a = ts_service_1.typeForPath(projectRoot, el)) === null || _a === void 0 ? void 0 : _a.type) === 'controller';
+            let meta = ts_service_1.typeForPath(projectRoot, el);
+            if (!meta) {
+                return null;
+            }
+            return meta.type === 'controller' && meta.kind === 'script';
         });
     }
     else {

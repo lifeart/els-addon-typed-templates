@@ -106,7 +106,11 @@ export function findComponentForTemplate(fsPath, projectRoot) {
   let possibleScripts: string[] = [];
   if (componentMeta.kind === 'template' && componentMeta.type === 'template') {
     possibleScripts = (registry.routePath[componentMeta.name.split('/').join('.')]||[]).filter((el)=>{
-      return typeForPath(projectRoot, el)?.type === 'controller';
+      let meta = typeForPath(projectRoot, el);
+      if (!meta) {
+        return null;
+      }
+      return meta.type === 'controller' && meta.kind === 'script';
     });
   } else {
     possibleScripts = (registry.component[componentMeta.name] || []).filter((el)=>{

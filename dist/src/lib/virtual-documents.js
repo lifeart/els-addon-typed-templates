@@ -79,6 +79,7 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
     content = content ? content : document.getText();
     const { nodes, comments } = ast_parser_1.getClassMeta(content);
     let scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
+    // console.log('scriptForComponent', scriptForComponent);
     let relComponentImport = null;
     if (scriptForComponent) {
         relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);

@@ -25,7 +25,7 @@ let hasLinter = false;
 /* */
 function lintFile(root, textDocument, server) {
     const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
-    const marks = ['components', 'component'];
+    const marks = ['components', 'component', 'templates'];
     const foundMarks = marks.filter((mark) => templatePath.includes(mark));
     if (isTestFile(templatePath) || foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
         return [];

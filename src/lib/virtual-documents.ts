@@ -96,6 +96,7 @@ export function createFullVirtualTemplate(
   const { nodes, comments } = getClassMeta(content);
   
   let scriptForComponent =  findComponentForTemplate(templatePath, projectRoot)
+  // console.log('scriptForComponent', scriptForComponent);
   let relComponentImport: string | null = null;
 
   if (scriptForComponent) {
