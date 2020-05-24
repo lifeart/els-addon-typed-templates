@@ -105,10 +105,10 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
         }
     }
     const { componentsForImport, parents, scopes, klass, blockPaths } = hbs_extractor_1.extractRelationships(items, projectRoot);
-    console.log('parents', parents);
-    console.log('scopes', scopes);
-    console.log('blockPaths', blockPaths);
-    console.log('componentsForImport', componentsForImport);
+    // console.log('parents', parents);
+    // console.log('scopes', scopes);
+    // console.log('blockPaths', blockPaths);
+    // console.log('componentsForImport', componentsForImport);
     // console.log('globalRegistry', globalRegistry);
     const definedScope = {
         ["each"]: "EachHelper",

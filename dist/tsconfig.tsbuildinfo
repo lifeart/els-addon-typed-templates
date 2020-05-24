@@ -786,7 +786,7 @@
         "signature": "78f484f76d2d7284db5666792d9f8c0e5aaade554fb81b1d5cb043d8a2cf63a4"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "cae0a3af9e8eb5f2e279452ea2b4a16b028682aacb72e52bce403e3e23b22910",
+        "version": "72e451cd652ed7f34f25ecc85b7b4e3ef9e8ec4379bc8484cbc0e8d957b1bd4d",
         "signature": "e167eeff9edfb3d97ba60fd53a8683cd2b471d21484805160b12da6fd38853ed"
       },
       "../src/lib/virtual-documents.ts": {
@@ -4319,8 +4319,8 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
       "../src/lib/ast-parser.ts",
+      "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
-      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
       "../src/index.ts",
@@ -4331,7 +4331,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/hbs-transform.ts"
+      "../src/lib/hbs-converter.ts"
     ]
   },
   "version": "3.7.3"

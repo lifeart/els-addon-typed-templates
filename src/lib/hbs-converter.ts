@@ -164,10 +164,10 @@ export function getClass(
   } = extractRelationships(items, projectRoot);
 
 
-  console.log('parents', parents);
-  console.log('scopes', scopes);
-  console.log('blockPaths', blockPaths);
-  console.log('componentsForImport', componentsForImport);
+  // console.log('parents', parents);
+  // console.log('scopes', scopes);
+  // console.log('blockPaths', blockPaths);
+  // console.log('componentsForImport', componentsForImport);
   // console.log('globalRegistry', globalRegistry);
 
   const definedScope = {
