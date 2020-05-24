@@ -1,5 +1,7 @@
 declare module "@glimmer/component" {
-  export default class Component<Args extends {} = {}> extends BaseComponent<
+  type UnknownConfig = Record<string, unknown>;
+
+  export default class Component<Args extends UnknownConfig = {}> extends BaseComponent<
     Args
   > {
     constructor(owner: unknown, args: Args) {
@@ -13,19 +15,21 @@ declare module "@glimmer/component" {
 }
 
 declare module "@ember/component" {
+  type UnknownConfig = Record<string, unknown>;
   export function setComponentTemplate<T, U>(Template: T, Klass: U): U;
 
 
-  export default class Component<Args extends {} = {}> extends BaseComponent<
+  export default class Component<Args extends UnknownConfig = { }> extends BaseComponent<
     Args
   > {
-    constructor(owner: unknown, args: Args) {
+    constructor(owner: unknown, args: Args = {  }) {
       super(...arguments);
       this.args = args;
+      return this;
     }
     static extend(args) {
       return class ExtendedComponent extends Component<typeof args> {
-
+ 
       }
     }
     args: Args;
