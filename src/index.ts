@@ -1,5 +1,6 @@
 import { URI } from "vscode-uri";
 import { mergeResults, normalizeAngleTagName } from "./lib/utils";
+import * as fs from 'fs';
 import {
   isParamPath,
   isArgumentName,
@@ -154,7 +155,8 @@ export async function onComplete(
       isArg = true;
       if (isExternalComponentArg) {
         realPath = normalizeArgumentName(focusPath.node.name);
-        content = `{{${realPath}}}`;
+        let realContent = fs.readFileSync(templatePath, 'utf8');
+        content = `{{${realPath}}}${realContent}`;
       } else {
         realPath = normalizeArgumentName(realPath);
       }

@@ -798,7 +798,7 @@
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/index.ts": {
-        "version": "cb6dacfec822c7b64adfc3dab0d35f6a496808dee4f24488546a2e4674a1c928",
+        "version": "df8e3cb6e8dd5df38975dd969a9bbbbd52c612d45b79ff65f93531fbfd2213b5",
         "signature": "3bb603ee422d29872a9aeca0e2a51d0455bc69635f9741571d16135f50b1b93f"
       },
       "../src/lib/ast-parser.test.ts": {
@@ -2490,6 +2490,7 @@
       "../src/index.ts": [
         "../node_modules/vscode-uri/lib/umd/index.d.ts",
         "../src/lib/utils.ts",
+        "../node_modules/@types/node/fs.d.ts",
         "../src/lib/ast-helpers.ts",
         "../src/lib/resolvers.ts",
         "../src/lib/ts-service.ts",
@@ -2497,7 +2498,6 @@
         "../src/lib/ast-parser.ts",
         "../src/lib/hbs-transform.ts",
         "../src/lib/ls-utils.ts",
-        "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
@@ -4322,9 +4322,9 @@
       "../src/lib/ast-parser.ts",
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
+      "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
-      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -4332,7 +4332,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/hbs-converter.ts"
+      "../src/index.ts"
     ]
   },
   "version": "3.7.3"

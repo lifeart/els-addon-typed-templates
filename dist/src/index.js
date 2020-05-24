@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode_uri_1 = require("vscode-uri");
 const utils_1 = require("./lib/utils");
+const fs = require("fs");
 const ast_helpers_1 = require("./lib/ast-helpers");
 const resolvers_1 = require("./lib/resolvers");
 const ts_service_1 = require("./lib/ts-service");
@@ -136,7 +137,8 @@ function onComplete(root, { results, focusPath, type, textDocument }) {
                 isArg = true;
                 if (isExternalComponentArg) {
                     realPath = ast_helpers_1.normalizeArgumentName(focusPath.node.name);
-                    content = `{{${realPath}}}`;
+                    let realContent = fs.readFileSync(templatePath, 'utf8');
+                    content = `{{${realPath}}}${realContent}`;
                 }
                 else {
                     realPath = ast_helpers_1.normalizeArgumentName(realPath);
