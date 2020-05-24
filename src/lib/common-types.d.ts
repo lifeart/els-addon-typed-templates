@@ -84,6 +84,7 @@ declare module "ember-typed-templates" {
     ["on"]: OnModifer;
     ["fn"]: FnHelper;
     ["yield"]: YieldHelper;
+    ["outlet"]: YieldHelper;
     ["concat"]: ConcatHelper;
     ["prevent-default"]: EventCatcherHelper;
     ["stop-propagation"]: EventCatcherHelper;

@@ -119,6 +119,7 @@ function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta 
         ["on"]: "OnModifer",
         ["fn"]: "FnHelper",
         ["yield"]: "YieldHelper",
+        ["outlet"]: "YieldHelper",
         ["concat"]: "ConcatHelper",
         ["prevent-default"]: "EventCatcherHelper",
         ["stop-propagation"]: "EventCatcherHelper",
