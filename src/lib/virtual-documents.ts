@@ -109,7 +109,7 @@ export function createFullVirtualTemplate(
     relComponentImport,
     getValidRegistryItems(registry, fileName, projectRoot)
   );
-  let debug = false;
+  let debug = true;
   if (debug) {
     console.log("===============");
     console.log(componentsMap[fileName]);

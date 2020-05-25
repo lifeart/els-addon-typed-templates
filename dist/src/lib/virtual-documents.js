@@ -86,7 +86,7 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
     }
     // console.log('scriptForComponent', scriptForComponent);
     componentsMap[fileName] = hbs_converter_1.getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, relComponentImport, getValidRegistryItems(registry, fileName, projectRoot));
-    let debug = false;
+    let debug = true;
     if (debug) {
         console.log("===============");
         console.log(componentsMap[fileName]);

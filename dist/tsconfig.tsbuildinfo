@@ -778,19 +778,19 @@
         "signature": "a8f722ec030eb742c748fcd690030d8756d7f0f36f09a8623f7363f6d8d7921a"
       },
       "../src/lib/hbs-transform.ts": {
-        "version": "45d36e76913291f76d61b61cfe5b152d2e97f5e8de97242498f7d5c5b591d67f",
-        "signature": "6ab54c87192a681b696e7188b82e3cfc80f12db71a6a8308b2ec279f6369d476"
+        "version": "badec577f6c09f245b30aefda1bc78d703bc6e6618b1664dcdc218dea70ba1a8",
+        "signature": "6966a6984ce2dd87688972bc3923e10397418b970563d8b5c943485ba322f052"
       },
       "../src/lib/hbs-extractor.ts": {
         "version": "394616ed20391af3425fe93c333b0a9e239cec217b36b124920f455b04b68699",
         "signature": "78f484f76d2d7284db5666792d9f8c0e5aaade554fb81b1d5cb043d8a2cf63a4"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "2177f98857fa0ae518bda4814f5ed9de600deb4735bbffbd33a68a90c9038a44",
+        "version": "7e0db4aaf1cc210d3d6166e17c3b2c9dfc5c777baadc9da54eae746c65f0efc7",
         "signature": "e167eeff9edfb3d97ba60fd53a8683cd2b471d21484805160b12da6fd38853ed"
       },
       "../src/lib/virtual-documents.ts": {
-        "version": "6f501d953cc9bd03a52cd0fc13bb15232af8942bfee058fa4d70ee2816ba117a",
+        "version": "034776b59e61c57edeec9f0874d67e92a9c6be0e10792463388495c849904082",
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
       "../src/lib/ls-utils.ts": {
@@ -4320,10 +4320,8 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
       "../src/lib/ast-parser.ts",
-      "../src/lib/hbs-transform.ts",
-      "../src/lib/hbs-extractor.ts",
+      "../src/lib/virtual-documents.ts",
       "../src/lib/ls-utils.ts",
-      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -4331,8 +4329,10 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
+      "../src/lib/hbs-transform.ts",
+      "../src/index.ts",
       "../src/lib/hbs-converter.ts",
-      "../src/lib/virtual-documents.ts"
+      "../src/lib/hbs-extractor.ts"
     ]
   },
   "version": "3.7.3"

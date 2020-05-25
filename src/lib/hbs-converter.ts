@@ -88,7 +88,7 @@ function registerTemplateKlassForFile(
     console.log(e);
   }
 
-  let debug = false;
+  let debug = true;
   if (debug) {
     console.log("--------------------------");
     console.log(virtualFileName);

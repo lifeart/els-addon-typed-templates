@@ -118,7 +118,9 @@ exports.transform = {
         if (klass) {
             this.klass = klass;
         }
-        return this._wrap(this[node.type](node), key);
+        const typeKey = `TypeFor${node.type}`;
+        const typings = (typeKey in this) ? ': ' + this[typeKey](node) : '';
+        return this._wrap(this[node.type](node), key, typings);
     },
     wrapToFunction(str, key) {
         return this._wrap(str, key);
@@ -126,8 +128,8 @@ exports.transform = {
     addMark(key) {
         return `/*@path-mark ${serializeKey(key)}*/`;
     },
-    _wrap(str, key) {
-        return `() { return ${str}; ${this.addMark(key)}}`;
+    _wrap(str, key, returnType) {
+        return `()${returnType} { return ${str}; ${this.addMark(key)}}`;
     },
     fn(args, body, key) {
         return this._makeFn(args, body, key);
@@ -145,6 +147,9 @@ exports.transform = {
     },
     TextNode(node) {
         return `"${node.chars}"`;
+    },
+    TypeForTextNode(node) {
+        return `"${node.chars}" `;
     },
     pathCall(node) {
         let key = keyForItem(node);
@@ -203,8 +208,17 @@ exports.transform = {
     NumberLiteral(node) {
         return `${node.value}`;
     },
+    TypeForNumberLiteral(node) {
+        return `${node.value}`;
+    },
     StringLiteral(node) {
         return `"${node.value}"`;
+    },
+    TypeForStringLiteral(node) {
+        return `"${node.value}"`;
+    },
+    TypeForNullLiteral() {
+        return `null`;
     },
     NullLiteral() {
         return "null";
