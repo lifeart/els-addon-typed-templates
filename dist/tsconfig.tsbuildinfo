@@ -778,8 +778,8 @@
         "signature": "a8f722ec030eb742c748fcd690030d8756d7f0f36f09a8623f7363f6d8d7921a"
       },
       "../src/lib/hbs-transform.ts": {
-        "version": "badec577f6c09f245b30aefda1bc78d703bc6e6618b1664dcdc218dea70ba1a8",
-        "signature": "6966a6984ce2dd87688972bc3923e10397418b970563d8b5c943485ba322f052"
+        "version": "144c2154b20d4b0ce65ce18344286d9d10c0f486402ff8f83c341f58eaba3bff",
+        "signature": "f6bf19063037996b284380bd454c1f41494a1d76ecaa98daaf5eb45a044ec454"
       },
       "../src/lib/hbs-extractor.ts": {
         "version": "394616ed20391af3425fe93c333b0a9e239cec217b36b124920f455b04b68699",

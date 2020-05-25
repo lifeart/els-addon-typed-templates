@@ -128,7 +128,7 @@ exports.transform = {
     addMark(key) {
         return `/*@path-mark ${serializeKey(key)}*/`;
     },
-    _wrap(str, key, returnType) {
+    _wrap(str, key, returnType = '') {
         return `()${returnType} { return ${str}; ${this.addMark(key)}}`;
     },
     fn(args, body, key) {

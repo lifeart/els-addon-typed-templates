@@ -26,7 +26,7 @@ export declare const transform: {
     transform(node: any, key: string, klass?: any): string;
     wrapToFunction(str: string, key: string): string;
     addMark(key: string): string;
-    _wrap(str: string, key: string, returnType?: "" | undefined): string;
+    _wrap(str: string, key: string, returnType?: string): string;
     fn(args: string, body: string, key: string): string;
     _makeFn(rawArgs: string, rawBody: string, key: string): string;
     TextNode(node: any): string;

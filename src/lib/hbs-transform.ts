@@ -160,7 +160,7 @@ export const transform = {
     }
     const typeKey = `TypeFor${node.type}`;
     const typings = (typeKey in this) ? ': ' + this[typeKey](node) : '';
-    return this._wrap(this[node.type](node), key, typings as any);
+    return this._wrap(this[node.type](node), key, typings);
   },
   wrapToFunction(str: string, key: string) {
     return this._wrap(str, key);
@@ -168,7 +168,7 @@ export const transform = {
   addMark(key: string) {
     return `/*@path-mark ${serializeKey(key)}*/`;
   },
-  _wrap(str: string, key: string, returnType?: '') {
+  _wrap(str: string, key: string, returnType: string = '') {
     return `()${returnType} { return ${str}; ${this.addMark(key)}}`;
   },
   fn(args: string, body: string, key: string) {
