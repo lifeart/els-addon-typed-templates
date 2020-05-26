@@ -29,6 +29,7 @@ function normalizePathOriginal(node) {
 function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, declaredInScope, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }) {
     let result = "";
     let simpleResult = "";
+    const builtinScopeImports = new Set();
     if (node.data === true) {
         result = exports.transform.wrapToFunction(normalizePathOriginal(node), key);
     }
@@ -42,6 +43,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
                 if (blockPaths.includes(key)) {
                     if (declaredInScope(scopeKey)) {
                         globalScope[scopeKey] = "AbstractBlockHelper";
+                        builtinScopeImports.add('AbstractBlockHelper');
                     }
                     else {
                         globalScope[scopeKey] = 'undefined';
@@ -59,6 +61,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
                     else {
                         if (declaredInScope(scopeKey)) {
                             globalScope[scopeKey] = "AbstractHelper";
+                            builtinScopeImports.add('AbstractHelper');
                         }
                         else {
                             globalScope[scopeKey] = 'undefined';
@@ -86,7 +89,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
                 if (scopeKey in globalRegistry &&
                     componentsForImport.includes(scopeKey)) {
                     addComponentImport(scopeKey, globalRegistry[scopeKey]);
-                    result = exports.transform.fn("_?, hash?", `let klass = new ${importNameForItem(scopeKey)}(); klass.args = hash; return klass.defaultYield()`, key);
+                    result = exports.transform.fn(`_, hash: typeof ${importNameForItem(scopeKey)}.prototype.args`, `let klass = new ${importNameForItem(scopeKey)}(this as unknown, hash); klass.args = hash; return klass.defaultYield()`, key);
                 }
                 else {
                     simpleResult = `this.globalScope["${scopeKey}"]`;
@@ -103,7 +106,7 @@ function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope,
             }
         }
     }
-    return { result, simpleResult };
+    return { result, simpleResult, builtinScopeImports: Array.from(builtinScopeImports) };
 }
 exports.transformPathExpression = transformPathExpression;
 exports.transform = {
@@ -115,7 +118,9 @@ exports.transform = {
         if (klass) {
             this.klass = klass;
         }
-        return this._wrap(this[node.type](node), key);
+        const typeKey = `TypeFor${node.type}`;
+        const typings = (typeKey in this) ? ': ' + this[typeKey](node) : '';
+        return this._wrap(this[node.type](node), key, typings);
     },
     wrapToFunction(str, key) {
         return this._wrap(str, key);
@@ -123,8 +128,8 @@ exports.transform = {
     addMark(key) {
         return `/*@path-mark ${serializeKey(key)}*/`;
     },
-    _wrap(str, key) {
-        return `() { return ${str}; ${this.addMark(key)}}`;
+    _wrap(str, key, returnType = '') {
+        return `()${returnType} { return ${str}; ${this.addMark(key)}}`;
     },
     fn(args, body, key) {
         return this._makeFn(args, body, key);
@@ -143,6 +148,9 @@ exports.transform = {
     TextNode(node) {
         return `"${node.chars}"`;
     },
+    TypeForTextNode(node) {
+        return `"${node.chars}" `;
+    },
     pathCall(node) {
         let key = keyForItem(node);
         let simpleKey = key + '_simple';
@@ -154,7 +162,7 @@ exports.transform = {
         }
         return `this["${keyForItem(node)}"]`;
     },
-    hashedExp(node) {
+    hashedExp(node, nodeType = 'DEFAULT') {
         let result = "";
         const params = node.params
             .map(p => {
@@ -163,7 +171,7 @@ exports.transform = {
             .join(",");
         const hash = node.hash.pairs
             .map(p => {
-            return `${p.key}:this["${keyForItem(p.value)}"]()`;
+            return `'${p.key}':this["${keyForItem(p.value)}"]()`;
         })
             .join(",");
         if (hash.length && params.length) {
@@ -176,7 +184,12 @@ exports.transform = {
             result = `${this.pathCall(node.path)}([],{${hash}})`;
         }
         else {
-            result = `${this.pathCall(node.path)}()`;
+            if (nodeType === 'BlockStatement') {
+                result = `${this.pathCall(node.path)}([], {})`;
+            }
+            else {
+                result = `${this.pathCall(node.path)}()`;
+            }
         }
         return result;
     },
@@ -190,13 +203,22 @@ exports.transform = {
         return this.hashedExp(node);
     },
     BlockStatement(node) {
-        return this.hashedExp(node);
+        return this.hashedExp(node, 'BlockStatement');
     },
     NumberLiteral(node) {
         return `${node.value}`;
     },
+    TypeForNumberLiteral(node) {
+        return `${node.value}`;
+    },
     StringLiteral(node) {
         return `"${node.value}"`;
+    },
+    TypeForStringLiteral(node) {
+        return `"${node.value}"`;
+    },
+    TypeForNullLiteral() {
+        return `null`;
     },
     NullLiteral() {
         return "null";

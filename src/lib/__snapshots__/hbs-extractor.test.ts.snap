@@ -1,5 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[` 1`] = `
+Object {
+  "blockPaths": Array [
+    "2,7:2,11 - PathExpression",
+    "3,2:7,11 - PathExpression",
+  ],
+  "componentsForImport": Array [
+    "link-to",
+  ],
+  "parents": Object {
+    "2,4:8,9 - BlockStatement": Array [
+      "3,2:7,11 - BlockStatement",
+      "6,4:6,11 - MustacheStatement",
+      "2,7:2,11 - PathExpression",
+      "2,12:2,27 - PathExpression",
+    ],
+    "3,2:7,11 - BlockStatement": Array [
+      "6,4:6,11 - MustacheStatement",
+      "3,2:7,11 - PathExpression",
+      "4,11:4,28 - SubExpression",
+      "4,23:4,26 - PathExpression",
+    ],
+    "4,11:4,28 - SubExpression": Array [
+      "4,13:4,17 - PathExpression",
+    ],
+    "6,4:6,11 - MustacheStatement": Array [
+      "6,6:6,9 - PathExpression",
+    ],
+  },
+  "scopes": Object {
+    "2,4:8,9 - BlockStatement": Array [
+      "tag",
+    ],
+    "3,2:7,11 - BlockStatement": Array [],
+    "6,4:6,11 - MustacheStatement": Array [],
+  },
+}
+`;
+
+exports[` 2`] = `
+Object {
+  "blockPaths": Array [
+    "1,3:1,7 - PathExpression",
+  ],
+  "componentsForImport": Array [],
+  "parents": Object {
+    "1,0:3,11 - BlockStatement": Array [
+      "2,4:2,11 - MustacheStatement",
+      "1,3:1,7 - PathExpression",
+      "1,8:1,23 - PathExpression",
+    ],
+    "2,4:2,11 - MustacheStatement": Array [
+      "2,6:2,9 - PathExpression",
+    ],
+  },
+  "scopes": Object {
+    "1,0:3,11 - BlockStatement": Array [
+      "tag",
+    ],
+    "2,4:2,11 - MustacheStatement": Array [],
+  },
+}
+`;
+
 exports[`getClassMeta <MyComponent as |ctx|> {{ctx.result}} </MyComponent> 1`] = `
 Object {
   "blockPaths": Array [

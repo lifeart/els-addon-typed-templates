@@ -5,5 +5,8 @@ declare module "ember-typed-templates" {
         onx: (naem: string) => undefined;
         boo: (name?, hash?) => [ {a:1} ];
         off: ([boo]: [number])=>void;
+        'foo-bars': any;
+        'my-components': any;
     }
 }
+

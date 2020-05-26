@@ -2,7 +2,7 @@ import { getClassMeta } from './ast-parser';
 import { extractRelationships } from './hbs-extractor';
 
 function results(source) {
-    let items = extractRelationships(getClassMeta(source).nodes);
+    let items = extractRelationships(getClassMeta(source).nodes, '');
     delete items.klass;
     return items;
 }
@@ -24,3 +24,21 @@ describe('getClassMeta', () => {
         });
     });
 });
+
+describe('getClassMeta - complex case', () => {
+    expect(results(`
+    {{#each @model.tagsList as |tag|}}
+  <LinkTo
+    @query={{hash tags=tag}}
+  >
+    {{tag}}
+  </LinkTo>
+{{/each}}
+    `)).toMatchSnapshot();
+})
+
+describe('getClassMeta - simple scope', () => {
+    expect(results(`{{#each @model.tagsList as |tag|}}
+    {{tag}}
+  {{/each}}`)).toMatchSnapshot();
+})

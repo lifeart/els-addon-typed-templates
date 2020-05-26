@@ -64,13 +64,40 @@ function tsDefinitionToLocation(el) {
 }
 exports.tsDefinitionToLocation = tsDefinitionToLocation;
 function toFullDiagnostic(err) {
+    if (!err.file || err.start === undefined) {
+        return null;
+    }
     let preErrorText = err.file.text.slice(0, err.start);
+    let postErrorText = err.file.text.slice(err.start, err.file.text.length);
+    // try {
+    //   console.log('err.file.fileName', err.file.fileName);
+    //   console.log('start', err.start);
+    //   console.log('err.slice', err.file.text.slice(err.start, 100));
+    //   console.log('err.code', err.code);
+    //   console.log('err.category', err.category);
+    //   console.log('err.related', err.relatedInformation);
+    //   console.log('err.source', err.source);
+    //   console.log('err.msg', err.messageText);
+    // } catch(e) {
+    //   console.log('err:', e);
+    // }
     if (err.start < err.file.text.indexOf('@mark-meaningful-issues-start')) {
         return null;
     }
-    let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
-    let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
-    let [start, end] = mark.split(':');
+    let closestLeftMark = postErrorText.indexOf('["');
+    let closestRightMarkOffset = postErrorText.indexOf('"]');
+    let maybeMark = err.file.text.slice(closestLeftMark + err.start, closestRightMarkOffset + err.start);
+    let hasNewline = err.file.text.slice(err.start, err.start + closestLeftMark).split('\n').length > 1;
+    maybeMark = maybeMark.slice(maybeMark.indexOf('[') + 2, maybeMark.indexOf(']')).trim().split(' - ')[0];
+    let start, end;
+    if (maybeMark.includes(':') && !hasNewline) {
+        [start, end] = maybeMark.split(':');
+    }
+    else {
+        let preError = preErrorText.slice(preErrorText.lastIndexOf('//@mark'), preErrorText.length);
+        let mark = preError.slice(preError.indexOf('[') + 1, preError.indexOf(']')).trim();
+        [start, end] = mark.split(':');
+    }
     if (!start || !end) {
         let postError = err.file.text.slice(err.start, err.file.text.length);
         let postErrorMark = postError.slice(postError.indexOf('/*@path-mark ') + 13, postError.indexOf('*/'));
@@ -84,9 +111,17 @@ function toFullDiagnostic(err) {
     // console.log('preErrorText',preErrorText.slice(preErrorText.lastIndexOf('//@mark ') + 8, preErrorText.lastIndexOf('//@mark ') + 40));
     let [startCol, startRow] = start.split(',').map((e) => parseInt(e, 10));
     let [endCol, endRow] = end.split(',').map((e) => parseInt(e, 10));
-    let msgText = err.messageText;
-    if (msgText.messageText) {
-        msgText = msgText.messageText;
+    let msgText = diagnosticToString(err.messageText);
+    /*
+      since ember components in addons may be like
+      ... export default Ember.Component.extend(Base, PromiseResolver, {
+      it's really tricky to get typings for it at all, and I prefer to skip warnings for it in next lines
+    */
+    if (msgText.startsWith("Property 'args' does not exist on type")) {
+        return null;
+    }
+    if (msgText.startsWith("Expected 0 arguments, but got 2.")) {
+        return null;
     }
     return {
         severity: vscode_languageserver_1.DiagnosticSeverity.Error,
@@ -94,6 +129,19 @@ function toFullDiagnostic(err) {
         message: msgText,
         source: "typed-templates"
     };
+}
+// regards to https://github.com/dfreeman/ember-typed-templates-vscode/blob/master/src/server/server.ts#L172
+function diagnosticToString(message, indent = '') {
+    if (typeof message === 'string') {
+        return `${indent}${message}`;
+    }
+    else if (message.next && message.next.length) {
+        let items = message.next.map((msg) => diagnosticToString(msg, `${indent}  `));
+        return `${indent}${message.messageText}\n${items.join('\n')}`;
+    }
+    else {
+        return `${indent}${message.messageText}`;
+    }
 }
 function getFullSemanticDiagnostics(service, fileName) {
     const tsDiagnostics = service.getSemanticDiagnostics(fileName);

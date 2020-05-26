@@ -1,4 +1,6 @@
 export declare function isParamPath(astPath: any): any;
+export declare function relplaceFocusPathForExternalComponentArgument(focusPath: any): any;
+export declare function isExternalComponentArgument(focusPath: any): boolean;
 export declare function realPathName(focusPath: any): any;
 export declare function isArgumentName(textPath: any): any;
 export declare function normalizeArgumentName(textPath: any): any;

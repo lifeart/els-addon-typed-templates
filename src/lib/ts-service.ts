@@ -15,22 +15,118 @@ export function componentsForService(service, clean = false) {
 
 type ProjectFile = { version: number };
 type TSMeta = { version: number; snapshot: ts.IScriptSnapshot };
+type MatchResultType =
+  | 'helper'
+  | 'service'
+  | 'route'
+  | 'controller'
+  | 'modifier'
+  | 'template'
+  | 'component'
+  | 'model'
+  | 'transform'
+  | 'adapter'
+  | 'serializer';
 
+// {"type":"component","name":"my-component","kind":"template","scope":"application","className":"MyComponentComponent"}
+export interface MatchResult {
+  type: MatchResultType;
+  name: string;
+  kind: string;
+  scope: string;
+  className?: string;
+}
+
+interface RegistryItem {
+  [key: string]: string[]
+}
+
+interface LSRegistry {
+  'transform': RegistryItem;
+  'helper': RegistryItem;
+  'component': RegistryItem;
+  'routePath': RegistryItem;
+  'model': RegistryItem;
+  'service': RegistryItem;
+  'modifier': RegistryItem;
+}
+export interface LanguageServer {
+  getRegistry(root: string): LSRegistry
+}
 interface ProjectMirror {
   project: {
     files: Map<string, ProjectFile>;
+    matchPathToType(filePath: string): null | MatchResult
   };
+  server: LanguageServer,
   files: WeakMap<ProjectFile, TSMeta>;
 }
 
 const STABLE_FILES: Map<string, TSMeta> = new Map();
 const PROJECTS_MAP: Map<string, ProjectMirror> = new Map();
 
-export function registerProject(item) {
+export function registerProject(item, server) {
   PROJECTS_MAP.set(item.root.split(":").pop(), {
     project: item,
+    server: server,
     files: new WeakMap()
   });
+}
+
+
+export function normalizeToAngleBracketName(name) {
+  const SIMPLE_DASHERIZE_REGEXP = /[a-z]|\/|-/g;
+  const ALPHA = /[A-Za-z0-9]/;
+
+  if (name.includes(".")) {
+    return name;
+  }
+
+  return name.replace(SIMPLE_DASHERIZE_REGEXP, (char, index) => {
+    if (char === "/") {
+      return "";
+    }
+
+    if (index === 0 || !ALPHA.test(name[index - 1])) {
+      return char.toUpperCase();
+    }
+
+    // Remove all occurrences of '-'s from the name that aren't starting with `-`
+    return char === "-" ? "" : char.toLowerCase();
+  });
+}
+
+const serverMock: LanguageServer = {
+  getRegistry(_: string): LSRegistry {
+    return {
+      'transform': {},
+      'helper': {},
+      'component': {},
+      'routePath': {},
+      'model': {},
+      'service': {},
+      'modifier': {}
+    }
+  }
+}
+
+export function serverForProject(root: string) {
+  const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
+  if (!projectMirror) {
+    console.log('server-mock used');
+    return serverMock as LanguageServer;
+  }
+  return projectMirror.server;
+}
+
+export function typeForPath(root: string, uri: string) {
+  const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
+  let result = projectMirror.project.matchPathToType(uri);
+  if (result === null) {
+    return null;
+  }
+  result.className = normalizeToAngleBracketName(result.name) + result.type.charAt(0).toUpperCase() + result.type.slice(1);
+  return result;
 }
 
 export function serviceForRoot(uri): ts.LanguageService {
@@ -91,6 +187,7 @@ export function serviceForRoot(uri): ts.LanguageService {
         return Object.assign({}, tsConfig, {
           baseUrl: ".",
           allowJs: true,
+          checkJs: true,
           allowSyntheticDefaultImports: true,
           skipLibCheck: true,
           experimentalDecorators: true,

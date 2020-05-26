@@ -15,13 +15,64 @@ function componentsForService(service, clean = false) {
 exports.componentsForService = componentsForService;
 const STABLE_FILES = new Map();
 const PROJECTS_MAP = new Map();
-function registerProject(item) {
+function registerProject(item, server) {
     PROJECTS_MAP.set(item.root.split(":").pop(), {
         project: item,
+        server: server,
         files: new WeakMap()
     });
 }
 exports.registerProject = registerProject;
+function normalizeToAngleBracketName(name) {
+    const SIMPLE_DASHERIZE_REGEXP = /[a-z]|\/|-/g;
+    const ALPHA = /[A-Za-z0-9]/;
+    if (name.includes(".")) {
+        return name;
+    }
+    return name.replace(SIMPLE_DASHERIZE_REGEXP, (char, index) => {
+        if (char === "/") {
+            return "";
+        }
+        if (index === 0 || !ALPHA.test(name[index - 1])) {
+            return char.toUpperCase();
+        }
+        // Remove all occurrences of '-'s from the name that aren't starting with `-`
+        return char === "-" ? "" : char.toLowerCase();
+    });
+}
+exports.normalizeToAngleBracketName = normalizeToAngleBracketName;
+const serverMock = {
+    getRegistry(_) {
+        return {
+            'transform': {},
+            'helper': {},
+            'component': {},
+            'routePath': {},
+            'model': {},
+            'service': {},
+            'modifier': {}
+        };
+    }
+};
+function serverForProject(root) {
+    const projectMirror = PROJECTS_MAP.get(root);
+    if (!projectMirror) {
+        console.log('server-mock used');
+        return serverMock;
+    }
+    return projectMirror.server;
+}
+exports.serverForProject = serverForProject;
+function typeForPath(root, uri) {
+    const projectMirror = PROJECTS_MAP.get(root);
+    let result = projectMirror.project.matchPathToType(uri);
+    if (result === null) {
+        return null;
+    }
+    result.className = normalizeToAngleBracketName(result.name) + result.type.charAt(0).toUpperCase() + result.type.slice(1);
+    return result;
+}
+exports.typeForPath = typeForPath;
 function serviceForRoot(uri) {
     if (!services[uri]) {
         const registry = ts.createDocumentRegistry(false, uri);
@@ -64,6 +115,7 @@ function serviceForRoot(uri) {
                 return Object.assign({}, tsConfig, {
                     baseUrl: ".",
                     allowJs: true,
+                    checkJs: true,
                     allowSyntheticDefaultImports: true,
                     skipLibCheck: true,
                     experimentalDecorators: true,

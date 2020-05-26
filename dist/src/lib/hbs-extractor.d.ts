@@ -1,4 +1,4 @@
-export declare function extractRelationships(items: any): {
+export declare function extractRelationships(items: any, projectRoot: any): {
     componentsForImport: string[];
     parents: {};
     scopes: {};

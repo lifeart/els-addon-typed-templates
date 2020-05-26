@@ -15,6 +15,28 @@ function isParamPath(astPath) {
     return false;
 }
 exports.isParamPath = isParamPath;
+function relplaceFocusPathForExternalComponentArgument(focusPath) {
+    let truePath = focusPath;
+    if (focusPath.node.type === 'TextNode') {
+        truePath = focusPath.parentPath;
+    }
+    return truePath;
+}
+exports.relplaceFocusPathForExternalComponentArgument = relplaceFocusPathForExternalComponentArgument;
+function isExternalComponentArgument(focusPath) {
+    let truePath = focusPath;
+    if (focusPath.node.type === 'TextNode') {
+        truePath = focusPath.parentPath;
+    }
+    if (truePath.parent.type === 'ElementNode' && !isSimpleBlockComponentElement(truePath.parent)) {
+        return false;
+    }
+    if (truePath.node.type === 'AttrNode' && truePath.node.name.startsWith('@')) {
+        return true;
+    }
+    return false;
+}
+exports.isExternalComponentArgument = isExternalComponentArgument;
 function realPathName(focusPath) {
     return focusPath.sourceForNode().replace(utils_1.PLACEHOLDER, "");
 }
@@ -28,7 +50,7 @@ function normalizeArgumentName(textPath) {
 }
 exports.normalizeArgumentName = normalizeArgumentName;
 function serializeArgumentName(textPath) {
-    return textPath.replace('this.args.', '@');
+    return textPath.replace('this.args.', '@').replace('ELSCompletionDummy', '');
 }
 exports.serializeArgumentName = serializeArgumentName;
 function canHandle(type, focusPath) {
@@ -36,6 +58,15 @@ function canHandle(type, focusPath) {
         return false;
     }
     if (focusPath.node.type !== "PathExpression") {
+        if (['AttrNode'].includes(focusPath.node.type)) {
+            if (focusPath.node.type === 'AttrNode' && focusPath.node.name.startsWith('@')) {
+                return true;
+            }
+            if (focusPath.node.type === 'TextNode' && focusPath.parentPath && focusPath.parentPath.node.type == 'AttrNode' && focusPath.parentPath.node.name.startsWith('@')) {
+                return true;
+            }
+            return false;
+        }
         return false;
     }
     const meta = focusPath.metaForType("handlebars");
@@ -62,7 +93,7 @@ function isEachArgument(focusPath) {
 }
 exports.isEachArgument = isEachArgument;
 function isSimpleBlockComponentElement(node) {
-    return node.blockParams.length && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
+    return !node.tag.startsWith('.') && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
 }
 exports.isSimpleBlockComponentElement = isSimpleBlockComponentElement;
 function positionForItem(item) {

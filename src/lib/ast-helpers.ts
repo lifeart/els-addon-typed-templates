@@ -13,7 +13,26 @@ export function isParamPath(astPath) {
   }
   return false;
 }
-
+export function relplaceFocusPathForExternalComponentArgument(focusPath) {
+  let truePath = focusPath;
+  if (focusPath.node.type === 'TextNode') {
+    truePath = focusPath.parentPath;
+  }
+  return truePath;
+}
+export function isExternalComponentArgument(focusPath) {
+  let truePath = focusPath;
+  if (focusPath.node.type === 'TextNode') {
+    truePath = focusPath.parentPath;
+  }
+  if (truePath.parent.type === 'ElementNode' && !isSimpleBlockComponentElement(truePath.parent)) {
+    return false;
+  }
+  if (truePath.node.type === 'AttrNode' && truePath.node.name.startsWith('@')) {
+    return true;
+  }
+  return false;
+}
 export function realPathName(focusPath) {
   return focusPath.sourceForNode().replace(PLACEHOLDER, "");
 }
@@ -27,7 +46,7 @@ export function normalizeArgumentName(textPath) {
 }
 
 export function serializeArgumentName(textPath) {
-  return textPath.replace('this.args.', '@');
+  return textPath.replace('this.args.', '@').replace('ELSCompletionDummy','');
 }
 
 export function canHandle(type: string, focusPath: any) {
@@ -35,6 +54,15 @@ export function canHandle(type: string, focusPath: any) {
     return false;
   }
   if (focusPath.node.type !== "PathExpression") {
+    if (['AttrNode'].includes(focusPath.node.type)) {
+      if (focusPath.node.type === 'AttrNode' && focusPath.node.name.startsWith('@')) {
+        return true;
+      }
+      if (focusPath.node.type === 'TextNode' && focusPath.parentPath && focusPath.parentPath.node.type == 'AttrNode' && focusPath.parentPath.node.name.startsWith('@')) {
+        return true;
+      }
+      return false;
+    }
     return false;
   }
   const meta = focusPath.metaForType("handlebars");
@@ -63,7 +91,7 @@ export function isEachArgument(focusPath) {
 }
 
 export function isSimpleBlockComponentElement(node) {
-  return node.blockParams.length && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
+  return !node.tag.startsWith('.') && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
 }
 
 export function positionForItem(item) {

@@ -3,7 +3,6 @@ import * as walkSync from "walk-sync";
 import {
     CompletionItemKind
   } from "vscode-languageserver";
-  import { kebabCase } from 'lodash';
 
 export function safeWalkSync(filePath, opts) {
     if (!filePath) {
@@ -15,12 +14,19 @@ export function safeWalkSync(filePath, opts) {
     return walkSync(filePath, opts);
 }
 
+// https://github.com/rwjblue/ember-angle-bracket-invocation-polyfill/blob/master/lib/ast-transform.js#L33
+export function normalizeAngleTagName(name: string) {
+  const ALPHA = /[A-Za-z]/;
 
-export function normalizeAngleTagName(tagName: string) {
-  return tagName
-    .split('::')
-    .map((item: string) => kebabCase(item))
-    .join('/');
+  return name
+    .replace(/[A-Z]/g, (char, index) => {
+      if (index === 0 || !ALPHA.test(name[index - 1])) {
+        return char.toLowerCase();
+      }
+
+      return `-${char.toLowerCase()}`;
+    })
+    .replace(/::/g, '/');
 }
 
 export const PLACEHOLDER = "ELSCompletionDummy";

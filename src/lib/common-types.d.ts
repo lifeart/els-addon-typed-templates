@@ -1,7 +1,13 @@
 declare module "@glimmer/component" {
-  export default class Component<Args extends {} = {}> extends BaseComponent<
+  type UnknownConfig = Record<string, unknown>;
+
+  export default class Component<Args extends UnknownConfig = {}> extends BaseComponent<
     Args
   > {
+    constructor(owner: unknown, args: Args) {
+      super(...arguments);
+      this.args = args;
+    }
     args: Args;
     willDestroy: () => void;
     toString: () => string;
@@ -9,16 +15,28 @@ declare module "@glimmer/component" {
 }
 
 declare module "@ember/component" {
+  type UnknownConfig = Record<string, unknown>;
   export function setComponentTemplate<T, U>(Template: T, Klass: U): U;
 
-  export default class Component<Args extends {} = {}> extends BaseComponent<
+
+  export default class Component<Args extends UnknownConfig = { }> extends BaseComponent<
     Args
   > {
+    constructor(owner: unknown, args: Args = {  }) {
+      super(...arguments);
+      this.args = args;
+    }
+    static extend(args) {
+      return class ExtendedComponent extends Component<typeof args> {
+ 
+      }
+    }
     args: Args;
     willDestroy: () => void;
     toString: () => string;
   }
 }
+
 
 declare module "@ember/component/helper" {
   export function helper<T>(Helper: T): T;
@@ -38,7 +56,7 @@ declare module "ember-typed-templates" {
     hash?
   ) => [A, B, C, D, E];
   type AbstractHelper = <T>([items]: T[], hash?) => T;
-  type AbstractBlockHelper = <T>([items]: ArrayLike<T>[], hash?) => [T];
+  export type AbstractBlockHelper = <T>([items]: ArrayLike<T>[], hash?) => [T];
   type HashHelper = <T>(items: any[], hash: T) => T;
   type ArrayHelper = <T>(items: ArrayLike<T>, hash?) => ArrayLike<T>;
   type AnyFn = (...args) => any;
@@ -53,15 +71,21 @@ declare module "ember-typed-templates" {
   function TIfHeper<T, U, Y>([a, b, c]: [T, U?, Y?], hash?) {
     return !!a ? b : c;
   }
+  function TUnlessHeper<T, U, Y>([a, b, c]: [T, U?, Y?], hash?) {
+    return !TIfHeper(a,b,c, hash);
+  }
   export interface GlobalRegistry {
     ["each"]: EachHelper;
     ["let"]: LetHelper;
     ["hash"]: HashHelper;
     ["array"]: ArrayHelper;
     ["if"]: typeof TIfHeper;
+    ["unless"]: typeof TUnlessHeper;
     ["on"]: OnModifer;
     ["fn"]: FnHelper;
+    ["has-block"]: YieldHelper;
     ["yield"]: YieldHelper;
+    ["outlet"]: YieldHelper;
     ["concat"]: ConcatHelper;
     ["prevent-default"]: EventCatcherHelper;
     ["stop-propagation"]: EventCatcherHelper;

@@ -9,6 +9,9 @@ function cleanComment(text) {
   return text.replace(/<\/?script[^>]*>/g,'');
 }
 
+export function getFirstASTNode(source) {
+  return parse(source).body[0];
+}
 export function getClassMeta(source) {
   const nodes: any = [];
   const comments: any = [];

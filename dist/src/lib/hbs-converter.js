@@ -6,6 +6,7 @@ const fs = require("fs");
 const resolvers_1 = require("./resolvers");
 const ast_parser_1 = require("./ast-parser");
 const hbs_extractor_1 = require("./hbs-extractor");
+const ts_service_1 = require("./ts-service");
 const hbs_transform_1 = require("./hbs-transform");
 const BUILTIN_GLOBAL_SCOPE = [
     'mut', 'fn', 'action',
@@ -46,7 +47,7 @@ function importNameForItem(item) {
             .split("/")
             .join("_"));
 }
-function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, templateFileName, scriptFileName, depth) {
+function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, templateFileName, scriptFileName, depth, projectRoot) {
     let klass = `
   export default EmptyKlass {
     args: any;
@@ -55,33 +56,42 @@ function registerTemplateKlassForFile(componentsMap, registry, virtualFileName, 
   `;
     try {
         let source = fs.readFileSync(templateFileName, "utf8");
+        const meta = ts_service_1.typeForPath(projectRoot, templateFileName);
         const { nodes, comments } = ast_parser_1.getClassMeta(source);
-        klass = getClass(componentsMap, virtualFileName, { nodes, comments }, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry, depth);
+        klass = getClass(componentsMap, virtualFileName, { nodes, comments, projectRoot, meta }, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry, depth);
     }
     catch (e) {
         console.log(e);
     }
-    console.log("--------------------------");
-    console.log(virtualFileName);
-    console.log("--------------------------");
-    console.log(klass);
-    console.log("--------------------------");
+    let debug = true;
+    if (debug) {
+        console.log("--------------------------");
+        console.log(virtualFileName);
+        console.log("--------------------------");
+        console.log(klass);
+        console.log("--------------------------");
+    }
     componentsMap[virtualFileName] = klass;
 }
-function getClass(componentsMap, fileName, { nodes, comments }, componentImport, globalRegistry, depth = 4) {
+function getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, componentImport, globalRegistry, depth = 5) {
     const yields = [];
     const imports = [];
     const items = nodes;
     if (depth < 0) {
-        return `export default class UnreachedComponent { args: any; defaultYield() { return []; } };`;
+        return `export default class ${meta.className}UnreachedComponent { args: any; defaultYield() { return []; } };`;
     }
     function addImport(name, filePath) {
+        // @to-do implement more elegant fix for mustache components, like `{{foo-bar}}`
+        // issue from hbs-transform addImport(scopeKey, globalRegistry[scopeKey]);
+        if (typeof filePath !== 'string') {
+            return;
+        }
         imports.push(`import ${importNameForItem(name)} from "${filePath}";`);
     }
     function addComponentImport(name, filePath) {
         if (filePath.template) {
             let virtualFileName = resolvers_1.virtualComponentTemplateFileName(filePath.template);
-            registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script, depth - 1);
+            registerTemplateKlassForFile(componentsMap, globalRegistry, virtualFileName, filePath.template, filePath.script, depth - 1, projectRoot);
             // todo - we need to resolve proper template and compile it :)
             addImport(name, resolvers_1.relativeImport(fileName, virtualFileName));
         }
@@ -93,9 +103,10 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
             imports.push(`class ${importNameForItem(name)} { args: any; defaultYield() { return []; } };`);
         }
     }
-    const { componentsForImport, parents, scopes, klass, blockPaths } = hbs_extractor_1.extractRelationships(items);
+    const { componentsForImport, parents, scopes, klass, blockPaths } = hbs_extractor_1.extractRelationships(items, projectRoot);
     // console.log('parents', parents);
     // console.log('scopes', scopes);
+    // console.log('blockPaths', blockPaths);
     // console.log('componentsForImport', componentsForImport);
     // console.log('globalRegistry', globalRegistry);
     const definedScope = {
@@ -107,6 +118,8 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
         ["on"]: "OnModifer",
         ["fn"]: "FnHelper",
         ["yield"]: "YieldHelper",
+        ["has-block"]: "YieldHelper",
+        ["outlet"]: "YieldHelper",
         ["concat"]: "ConcatHelper",
         ["prevent-default"]: "EventCatcherHelper",
         ["stop-propagation"]: "EventCatcherHelper",
@@ -142,12 +155,12 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
         let p = Object.keys(parents);
         let parent = null;
         p.forEach(pid => {
-            if (parents[pid].includes(key)) {
+            if (pid !== key && parents[pid].includes(key)) {
                 parent = pid;
             }
         });
         if (parent) {
-            itemScopes.push([parent, scopes[parent]]);
+            itemScopes.push([parent, scopes[parent] || []]);
             return getItemScopes(parent, itemScopes);
         }
         return itemScopes;
@@ -173,9 +186,10 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
     const tokensToProcess = Object.keys(klass).sort();
     const pathTokens = tokensToProcess.filter((name) => name.includes('PathExpression'));
     const otherTokens = tokensToProcess.filter((name) => !pathTokens.includes(name));
+    let builtinImports = [];
     pathTokens.forEach((key) => {
         let node = klass[key];
-        const { result, simpleResult } = hbs_transform_1.transformPathExpression(node, key, {
+        const { result, simpleResult, builtinScopeImports } = hbs_transform_1.transformPathExpression(node, key, {
             yields,
             importNameForItem,
             componentImport,
@@ -194,6 +208,11 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
             componentsForImport
         });
         klass[key] = result;
+        builtinScopeImports.forEach((name) => {
+            if (!builtinImports.includes(name)) {
+                builtinImports.push(name);
+            }
+        });
         klass[key + '_simple'] = simpleResult;
     });
     otherTokens.forEach(key => {
@@ -202,13 +221,13 @@ function getClass(componentsMap, fileName, { nodes, comments }, componentImport,
             klass[key] = hbs_transform_1.transform.transform(node, key, klass);
         }
     });
-    return makeClass({ imports: Array.from(new Set(imports)), yields, klass, comments, componentImport, globalScope, definedScope });
+    return makeClass({ meta, imports: Array.from(new Set(imports)), builtinImports, yields, klass, comments, componentImport, globalScope, definedScope });
 }
 exports.getClass = getClass;
 function serializeKey(key) {
     return key.split(" - ")[0];
 }
-function makeClass({ imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
+function makeClass({ meta, builtinImports, imports, yields, klass, comments, componentImport, globalScope, definedScope }) {
     const hasNocheck = comments.find(([_, el]) => el.includes('@ts-nocheck'));
     const hasArgsTypings = comments.find(([_, el]) => el.includes('interface Args'));
     function commentForNode(rawPos) {
@@ -225,24 +244,25 @@ function makeClass({ imports, yields, klass, comments, componentImport, globalSc
             return '';
         }
     }
+    let isTemplateOnlyComponent = !componentImport;
     const componentKlassImport = componentImport
         ? `import Component from "${componentImport}";`
         : "";
     const templateComponentDeclaration = componentImport
-        ? `export default class Template extends Component`
-        : `export default class TemplateOnlyComponent`;
+        ? `export default class ${meta.className}Template extends Component`
+        : `export default class ${meta.className}TemplateOnlyComponent`;
     const componentExtraProperties = componentImport && !hasArgsTypings
         ? ""
         : `
     args: ${hasArgsTypings ? 'Args' : 'any'};
   `;
+    builtinImports.push('GlobalRegistry');
     let klssTpl = `
 
 ${hasNocheck ? '// @ts-nocheck' : ''}
 ${componentKlassImport}
 ${imports.join("\n")}
-import { GlobalRegistry } from "ember-typed-templates";
-
+import { ${builtinImports.join(', ')} } from "ember-typed-templates";
 interface TemplateScopeRegistry {
 ${Object.keys(globalScope)
         .filter((key) => !(key in definedScope))
@@ -260,6 +280,7 @@ ${hasArgsTypings ? hasArgsTypings[1] : ''}
 
 ${templateComponentDeclaration} {
   ${componentExtraProperties}
+  ${isTemplateOnlyComponent ? `constructor(owner:unknown, args: ${hasArgsTypings ? 'Args' : 'any'}) { this.args = args; }` : ''}
   globalScope:  EmberTemplateScopeRegistry;
   defaultYield() {
     return ${yields.length ? `this['${yields[0]}']()` : "[]"};

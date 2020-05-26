@@ -11,10 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode_uri_1 = require("vscode-uri");
 const utils_1 = require("./lib/utils");
+const fs = require("fs");
 const ast_helpers_1 = require("./lib/ast-helpers");
 const resolvers_1 = require("./lib/resolvers");
 const ts_service_1 = require("./lib/ts-service");
 const virtual_documents_1 = require("./lib/virtual-documents");
+const ast_parser_1 = require("./lib/ast-parser");
 const hbs_transform_1 = require("./lib/hbs-transform");
 const ls_utils_1 = require("./lib/ls-utils");
 function isTestFile(uri) {
@@ -24,7 +26,7 @@ let hasLinter = false;
 /* */
 function lintFile(root, textDocument, server) {
     const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
-    const marks = ['components', 'component'];
+    const marks = ['components', 'component', 'templates'];
     const foundMarks = marks.filter((mark) => templatePath.includes(mark));
     if (isTestFile(templatePath) || foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
         return [];
@@ -32,8 +34,12 @@ function lintFile(root, textDocument, server) {
     const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
     const service = ts_service_1.serviceForRoot(projectRoot);
     const componentsMap = ts_service_1.componentsForService(service);
+    const componentMeta = ts_service_1.typeForPath(projectRoot, templatePath);
+    if (!componentMeta) {
+        return;
+    }
     const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
-    virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri);
+    virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, false, componentMeta);
     return ls_utils_1.getFullSemanticDiagnostics(service, fullFileName);
 }
 function setupLinter(root, project, server) {
@@ -89,27 +95,54 @@ function onDefinition(root, { results, focusPath, type, textDocument }) {
 }
 exports.onDefinition = onDefinition;
 function onInit(server, item) {
-    ts_service_1.registerProject(item);
+    ts_service_1.registerProject(item, server);
     setupLinter(item.root, item, server);
 }
 exports.onInit = onInit;
-function onComplete(root, { results, focusPath, server, type, textDocument }) {
+function onComplete(root, { results, focusPath, type, textDocument }) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!ast_helpers_1.canHandle(type, focusPath)) {
             return results;
         }
         try {
             const isParam = ast_helpers_1.isParamPath(focusPath);
+            const isExternalComponentArg = ast_helpers_1.isExternalComponentArgument(focusPath);
+            let originalComponentName = '';
+            if (isExternalComponentArg) {
+                focusPath = ast_helpers_1.relplaceFocusPathForExternalComponentArgument(focusPath);
+                originalComponentName = utils_1.normalizeAngleTagName(focusPath.parent.tag);
+            }
             const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
             const service = ts_service_1.serviceForRoot(projectRoot);
+            const server = ts_service_1.serverForProject(projectRoot);
             const componentsMap = ts_service_1.componentsForService(service, true);
-            const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
+            let templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
+            if (isExternalComponentArg) {
+                let possibleTemplates = server.getRegistry(projectRoot).component[originalComponentName] || [];
+                possibleTemplates.forEach((el) => {
+                    if (el.endsWith('.hbs')) {
+                        templatePath = el;
+                    }
+                });
+            }
+            const componentMeta = ts_service_1.typeForPath(projectRoot, templatePath);
+            if (!componentMeta) {
+                return;
+            }
             let isArg = false;
             const isArrayCase = ast_helpers_1.isEachArgument(focusPath);
             let realPath = ast_helpers_1.realPathName(focusPath);
-            if (ast_helpers_1.isArgumentName(realPath)) {
+            let content = focusPath.content;
+            if (ast_helpers_1.isArgumentName(realPath) || isExternalComponentArg) {
                 isArg = true;
-                realPath = ast_helpers_1.normalizeArgumentName(realPath);
+                if (isExternalComponentArg) {
+                    realPath = ast_helpers_1.normalizeArgumentName(focusPath.node.name);
+                    let realContent = fs.readFileSync(templatePath, 'utf8');
+                    content = `{{${realPath}}}${realContent}`;
+                }
+                else {
+                    realPath = ast_helpers_1.normalizeArgumentName(realPath);
+                }
             }
             const fileName = resolvers_1.virtualTemplateFileName(templatePath);
             const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
@@ -120,10 +153,14 @@ function onComplete(root, { results, focusPath, server, type, textDocument }) {
                 isParam,
                 isArrayCase
             });
+            let nodePosition = hbs_transform_1.positionForItem(focusPath.node);
             let tsResults = null;
             try {
-                let markId = `; /*@path-mark ${hbs_transform_1.positionForItem(focusPath.node)}*/`;
-                let tpl = virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, focusPath.content);
+                if (isExternalComponentArg) {
+                    nodePosition = hbs_transform_1.positionForItem(ast_parser_1.getFirstASTNode(content).path);
+                }
+                let markId = `; /*@path-mark ${nodePosition}*/`;
+                let tpl = virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, content, componentMeta);
                 tsResults = service.getCompletionsAtPosition(fullFileName, tpl.indexOf(markId), {
                     includeInsertTextCompletions: true
                 });
