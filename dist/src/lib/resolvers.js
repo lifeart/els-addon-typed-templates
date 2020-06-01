@@ -78,7 +78,6 @@ function relativeComponentImport(templateFileName, scriptForComponent) {
 exports.relativeComponentImport = relativeComponentImport;
 function findComponentForTemplate(fsPath, projectRoot) {
     const extName = path.extname(fsPath);
-    console.log('findComponentForTemplate', projectRoot, fsPath);
     const componentMeta = ts_service_1.typeForPath(projectRoot, fsPath);
     if (extName !== '.hbs' || !componentMeta) {
         // @to-do figure out this strategy

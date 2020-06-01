@@ -454,7 +454,7 @@
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/lib/resolvers.ts": {
-        "version": "fa51852489a11ed6df252e95e3ed25739176317d3cd955a567e2490112e81438",
+        "version": "3f47aca409fcc606e8487b1b052096ebd0f5c9c5dbdb71d10a6184c9f9249e48",
         "signature": "e82637cbbebe81f6640be57049c857fcc05eac6d187ae3b5e6c3e644db1d844e"
       },
       "../node_modules/camelcase/index.d.ts": {
@@ -4331,7 +4331,6 @@
       "../src/interfaces.ts",
       "../src/lib/ast-helpers.ts",
       "../src/lib/ls-utils.ts",
-      "../src/lib/resolvers.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -4419,6 +4418,7 @@
       "../src/lib/hbs-extractor.ts",
       "../src/lib/hbs-converter.ts",
       "../src/lib/virtual-documents.ts",
+      "../src/providers/linter.ts",
       "../src/providers/definition.ts",
       "../src/providers/completion.ts",
       "../src/index.ts",
@@ -4429,7 +4429,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/providers/linter.ts"
+      "../src/lib/resolvers.ts"
     ]
   },
   "version": "3.7.3"
