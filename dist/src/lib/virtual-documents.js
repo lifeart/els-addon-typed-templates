@@ -25,6 +25,7 @@ function getValidRegistryItems(registry, templateFile, projectRoot) {
         return items;
     }
     else {
+        fs.writeFileSync(projectRoot + '/registry.json', JSON.stringify(registry), 'utf8');
         const keys = ["helper", "modifier"];
         keys.forEach(keyName => {
             Object.keys(registry[keyName]).forEach(name => {
