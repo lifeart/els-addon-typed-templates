@@ -3,6 +3,8 @@ import * as walkSync from "walk-sync";
 import {
   CompletionItemKind
 } from "vscode-languageserver";
+import { URI } from "vscode-uri";
+import * as path from "path";
 
 export function safeWalkSync(filePath, opts) {
   if (!filePath) {
@@ -83,6 +85,10 @@ export function itemKind(tsName) {
   };
 
   return kinds[tsName] || CompletionItemKind.Property;
+}
+
+export function toFilePath(uri) {
+  return path.resolve(URI.parse(uri).fsPath);
 }
 
 export function normalizeToAngleBracketName(name) {

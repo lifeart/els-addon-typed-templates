@@ -14,6 +14,11 @@ const linter_1 = require("./providers/linter");
 const definition_1 = require("./providers/definition");
 const completion_1 = require("./providers/completion");
 module.exports = class TypedTemplates {
+    constructor() {
+        this.onInit = this.onInit.bind(this);
+        this.onComplete = this.onComplete.bind(this);
+        this.onDefinition = this.onDefinition.bind(this);
+    }
     onInit(server, project) {
         this.server = server;
         this.project = project;

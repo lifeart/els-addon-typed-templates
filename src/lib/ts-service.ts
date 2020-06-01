@@ -66,7 +66,7 @@ const STABLE_FILES: Map<string, TSMeta> = new Map();
 const PROJECTS_MAP: Map<string, ProjectMirror> = new Map();
 
 export function registerProject(item, server) {
-  PROJECTS_MAP.set(item.root.split(":").pop(), {
+  PROJECTS_MAP.set(item.root, {
     project: item,
     server: server,
     files: new WeakMap()
@@ -99,6 +99,7 @@ export function serverForProject(root: string) {
 }
 
 export function typeForPath(root: string, uri: string) {
+  console.log('typeForPath', root,  uri);
   const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
   let result = projectMirror.project.matchPathToType(uri);
   if (result === null) {

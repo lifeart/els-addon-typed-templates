@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ls_utils_1 = require("../lib/ls-utils");
-const vscode_uri_1 = require("vscode-uri");
 const resolvers_1 = require("../lib/resolvers");
+const utils_1 = require("../lib/utils");
 const ts_service_1 = require("../lib/ts-service");
 const virtual_documents_1 = require("../lib/virtual-documents");
 function isTestFile(uri) {
@@ -48,7 +48,7 @@ class Linter {
     }
     lintFile(textDocument) {
         return __awaiter(this, void 0, void 0, function* () {
-            const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
+            const templatePath = utils_1.toFilePath(textDocument.uri);
             if (!this.canLint(templatePath)) {
                 return [];
             }

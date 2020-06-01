@@ -15,10 +15,9 @@ import {
 
 import { virtualTemplateFileName } from "./../lib/resolvers";
 
-import { URI } from "vscode-uri";
-
 import { serviceForRoot, componentsForService } from './../lib/ts-service';
 import { Project, DefinitionFunctionParams } from '../interfaces';
+import { toFilePath } from '../lib/utils';
 
 export default class DefinitionProvider {
     constructor(private project: Project) { }
@@ -28,14 +27,12 @@ export default class DefinitionProvider {
         if (!canHandle(type, focusPath)) {
             return results;
         }
-        const root = this.project.root;
-
         try {
             const isParam = isParamPath(focusPath);
-            const projectRoot = URI.parse(root).fsPath;
+            const projectRoot = this.project.root;
             const service = serviceForRoot(projectRoot);
             const componentsMap = componentsForService(service);
-            const templatePath = URI.parse(textDocument.uri).fsPath;
+            const templatePath = toFilePath(textDocument.uri);
             let isArg = false;
             let realPath = realPathName(focusPath);
             if (isArgumentName(realPath)) {

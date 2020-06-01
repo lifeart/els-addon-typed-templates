@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const walkSync = require("walk-sync");
 const vscode_languageserver_1 = require("vscode-languageserver");
+const vscode_uri_1 = require("vscode-uri");
+const path = require("path");
 function safeWalkSync(filePath, opts) {
     if (!filePath) {
         return [];
@@ -80,6 +82,10 @@ function itemKind(tsName) {
     return kinds[tsName] || vscode_languageserver_1.CompletionItemKind.Property;
 }
 exports.itemKind = itemKind;
+function toFilePath(uri) {
+    return path.resolve(vscode_uri_1.URI.parse(uri).fsPath);
+}
+exports.toFilePath = toFilePath;
 function normalizeToAngleBracketName(name) {
     const SIMPLE_DASHERIZE_REGEXP = /[a-z]|\/|-/g;
     const ALPHA = /[A-Za-z0-9]/;

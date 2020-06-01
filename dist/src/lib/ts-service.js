@@ -16,7 +16,7 @@ exports.componentsForService = componentsForService;
 const STABLE_FILES = new Map();
 const PROJECTS_MAP = new Map();
 function registerProject(item, server) {
-    PROJECTS_MAP.set(item.root.split(":").pop(), {
+    PROJECTS_MAP.set(item.root, {
         project: item,
         server: server,
         files: new WeakMap()
@@ -46,6 +46,7 @@ function serverForProject(root) {
 }
 exports.serverForProject = serverForProject;
 function typeForPath(root, uri) {
+    console.log('typeForPath', root, uri);
     const projectMirror = PROJECTS_MAP.get(root);
     let result = projectMirror.project.matchPathToType(uri);
     if (result === null) {

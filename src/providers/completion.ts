@@ -4,7 +4,7 @@ import { Project, CompletionFunctionParams } from '../interfaces';
 import { CompletionItem } from 'vscode-languageserver';
 
 import { createVirtualTemplate } from "./../lib/virtual-documents";
-import { mergeResults, normalizeAngleTagName } from "./../lib/utils";
+import { mergeResults, normalizeAngleTagName, toFilePath } from "./../lib/utils";
 
 import { serviceForRoot, componentsForService, typeForPath, serverForProject } from './../lib/ts-service';
 
@@ -14,9 +14,6 @@ import { positionForItem } from './../lib/ast-helpers';
 import { getFirstASTNode } from './../lib/ast-parser';
 import { normalizeCompletions } from './../lib/ls-utils';
 import { createFullVirtualTemplate } from "./../lib/virtual-documents";
-
-
-import { URI } from "vscode-uri";
 
 import {
     isParamPath,
@@ -36,8 +33,6 @@ export default class CompletionProvider {
         { results, focusPath, type, textDocument }: CompletionFunctionParams
     ): Promise<CompletionItem[] | null> {
 
-        const root = this.project.root;
-
         if (!canHandle(type, focusPath)) {
             return results;
         }
@@ -50,11 +45,11 @@ export default class CompletionProvider {
                 focusPath = relplaceFocusPathForExternalComponentArgument(focusPath);
                 originalComponentName = normalizeAngleTagName(focusPath.parent.tag);
             }
-            const projectRoot = URI.parse(root).fsPath;
+            const projectRoot = this.project.root;
             const service = serviceForRoot(projectRoot);
             const server = serverForProject(projectRoot);
             const componentsMap = componentsForService(service, true);
-            let templatePath = URI.parse(textDocument.uri).fsPath;
+            let templatePath = toFilePath(textDocument.uri);
             if (isExternalComponentArg) {
                 let possibleTemplates = server.getRegistry(projectRoot).component[originalComponentName] || [];
                 possibleTemplates.forEach((el) => {

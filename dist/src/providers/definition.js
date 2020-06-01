@@ -13,8 +13,8 @@ const ast_helpers_1 = require("./../lib/ast-helpers");
 const virtual_documents_1 = require("./../lib/virtual-documents");
 const ls_utils_1 = require("./../lib/ls-utils");
 const resolvers_1 = require("./../lib/resolvers");
-const vscode_uri_1 = require("vscode-uri");
 const ts_service_1 = require("./../lib/ts-service");
+const utils_1 = require("../lib/utils");
 class DefinitionProvider {
     constructor(project) {
         this.project = project;
@@ -24,13 +24,12 @@ class DefinitionProvider {
             if (!ast_helpers_1.canHandle(type, focusPath)) {
                 return results;
             }
-            const root = this.project.root;
             try {
                 const isParam = ast_helpers_1.isParamPath(focusPath);
-                const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
+                const projectRoot = this.project.root;
                 const service = ts_service_1.serviceForRoot(projectRoot);
                 const componentsMap = ts_service_1.componentsForService(service);
-                const templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
+                const templatePath = utils_1.toFilePath(textDocument.uri);
                 let isArg = false;
                 let realPath = ast_helpers_1.realPathName(focusPath);
                 if (ast_helpers_1.isArgumentName(realPath)) {

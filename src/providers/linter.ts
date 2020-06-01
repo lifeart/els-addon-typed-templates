@@ -1,6 +1,6 @@
 import { getFullSemanticDiagnostics } from "../lib/ls-utils";
-import { URI } from "vscode-uri";
 import { virtualComponentTemplateFileName } from "../lib/resolvers";
+import { toFilePath } from '../lib/utils';
 
 import { Project, Server } from '../interfaces';
 import { Diagnostic, TextDocument } from 'vscode-languageserver';
@@ -39,7 +39,7 @@ export default class Linter {
         return true;
     }
     async lintFile(textDocument) {
-        const templatePath = URI.parse(textDocument.uri).fsPath;
+        const templatePath = toFilePath(textDocument.uri);
         if (!this.canLint(templatePath)) {
             return [];
         }

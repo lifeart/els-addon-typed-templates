@@ -1,5 +1,5 @@
 import { PLACEHOLDER } from "./utils";
-// import * as fs from "fs";
+import * as fs from "fs";
 import {
   findComponentForTemplate,
   relativeComponentImport,
@@ -111,9 +111,10 @@ export function createFullVirtualTemplate(
   );
   let debug = true;
   if (debug) {
-    console.log("===============");
-    console.log(componentsMap[fileName]);
-    console.log("===============");
+    // console.log("===============");
+    fs.writeFileSync(fileName, componentsMap[fileName], "utf8");
+    // console.log(componentsMap[fileName]);
+    // console.log("===============");
   }
   return componentsMap[fileName];
 }

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
-// import * as fs from "fs";
+const fs = require("fs");
 const resolvers_1 = require("./resolvers");
 const ts_service_1 = require("./ts-service");
 const hbs_converter_1 = require("./hbs-converter");
@@ -88,9 +88,10 @@ function createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fil
     componentsMap[fileName] = hbs_converter_1.getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, relComponentImport, getValidRegistryItems(registry, fileName, projectRoot));
     let debug = true;
     if (debug) {
-        console.log("===============");
-        console.log(componentsMap[fileName]);
-        console.log("===============");
+        // console.log("===============");
+        fs.writeFileSync(fileName, componentsMap[fileName], "utf8");
+        // console.log(componentsMap[fileName]);
+        // console.log("===============");
     }
     return componentsMap[fileName];
 }

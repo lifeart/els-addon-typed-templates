@@ -12,6 +12,11 @@ module.exports = class TypedTemplates implements AddonAPI {
   definitionProvider!: DefinitionProvider;
   completionProvider!: CompletionProvider;
   linter!: Linter;
+  constructor() {
+    this.onInit = this.onInit.bind(this);
+    this.onComplete = this.onComplete.bind(this);
+    this.onDefinition = this.onDefinition.bind(this);
+  }
   onInit(server, project) {
     this.server = server;
     this.project = project;

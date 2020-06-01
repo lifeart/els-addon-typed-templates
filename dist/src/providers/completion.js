@@ -18,7 +18,6 @@ const ast_helpers_1 = require("./../lib/ast-helpers");
 const ast_parser_1 = require("./../lib/ast-parser");
 const ls_utils_1 = require("./../lib/ls-utils");
 const virtual_documents_2 = require("./../lib/virtual-documents");
-const vscode_uri_1 = require("vscode-uri");
 const ast_helpers_2 = require("./../lib/ast-helpers");
 class CompletionProvider {
     constructor(project) {
@@ -26,7 +25,6 @@ class CompletionProvider {
     }
     onComplete({ results, focusPath, type, textDocument }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const root = this.project.root;
             if (!ast_helpers_2.canHandle(type, focusPath)) {
                 return results;
             }
@@ -38,11 +36,11 @@ class CompletionProvider {
                     focusPath = ast_helpers_2.relplaceFocusPathForExternalComponentArgument(focusPath);
                     originalComponentName = utils_1.normalizeAngleTagName(focusPath.parent.tag);
                 }
-                const projectRoot = vscode_uri_1.URI.parse(root).fsPath;
+                const projectRoot = this.project.root;
                 const service = ts_service_1.serviceForRoot(projectRoot);
                 const server = ts_service_1.serverForProject(projectRoot);
                 const componentsMap = ts_service_1.componentsForService(service, true);
-                let templatePath = vscode_uri_1.URI.parse(textDocument.uri).fsPath;
+                let templatePath = utils_1.toFilePath(textDocument.uri);
                 if (isExternalComponentArg) {
                     let possibleTemplates = server.getRegistry(projectRoot).component[originalComponentName] || [];
                     possibleTemplates.forEach((el) => {
