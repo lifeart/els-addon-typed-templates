@@ -2,18 +2,18 @@ import { getFullSemanticDiagnostics } from "../lib/ls-utils";
 import { virtualComponentTemplateFileName } from "../lib/resolvers";
 import { toFilePath } from '../lib/utils';
 
-import { Project, Server } from '../interfaces';
+import { Project } from '../interfaces';
 import { Diagnostic, TextDocument } from 'vscode-languageserver';
 import { serviceForRoot, componentsForService, typeForPath } from '../lib/ts-service';
-import { createFullVirtualTemplate } from "../lib/virtual-documents";
+import VirtualDocumentProvider from './virtual-document';
 
 
 function isTestFile(uri) {
     return uri.includes('tests');
 }
 
-export function setupLinter(project: Project, server: Server): Linter {
-    const linter = new Linter(server, project);
+export function setupLinter(project: Project, virtualDocument: VirtualDocumentProvider): Linter {
+    const linter = new Linter(project, virtualDocument);
     project.addLinter(async (document: TextDocument): Promise<Diagnostic[] | null> => {
         let results: Diagnostic[] | undefined = [];
         try {
@@ -29,7 +29,7 @@ export function setupLinter(project: Project, server: Server): Linter {
 
 
 export default class Linter {
-    constructor(private server: Server, private project: Project) {}
+    constructor(private project: Project, private virtualDocument: VirtualDocumentProvider) { }
     canLint(templatePath: string) {
         const marks = ['components', 'component', 'templates'];
         const foundMarks = marks.filter((mark) => templatePath.includes(mark));
@@ -55,7 +55,7 @@ export default class Linter {
             return;
         }
         const fullFileName = virtualComponentTemplateFileName(templatePath);
-        createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, this.server, textDocument.uri, false, componentMeta);
+        this.virtualDocument.createFullVirtualTemplate(componentsMap, templatePath, fullFileName,textDocument.uri, false, componentMeta);
         return getFullSemanticDiagnostics(service, fullFileName);
     }
 }

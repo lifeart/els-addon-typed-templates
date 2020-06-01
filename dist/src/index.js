@@ -13,6 +13,7 @@ const ts_service_1 = require("./lib/ts-service");
 const linter_1 = require("./providers/linter");
 const definition_1 = require("./providers/definition");
 const completion_1 = require("./providers/completion");
+const virtual_document_1 = require("./providers/virtual-document");
 module.exports = class TypedTemplates {
     constructor() {
         this.onInit = this.onInit.bind(this);
@@ -22,10 +23,11 @@ module.exports = class TypedTemplates {
     onInit(server, project) {
         this.server = server;
         this.project = project;
-        this.definitionProvider = new definition_1.default(project);
-        this.completionProvider = new completion_1.default(project);
+        this.virtualDocumentProvider = new virtual_document_1.default(project, server);
+        this.definitionProvider = new definition_1.default(project, this.virtualDocumentProvider);
+        this.completionProvider = new completion_1.default(project, this.virtualDocumentProvider);
         ts_service_1.registerProject(project, server);
-        this.linter = linter_1.setupLinter(project, server);
+        this.linter = linter_1.setupLinter(project, this.virtualDocumentProvider);
     }
     onComplete(_, params) {
         return __awaiter(this, void 0, void 0, function* () {

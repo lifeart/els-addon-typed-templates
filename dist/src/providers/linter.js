@@ -13,12 +13,11 @@ const ls_utils_1 = require("../lib/ls-utils");
 const resolvers_1 = require("../lib/resolvers");
 const utils_1 = require("../lib/utils");
 const ts_service_1 = require("../lib/ts-service");
-const virtual_documents_1 = require("../lib/virtual-documents");
 function isTestFile(uri) {
     return uri.includes('tests');
 }
-function setupLinter(project, server) {
-    const linter = new Linter(server, project);
+function setupLinter(project, virtualDocument) {
+    const linter = new Linter(project, virtualDocument);
     project.addLinter((document) => __awaiter(this, void 0, void 0, function* () {
         let results = [];
         try {
@@ -34,9 +33,9 @@ function setupLinter(project, server) {
 }
 exports.setupLinter = setupLinter;
 class Linter {
-    constructor(server, project) {
-        this.server = server;
+    constructor(project, virtualDocument) {
         this.project = project;
+        this.virtualDocument = virtualDocument;
     }
     canLint(templatePath) {
         const marks = ['components', 'component', 'templates'];
@@ -64,7 +63,7 @@ class Linter {
                 return;
             }
             const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
-            virtual_documents_1.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, this.server, textDocument.uri, false, componentMeta);
+            this.virtualDocument.createFullVirtualTemplate(componentsMap, templatePath, fullFileName, textDocument.uri, false, componentMeta);
             return ls_utils_1.getFullSemanticDiagnostics(service, fullFileName);
         });
     }

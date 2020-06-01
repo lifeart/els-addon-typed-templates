@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const virtual_documents_1 = require("./../lib/virtual-documents");
 const utils_1 = require("./../lib/utils");
 const ts_service_1 = require("./../lib/ts-service");
 const resolvers_1 = require("./../lib/resolvers");
@@ -17,11 +16,11 @@ const fs = require("fs");
 const ast_helpers_1 = require("./../lib/ast-helpers");
 const ast_parser_1 = require("./../lib/ast-parser");
 const ls_utils_1 = require("./../lib/ls-utils");
-const virtual_documents_2 = require("./../lib/virtual-documents");
 const ast_helpers_2 = require("./../lib/ast-helpers");
 class CompletionProvider {
-    constructor(project) {
+    constructor(project, virtualDocument) {
         this.project = project;
+        this.virtualDocument = virtualDocument;
     }
     onComplete({ results, focusPath, type, textDocument }) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -70,7 +69,7 @@ class CompletionProvider {
                 }
                 const fileName = resolvers_1.virtualTemplateFileName(templatePath);
                 const fullFileName = resolvers_1.virtualComponentTemplateFileName(templatePath);
-                const { pos } = virtual_documents_1.createVirtualTemplate(projectRoot, componentsMap, fileName, {
+                const { pos } = this.virtualDocument.createVirtualTemplate(componentsMap, fileName, {
                     templatePath,
                     realPath,
                     isArg,
@@ -84,7 +83,7 @@ class CompletionProvider {
                         nodePosition = ast_helpers_1.positionForItem(ast_parser_1.getFirstASTNode(content).path);
                     }
                     let markId = `; /*@path-mark ${nodePosition}*/`;
-                    let tpl = virtual_documents_2.createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, content, componentMeta);
+                    let tpl = this.virtualDocument.createFullVirtualTemplate(componentsMap, templatePath, fullFileName, textDocument.uri, content, componentMeta);
                     tsResults = service.getCompletionsAtPosition(fullFileName, tpl.indexOf(markId), {
                         includeInsertTextCompletions: true
                     });

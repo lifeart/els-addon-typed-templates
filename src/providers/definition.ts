@@ -7,8 +7,6 @@ import {
     normalizeArgumentName
 } from "./../lib/ast-helpers";
 
-import { createVirtualTemplate } from "./../lib/virtual-documents";
-
 import {
     normalizeDefinitions
 } from "./../lib/ls-utils";
@@ -18,9 +16,10 @@ import { virtualTemplateFileName } from "./../lib/resolvers";
 import { serviceForRoot, componentsForService } from './../lib/ts-service';
 import { Project, DefinitionFunctionParams } from '../interfaces';
 import { toFilePath } from '../lib/utils';
+import VirtualDocumentProvider from './virtual-document';
 
 export default class DefinitionProvider {
-    constructor(private project: Project) { }
+    constructor(private project: Project, private virtualDocument: VirtualDocumentProvider) { }
     async onDefinition(
         { results, focusPath, type, textDocument }: DefinitionFunctionParams
     ) {
@@ -41,8 +40,7 @@ export default class DefinitionProvider {
             }
 
             const fileName = virtualTemplateFileName(templatePath);
-            const { pos } = createVirtualTemplate(
-                projectRoot,
+            const { pos } = this.virtualDocument.createVirtualTemplate(
                 componentsMap,
                 fileName,
                 {

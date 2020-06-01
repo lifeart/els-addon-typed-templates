@@ -5,12 +5,14 @@ import DefinitionProvider from './providers/definition';
 import CompletionProvider from './providers/completion';
 import Linter from './providers/linter';
 import { AddonAPI } from './interfaces';
+import VirtualDocumentProvider from './providers/virtual-document';
 
 module.exports = class TypedTemplates implements AddonAPI {
   server!: Server;
   project!: Project;
   definitionProvider!: DefinitionProvider;
   completionProvider!: CompletionProvider;
+  virtualDocumentProvider!: VirtualDocumentProvider;
   linter!: Linter;
   constructor() {
     this.onInit = this.onInit.bind(this);
@@ -20,10 +22,11 @@ module.exports = class TypedTemplates implements AddonAPI {
   onInit(server, project) {
     this.server = server;
     this.project = project;
-    this.definitionProvider = new DefinitionProvider(project);
-    this.completionProvider = new CompletionProvider(project);
+    this.virtualDocumentProvider = new VirtualDocumentProvider(project, server);
+    this.definitionProvider = new DefinitionProvider(project, this.virtualDocumentProvider);
+    this.completionProvider = new CompletionProvider(project, this.virtualDocumentProvider);
     registerProject(project, server);
-    this.linter = setupLinter(project, server);
+    this.linter = setupLinter(project, this.virtualDocumentProvider);
   }
   async onComplete(
     _: string, params: CompletionFunctionParams

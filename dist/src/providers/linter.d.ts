@@ -1,10 +1,11 @@
-import { Project, Server } from '../interfaces';
+import { Project } from '../interfaces';
 import { Diagnostic } from 'vscode-languageserver';
-export declare function setupLinter(project: Project, server: Server): Linter;
+import VirtualDocumentProvider from './virtual-document';
+export declare function setupLinter(project: Project, virtualDocument: VirtualDocumentProvider): Linter;
 export default class Linter {
-    private server;
     private project;
-    constructor(server: Server, project: Project);
+    private virtualDocument;
+    constructor(project: Project, virtualDocument: VirtualDocumentProvider);
     canLint(templatePath: string): boolean;
     lintFile(textDocument: any): Promise<Diagnostic[] | undefined>;
 }

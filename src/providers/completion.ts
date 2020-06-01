@@ -3,7 +3,6 @@
 import { Project, CompletionFunctionParams } from '../interfaces';
 import { CompletionItem } from 'vscode-languageserver';
 
-import { createVirtualTemplate } from "./../lib/virtual-documents";
 import { mergeResults, normalizeAngleTagName, toFilePath } from "./../lib/utils";
 
 import { serviceForRoot, componentsForService, typeForPath, serverForProject } from './../lib/ts-service';
@@ -13,7 +12,7 @@ import * as fs from 'fs';
 import { positionForItem } from './../lib/ast-helpers';
 import { getFirstASTNode } from './../lib/ast-parser';
 import { normalizeCompletions } from './../lib/ls-utils';
-import { createFullVirtualTemplate } from "./../lib/virtual-documents";
+import VirtualDocumentProvider from './virtual-document';
 
 import {
     isParamPath,
@@ -27,7 +26,7 @@ import {
 } from "./../lib/ast-helpers";
 
 export default class CompletionProvider {
-    constructor(private project: Project) { }
+    constructor(private project: Project, private virtualDocument: VirtualDocumentProvider) { }
     async  onComplete(
 
         { results, focusPath, type, textDocument }: CompletionFunctionParams
@@ -81,8 +80,7 @@ export default class CompletionProvider {
             const fullFileName = virtualComponentTemplateFileName(templatePath);
 
 
-            const { pos } = createVirtualTemplate(
-                projectRoot,
+            const { pos } = this.virtualDocument.createVirtualTemplate(
                 componentsMap,
                 fileName,
                 {
@@ -102,7 +100,7 @@ export default class CompletionProvider {
                     nodePosition = positionForItem((getFirstASTNode(content) as any).path);
                 }
                 let markId = `; /*@path-mark ${nodePosition}*/`;
-                let tpl = createFullVirtualTemplate(projectRoot, componentsMap, templatePath, fullFileName, server, textDocument.uri, content as string, componentMeta);
+                let tpl = this.virtualDocument.createFullVirtualTemplate(componentsMap, templatePath, fullFileName, textDocument.uri, content as string, componentMeta);
                 tsResults = service.getCompletionsAtPosition(fullFileName, tpl.indexOf(markId), {
                     includeInsertTextCompletions: true
                 });

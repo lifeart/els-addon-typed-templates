@@ -1,8 +1,10 @@
 import { Project, CompletionFunctionParams } from '../interfaces';
 import { CompletionItem } from 'vscode-languageserver';
+import VirtualDocumentProvider from './virtual-document';
 export default class CompletionProvider {
     private project;
-    constructor(project: Project);
+    private virtualDocument;
+    constructor(project: Project, virtualDocument: VirtualDocumentProvider);
     onComplete({ results, focusPath, type, textDocument }: CompletionFunctionParams): Promise<CompletionItem[] | null>;
 }
 //# sourceMappingURL=completion.d.ts.map

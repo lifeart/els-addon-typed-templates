@@ -1,4 +1,4 @@
-import { FileChangeType, Diagnostic, TextDocument, Location, TextDocumentIdentifier, Position, CompletionItem } from 'vscode-languageserver';
+import { FileChangeType, Diagnostic, TextDocument, TextDocuments, Location, TextDocumentIdentifier, Position, CompletionItem } from 'vscode-languageserver';
 declare type Executor = (server: Server, command: string, args: any[]) => any;
 declare type Linter = (document: TextDocument) => Promise<Diagnostic[] | null>;
 declare type Watcher = (uri: string, change: FileChangeType) => any;
@@ -33,6 +33,7 @@ export interface Server {
     getRegistry(projectRoot: string): Registry;
     onExecute(command: Command): any;
     getUsages(normalizedName: string): string[];
+    documents: TextDocuments;
 }
 interface BaseAPIParams {
     server: Server;

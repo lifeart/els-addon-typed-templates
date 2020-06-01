@@ -442,8 +442,8 @@
         "signature": "f8be26040f2f29d38f0856c856a1b0a0b7a53ba1a68847c03584c7254b8c1c26"
       },
       "../src/interfaces.ts": {
-        "version": "bd8025da88d51e99c49472c094ef4e759060d7f1cc4ab2e32e71b1d9e1fbab04",
-        "signature": "2e48816680f46bfa2c34273433584a2620dbcf59fd88e7f820ad3517a566fa29"
+        "version": "a8a007859bf3fc6558e5f638d6df77207580e98b0b534dc8d9d184bb943b00d5",
+        "signature": "3abfea4d7c3c435b8649b20b3e3e9d3af92eb86e2099a3f55d459aaf427693ff"
       },
       "../src/lib/ast-helpers.ts": {
         "version": "7695c1e5165013c2335121b781bdca5eae8a52411cdf70fb0e53b6efb27a9a28",
@@ -801,24 +801,24 @@
         "version": "7e0db4aaf1cc210d3d6166e17c3b2c9dfc5c777baadc9da54eae746c65f0efc7",
         "signature": "e167eeff9edfb3d97ba60fd53a8683cd2b471d21484805160b12da6fd38853ed"
       },
-      "../src/lib/virtual-documents.ts": {
-        "version": "f54c7440c9fb48fa24dcbc5274049003d4f446751a31bd06044170df65581302",
-        "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
+      "../src/providers/virtual-document.ts": {
+        "version": "584e22806dd2f72000bb4a85b16989d97931e988fe42200f77b175c6708e4dcc",
+        "signature": "b06068145afbd7b961641bb7a671fda318ed1b6ce74315908c24222e3fb661c1"
       },
       "../src/providers/linter.ts": {
-        "version": "6366417f2b94ef44303ae0940c73b07ec0e667d7f4e6c41209b2fbc218893618",
-        "signature": "788c268d899bd0eac429dfc3f3ade342ea177188d18fbb5408c0aeb221e340d6"
+        "version": "89fefdb65e5da0e226860dff497a9e549eec3b1c1ec4c86ec5ce5ac11e177827",
+        "signature": "8c94e8f5bb4f06c6eefcf6b283aabf6d5b1b810db648e418795b7166cd1724a4"
       },
       "../src/providers/definition.ts": {
-        "version": "b3f7a964dabb3f4d336e1fe2d6521c6f72954ed50aeea1329ac43a0caa73e08d",
-        "signature": "2cf5c8d54461fc983bc7fc3a4314d7730eadc095361f77de8ccde066f0a4e925"
+        "version": "cb250a96eee287b3627a29e0a3daf9c6c24038ec9fc9ea620688920c399e6965",
+        "signature": "2418d141b9578cdf96b867bf21dfc7e04b108b9689c4747bf5c9a25f277e409e"
       },
       "../src/providers/completion.ts": {
-        "version": "0f2f22a1fce98aed48d8ada54626be5e50b3fb74aca1c93d6e8923373e95421f",
-        "signature": "2fe322c6c9a47a30ead0ed90cee5d443193f2054dccb40e8ec371b7f3905db62"
+        "version": "fe95039a9f56a982d249cf4207b3fee082314535c6a51fb676eaf0af6f1bb820",
+        "signature": "93a294bcd94afd9a9db7f4ef7da75a9a3711264979737e8ea938448378ac1781"
       },
       "../src/index.ts": {
-        "version": "2a64487c85f19ed4be19d1a77a872f1a1b84683dd94b705d457ba49a70e76206",
+        "version": "6ae3f83e282217c5e4e5921979f10e791c28a076072ca10b81818363856601d8",
         "signature": "00316e779bb16e52d58ebe243051bc85fe123e66577a482f57c290a6f2e1a779"
       },
       "../src/lib/ast-parser.test.ts": {
@@ -836,6 +836,10 @@
       "../src/lib/hbs-extractor.test.ts": {
         "version": "56226c372e7e795cc26997e8651ab6ac693ac6c9472fb810c454de962e5d2f8e",
         "signature": "5af2a93a31e2ff9f94348f3cf0c3ecdaded3b4dc809bd441262e1eafa5be1d34"
+      },
+      "../src/lib/virtual-documents.ts": {
+        "version": "4ca36d684a920815b9fe4c683e0f66ec47cc06064bb15384197e0da0cc180948",
+        "signature": "dc87380ddbdd71377029f51ee92df7ad69ef0de471f63fa248dc2f483529296c"
       },
       "../node_modules/jest-diff/build/types.d.ts": {
         "version": "71ba0678a3c647f5c0706ae975c031ace0d464e60f9ce56eaa7f1678d065aab7",
@@ -2511,13 +2515,14 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../src/lib/virtual-documents.ts": [
+      "../src/providers/virtual-document.ts": [
         "../src/lib/utils.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../src/lib/resolvers.ts",
         "../src/lib/ts-service.ts",
         "../src/lib/hbs-converter.ts",
         "../src/lib/ast-parser.ts",
+        "../src/interfaces.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
@@ -2529,7 +2534,7 @@
         "../src/interfaces.ts",
         "../node_modules/vscode-languageserver/lib/main.d.ts",
         "../src/lib/ts-service.ts",
-        "../src/lib/virtual-documents.ts",
+        "../src/providers/virtual-document.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2537,12 +2542,12 @@
       ],
       "../src/providers/definition.ts": [
         "../src/lib/ast-helpers.ts",
-        "../src/lib/virtual-documents.ts",
         "../src/lib/ls-utils.ts",
         "../src/lib/resolvers.ts",
         "../src/lib/ts-service.ts",
         "../src/interfaces.ts",
         "../src/lib/utils.ts",
+        "../src/providers/virtual-document.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2551,7 +2556,6 @@
       "../src/providers/completion.ts": [
         "../src/interfaces.ts",
         "../node_modules/vscode-languageserver/lib/main.d.ts",
-        "../src/lib/virtual-documents.ts",
         "../src/lib/utils.ts",
         "../src/lib/ts-service.ts",
         "../src/lib/resolvers.ts",
@@ -2559,6 +2563,7 @@
         "../src/lib/ast-helpers.ts",
         "../src/lib/ast-parser.ts",
         "../src/lib/ls-utils.ts",
+        "../src/providers/virtual-document.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
@@ -2569,6 +2574,7 @@
         "../src/providers/linter.ts",
         "../src/providers/definition.ts",
         "../src/providers/completion.ts",
+        "../src/providers/virtual-document.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -2596,6 +2602,12 @@
       "../src/lib/hbs-extractor.test.ts": [
         "../src/lib/ast-parser.ts",
         "../src/lib/hbs-extractor.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../src/lib/virtual-documents.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
@@ -4176,18 +4188,22 @@
       "../src/lib/ast-parser.ts": [
         "../node_modules/@glimmer/syntax/dist/types/lib/types/nodes.d.ts"
       ],
-      "../src/lib/virtual-documents.ts": [
+      "../src/providers/virtual-document.ts": [
+        "../src/interfaces.ts",
         "../src/lib/ts-service.ts"
       ],
       "../src/providers/linter.ts": [
         "../src/interfaces.ts",
+        "../src/providers/virtual-document.ts",
         "../node_modules/vscode-languageserver/lib/main.d.ts"
       ],
       "../src/providers/definition.ts": [
-        "../src/interfaces.ts"
+        "../src/interfaces.ts",
+        "../src/providers/virtual-document.ts"
       ],
       "../src/providers/completion.ts": [
         "../src/interfaces.ts",
+        "../src/providers/virtual-document.ts",
         "../node_modules/vscode-languageserver/lib/main.d.ts"
       ],
       "../src/lib/common-types.d.ts": [
@@ -4418,7 +4434,7 @@
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
       "../src/lib/hbs-converter.ts",
-      "../src/providers/linter.ts",
+      "../src/providers/virtual-document.ts",
       "../src/providers/definition.ts",
       "../src/providers/completion.ts",
       "../src/index.ts",
@@ -4426,10 +4442,11 @@
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
       "../src/lib/hbs-extractor.test.ts",
+      "../src/lib/virtual-documents.ts",
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/virtual-documents.ts"
+      "../src/providers/linter.ts"
     ]
   },
   "version": "3.7.3"

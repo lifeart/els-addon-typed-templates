@@ -1,4 +1,4 @@
-import { FileChangeType, Diagnostic, TextDocument, Location, TextDocumentIdentifier, Position, CompletionItem } from 'vscode-languageserver';
+import { FileChangeType, Diagnostic, TextDocument, TextDocuments, Location, TextDocumentIdentifier, Position, CompletionItem } from 'vscode-languageserver';
 
 type Executor = (server: Server, command: string, args: any[]) => any;
 type Linter = (document: TextDocument) => Promise<Diagnostic[] | null>;
@@ -50,6 +50,7 @@ export interface Server {
     getRegistry(projectRoot: string): Registry;
     onExecute(command: Command): any;
     getUsages(normalizedName: string): string[]; // return list of files, related to token
+    documents: TextDocuments;
 }
 
 interface BaseAPIParams {

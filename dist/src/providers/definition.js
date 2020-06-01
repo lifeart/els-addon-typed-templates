@@ -10,14 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ast_helpers_1 = require("./../lib/ast-helpers");
-const virtual_documents_1 = require("./../lib/virtual-documents");
 const ls_utils_1 = require("./../lib/ls-utils");
 const resolvers_1 = require("./../lib/resolvers");
 const ts_service_1 = require("./../lib/ts-service");
 const utils_1 = require("../lib/utils");
 class DefinitionProvider {
-    constructor(project) {
+    constructor(project, virtualDocument) {
         this.project = project;
+        this.virtualDocument = virtualDocument;
     }
     onDefinition({ results, focusPath, type, textDocument }) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -37,7 +37,7 @@ class DefinitionProvider {
                     realPath = ast_helpers_1.normalizeArgumentName(realPath);
                 }
                 const fileName = resolvers_1.virtualTemplateFileName(templatePath);
-                const { pos } = virtual_documents_1.createVirtualTemplate(projectRoot, componentsMap, fileName, {
+                const { pos } = this.virtualDocument.createVirtualTemplate(componentsMap, fileName, {
                     templatePath,
                     realPath,
                     isArg,
