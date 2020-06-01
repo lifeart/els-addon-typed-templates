@@ -23,7 +23,7 @@ import { Project, DefinitionFunctionParams } from '../interfaces';
 export default class DefinitionProvider {
     constructor(private project: Project) { }
     async onDefinition(
-        { results, focusPath, type, textDocument } : DefinitionFunctionParams
+        { results, focusPath, type, textDocument }: DefinitionFunctionParams
     ) {
         if (!canHandle(type, focusPath)) {
             return results;

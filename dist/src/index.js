@@ -10,17 +10,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ts_service_1 = require("./lib/ts-service");
-const linter_1 = require("./linter");
+const linter_1 = require("./providers/linter");
 const definition_1 = require("./providers/definition");
 const completion_1 = require("./providers/completion");
 module.exports = class TypedTemplates {
     onInit(server, project) {
         this.server = server;
         this.project = project;
-        ts_service_1.registerProject(project, server);
-        linter_1.setupLinter(project.root, project, server);
         this.definitionProvider = new definition_1.default(project);
         this.completionProvider = new completion_1.default(project);
+        ts_service_1.registerProject(project, server);
+        this.linter = linter_1.setupLinter(project, server);
     }
     onComplete(_, params) {
         return __awaiter(this, void 0, void 0, function* () {

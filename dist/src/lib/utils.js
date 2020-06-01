@@ -80,4 +80,22 @@ function itemKind(tsName) {
     return kinds[tsName] || vscode_languageserver_1.CompletionItemKind.Property;
 }
 exports.itemKind = itemKind;
+function normalizeToAngleBracketName(name) {
+    const SIMPLE_DASHERIZE_REGEXP = /[a-z]|\/|-/g;
+    const ALPHA = /[A-Za-z0-9]/;
+    if (name.includes(".")) {
+        return name;
+    }
+    return name.replace(SIMPLE_DASHERIZE_REGEXP, (char, index) => {
+        if (char === "/") {
+            return "";
+        }
+        if (index === 0 || !ALPHA.test(name[index - 1])) {
+            return char.toUpperCase();
+        }
+        // Remove all occurrences of '-'s from the name that aren't starting with `-`
+        return char === "-" ? "" : char.toLowerCase();
+    });
+}
+exports.normalizeToAngleBracketName = normalizeToAngleBracketName;
 //# sourceMappingURL=utils.js.map

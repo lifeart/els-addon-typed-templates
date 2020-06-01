@@ -430,16 +430,16 @@
         "signature": "e412afe13639f92925a8296a98fa39470bde3a9915014eea206c08591aafe220"
       },
       "../src/lib/utils.ts": {
-        "version": "61fa00cc8cf5f8f6fe9f7077001907605e9c6d7306bb08e47f6613bd8321e3c0",
-        "signature": "260f0447f19118c7b124687b1fd0ba0b362b63cc9c6bb92a2cec290e66db2ca6"
+        "version": "f31ebc4e728a3303cdf9a72324363805c1a296ef73d5e3f395b378b122c9a1f1",
+        "signature": "eaea2d170ae1f75a565a25be8259b38b391ebe31121060815cb040edb9e27a53"
       },
       "../src/lib/ts-service.ts": {
-        "version": "89f8215595519172c3d8316452a1065370ec718f983004aff8a97723226a9628",
-        "signature": "6bf4a573d496623e9d01e939733f6b1c92b278d58027281e3165256f996a9925"
+        "version": "1c41b5a95f2490ae075abc3f21f9207adec727a5ef50474b466dd8d2711ebeed",
+        "signature": "f8be26040f2f29d38f0856c856a1b0a0b7a53ba1a68847c03584c7254b8c1c26"
       },
       "../src/interfaces.ts": {
-        "version": "d3cc9a07eeccfc3c5d60bb2367f6311ce93069c860dd9924e69d5d4de6016a13",
-        "signature": "7b7320ab2e04ada0ed5878a5cb33c903276aee8f9c80321dc5b5551ca8a3edce"
+        "version": "bd8025da88d51e99c49472c094ef4e759060d7f1cc4ab2e32e71b1d9e1fbab04",
+        "signature": "2e48816680f46bfa2c34273433584a2620dbcf59fd88e7f820ad3517a566fa29"
       },
       "../node_modules/vscode-uri/lib/umd/index.d.ts": {
         "version": "75aeafec518f28d9ca2042b07f34f2b796be72fa609c1ba117ca79887b4d04aa",
@@ -805,12 +805,12 @@
         "version": "034776b59e61c57edeec9f0874d67e92a9c6be0e10792463388495c849904082",
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
-      "../src/linter.ts": {
-        "version": "172f43ed059613067f863af138fa7080b17af38b99923c874b97fc2fd3db55c8",
-        "signature": "0018ab97e486984542cf61d2a1c7c5f6b0ce5d8bbca2543461b85f0fb29aa579"
+      "../src/providers/linter.ts": {
+        "version": "d68e502387042c57a83c45e00b68410ee594b8d1cda815cbb796e58eea3b74f4",
+        "signature": "788c268d899bd0eac429dfc3f3ade342ea177188d18fbb5408c0aeb221e340d6"
       },
       "../src/providers/definition.ts": {
-        "version": "777a8da2fc05b1e37f17c22d41cd148c35d37c338e8476c5e5c03ad5d55f4182",
+        "version": "d77d4b134698f6fd5dfc0dc3692d87ce27cb9e67e1c66bc3ebfc2482af8e5ff3",
         "signature": "2cf5c8d54461fc983bc7fc3a4314d7730eadc095361f77de8ccde066f0a4e925"
       },
       "../src/providers/completion.ts": {
@@ -818,7 +818,7 @@
         "signature": "2fe322c6c9a47a30ead0ed90cee5d443193f2054dccb40e8ec371b7f3905db62"
       },
       "../src/index.ts": {
-        "version": "94b0b90207bf2e3702cc8840dbae590bc61d0d746000606e6b2d59d5ae53d14b",
+        "version": "91ba452dd288f12902d79e6632f4b2e9734aaf0ce9a43a989fdd1be32e2afd03",
         "signature": "00316e779bb16e52d58ebe243051bc85fe123e66577a482f57c290a6f2e1a779"
       },
       "../src/lib/ast-parser.test.ts": {
@@ -2520,7 +2520,7 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "../src/linter.ts": [
+      "../src/providers/linter.ts": [
         "../src/lib/ls-utils.ts",
         "../node_modules/vscode-uri/lib/umd/index.d.ts",
         "../src/lib/resolvers.ts",
@@ -2565,7 +2565,7 @@
       "../src/index.ts": [
         "../src/lib/ts-service.ts",
         "../src/interfaces.ts",
-        "../src/linter.ts",
+        "../src/providers/linter.ts",
         "../src/providers/definition.ts",
         "../src/providers/completion.ts",
         "../node_modules/@types/node/fs.d.ts",
@@ -4178,8 +4178,9 @@
       "../src/lib/virtual-documents.ts": [
         "../src/lib/ts-service.ts"
       ],
-      "../src/linter.ts": [
-        "../src/interfaces.ts"
+      "../src/providers/linter.ts": [
+        "../src/interfaces.ts",
+        "../node_modules/vscode-languageserver/lib/main.d.ts"
       ],
       "../src/providers/definition.ts": [
         "../src/interfaces.ts"
@@ -4323,13 +4324,8 @@
       "../node_modules/vscode-languageserver/lib/workspacefolders.d.ts",
       "../node_modules/vscode-languageserver/lib/files.d.ts",
       "../node_modules/vscode-languageserver/lib/main.d.ts",
-      "../src/lib/utils.ts",
-      "../src/lib/ts-service.ts",
       "../src/interfaces.ts",
       "../node_modules/vscode-uri/lib/umd/index.d.ts",
-      "../src/lib/ast-helpers.ts",
-      "../src/lib/ls-utils.ts",
-      "../src/lib/resolvers.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -4413,13 +4409,6 @@
       "../node_modules/@glimmer/syntax/dist/types/lib/utils.d.ts",
       "../node_modules/@glimmer/syntax/dist/types/index.d.ts",
       "../src/lib/ast-parser.ts",
-      "../src/lib/hbs-transform.ts",
-      "../src/lib/hbs-extractor.ts",
-      "../src/lib/hbs-converter.ts",
-      "../src/lib/virtual-documents.ts",
-      "../src/linter.ts",
-      "../src/providers/completion.ts",
-      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/hbs-converter.test.ts",
@@ -4427,7 +4416,19 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/providers/definition.ts"
+      "../src/lib/utils.ts",
+      "../src/lib/virtual-documents.ts",
+      "../src/lib/hbs-converter.ts",
+      "../src/lib/hbs-transform.ts",
+      "../src/lib/ls-utils.ts",
+      "../src/lib/ast-helpers.ts",
+      "../src/lib/ts-service.ts",
+      "../src/index.ts",
+      "../src/providers/definition.ts",
+      "../src/providers/linter.ts",
+      "../src/lib/hbs-extractor.ts",
+      "../src/lib/resolvers.ts",
+      "../src/providers/completion.ts"
     ]
   },
   "version": "3.7.3"

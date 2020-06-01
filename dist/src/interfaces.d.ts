@@ -53,11 +53,11 @@ export interface DefinitionFunctionParams extends ExtendedAPIParams {
     results: Location[];
 }
 declare type ReferenceResolveFunction = (root: string, params: ReferenceFunctionParams) => Promise<Location[]>;
-declare type CompletionResolveFunction = (root: string, params: CompletionFunctionParams) => Promise<CompletionItem[]>;
+declare type CompletionResolveFunction = (root: string, params: CompletionFunctionParams) => Promise<CompletionItem[] | null>;
 declare type DefinitionResolveFunction = (root: string, params: DefinitionFunctionParams) => Promise<Location[]>;
 declare type InitCallback = (server: Server, project: Project) => void;
 export interface AddonAPI {
-    onReference: undefined | ReferenceResolveFunction;
+    onReference?: undefined | ReferenceResolveFunction;
     onComplete: undefined | CompletionResolveFunction;
     onDefinition: undefined | DefinitionResolveFunction;
     onInit: undefined | InitCallback;
