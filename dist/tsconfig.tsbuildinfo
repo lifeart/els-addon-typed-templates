@@ -806,7 +806,7 @@
         "signature": "05b980d02aa89c02b9847dbccab7f0436111e817e7df699b339e893c526589ec"
       },
       "../src/providers/linter.ts": {
-        "version": "09bafa8f18690ed761959c4fc6ec9bf186d8b8b1e1bcdb31232f920f213bfade",
+        "version": "6366417f2b94ef44303ae0940c73b07ec0e667d7f4e6c41209b2fbc218893618",
         "signature": "788c268d899bd0eac429dfc3f3ade342ea177188d18fbb5408c0aeb221e340d6"
       },
       "../src/providers/definition.ts": {
@@ -4418,7 +4418,7 @@
       "../src/lib/hbs-transform.ts",
       "../src/lib/hbs-extractor.ts",
       "../src/lib/hbs-converter.ts",
-      "../src/providers/linter.ts",
+      "../src/lib/virtual-documents.ts",
       "../src/providers/definition.ts",
       "../src/providers/completion.ts",
       "../src/index.ts",
@@ -4429,7 +4429,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/virtual-documents.ts"
+      "../src/providers/linter.ts"
     ]
   },
   "version": "3.7.3"

@@ -36,6 +36,10 @@ export default class Linter {
         if (isTestFile(templatePath) || foundMarks.length === 0 || templatePath.endsWith('.d.ts')) {
             return false;
         }
+        // skip virtual files linting (if debug enabled)
+        if (templatePath.includes('--virtual-')) {
+            return false;
+        }
         return true;
     }
     async lintFile(textDocument) {
