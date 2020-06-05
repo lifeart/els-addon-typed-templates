@@ -1,4 +1,5 @@
 import { FileChangeType, Diagnostic, TextDocument, TextDocuments, Location, TextDocumentIdentifier, Position, CompletionItem } from 'vscode-languageserver';
+import { LSRegistry } from './lib/ts-service';
 
 type Executor = (server: Server, command: string, args: any[]) => any;
 type Linter = (document: TextDocument) => Promise<Diagnostic[] | null>;
@@ -30,7 +31,7 @@ export interface Project {
     matchPathToType(filePath: string): null | MatchResult;
 }
 
-interface Registry {
+interface Registry extends LSRegistry {
     component: {
         [componentName: string]: string[] // files, related to component
     },

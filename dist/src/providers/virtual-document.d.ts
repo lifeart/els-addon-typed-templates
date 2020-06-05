@@ -6,6 +6,7 @@ export default class VirtualDocumentProvider {
     private project;
     builder: TypescriptTemplateBuilder;
     constructor(server: Server, project: Project);
+    unknownComponentTemplate(meta: any): string;
     createFullVirtualTemplate(componentsMap: any, templatePath: any, fileName: any, uri: any, content: string | boolean | undefined, meta: MatchResult): any;
     createVirtualTemplate(componentsMap: any, fileName: any, { templatePath, realPath, isArg, isArrayCase, isParam }: any): {
         pos: any;

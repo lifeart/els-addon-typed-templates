@@ -12,17 +12,20 @@ class VirtualDocumentProvider {
         this.project = project;
         this.builder = new hbs_converter_1.TypescriptTemplateBuilder(server, project);
     }
+    unknownComponentTemplate(meta) {
+        return `export default class ${meta.className}Template {};`;
+    }
     createFullVirtualTemplate(componentsMap, templatePath, fileName, uri, content = false, meta) {
         const projectRoot = this.project.root;
         const server = this.server;
         const document = server.documents.get(uri);
         if (!document && !content) {
-            return `export default class ${meta.className}Template {};`;
+            return this.unknownComponentTemplate(meta);
         }
         const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
         content = content ? content : (document ? document.getText() : "");
         const { nodes, comments } = ast_parser_1.getClassMeta(content);
-        let scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
+        let scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, this.project, registry);
         // console.log('scriptForComponent', scriptForComponent);
         let relComponentImport = null;
         if (scriptForComponent) {
@@ -41,7 +44,7 @@ class VirtualDocumentProvider {
     }
     createVirtualTemplate(componentsMap, fileName, { templatePath, realPath, isArg, isArrayCase, isParam }) {
         const projectRoot = this.project.root;
-        const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, projectRoot);
+        const scriptForComponent = resolvers_1.findComponentForTemplate(templatePath, this.project, this.server.getRegistry(this.project.root));
         let isTemplateOnly = false;
         let relComponentImport = undefined;
         let className = 'Template';

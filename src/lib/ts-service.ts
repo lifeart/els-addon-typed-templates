@@ -2,6 +2,7 @@ import * as ts from "typescript";
 import * as path from "path";
 import * as fs from "fs";
 import { safeWalkSync, normalizeToAngleBracketName } from "./utils";
+import { Project } from "../interfaces";
 
 const services: any = {};
 const components = new WeakMap();
@@ -41,7 +42,7 @@ interface RegistryItem {
   [key: string]: string[]
 }
 
-interface LSRegistry {
+export interface LSRegistry {
   'transform': RegistryItem;
   'helper': RegistryItem;
   'component': RegistryItem;
@@ -98,15 +99,18 @@ export function serverForProject(root: string) {
   return projectMirror.server;
 }
 
-export function typeForPath(root: string, uri: string) {
-  console.log('typeForPath', root,  uri);
-  const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
-  let result = projectMirror.project.matchPathToType(uri);
+export function matchPathToType(project: Project, uri: string) {
+  let result: MatchResult | null = (project.matchPathToType(uri) as unknown) as MatchResult | null
   if (result === null) {
     return null;
   }
   result.className = normalizeToAngleBracketName(result.name) + result.type.charAt(0).toUpperCase() + result.type.slice(1);
   return result;
+}
+export function typeForPath(root: string, uri: string) {
+  console.log('typeForPath', root,  uri);
+  const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
+  return matchPathToType((projectMirror.project as unknown) as Project, uri);
 }
 
 function getProjectTypeScriptConfig(root: string) {

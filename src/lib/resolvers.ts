@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
-import { serverForProject, typeForPath } from './ts-service';
+import { LSRegistry, matchPathToType } from './ts-service';
+import { Project } from '../../dist/src/interfaces';
 
 export function virtualTemplateFileName(fsPath) {
   const extName = path.extname(fsPath);
@@ -90,23 +91,19 @@ export function relativeComponentImport(
   return ralativeAddonImport(templateFileName, scriptForComponent);
 }
 
-export function findComponentForTemplate(fsPath, projectRoot) { 
+export function findComponentForTemplate(fsPath, project: Project, registry: LSRegistry) { 
   const extName = path.extname(fsPath);
-  const componentMeta = typeForPath(projectRoot, fsPath);
+  const componentMeta = matchPathToType(project, fsPath);
 
   if (extName !== '.hbs' || !componentMeta) {
     // @to-do figure out this strategy
     return null;
   } 
 
-  const server = serverForProject(projectRoot);
-
-  const registry = server.getRegistry(projectRoot);
-
   let possibleScripts: string[] = [];
   if (componentMeta.kind === 'template' && componentMeta.type === 'template') {
     possibleScripts = (registry.routePath[componentMeta.name.split('/').join('.')]||[]).filter((el)=>{
-      let meta = typeForPath(projectRoot, el);
+      let meta = matchPathToType(project, el);
       if (!meta) {
         return null;
       }
@@ -114,14 +111,14 @@ export function findComponentForTemplate(fsPath, projectRoot) {
     });
   } else {
     possibleScripts = (registry.component[componentMeta.name] || []).filter((el)=>{
-      return typeForPath(projectRoot, el)?.kind === 'script'
+      return matchPathToType(project, el)?.kind === 'script'
     });
   }
 
   if (possibleScripts.length > 1) {
     possibleScripts = possibleScripts.filter((el)=> {
       // to-do - add support for typed-templates in addons (we need to check is it addon or not and replace scope)
-      return typeForPath(projectRoot, el)?.scope === 'application';
+      return matchPathToType(project, el)?.scope === 'application';
     })
   }
   if (possibleScripts.length > 1) {

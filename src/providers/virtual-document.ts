@@ -5,7 +5,7 @@ import {
     relativeComponentImport,
     ralativeAddonImport
 } from "./../lib/resolvers";
-import { MatchResult, typeForPath } from './../lib/ts-service';
+import { MatchResult, typeForPath, LSRegistry } from './../lib/ts-service';
 import { TypescriptTemplateBuilder } from "./../lib/hbs-converter";
 import { getClassMeta } from './../lib/ast-parser';
 import { Project, Server } from './../interfaces';
@@ -16,6 +16,9 @@ export default class VirtualDocumentProvider {
         this.builder = new TypescriptTemplateBuilder(server, project)
     }
 
+    unknownComponentTemplate(meta) {
+        return `export default class ${meta.className}Template {};`;
+    }
     createFullVirtualTemplate(
         componentsMap,
         templatePath,
@@ -28,13 +31,13 @@ export default class VirtualDocumentProvider {
         const server = this.server;
         const document = server.documents.get(uri);
         if (!document && !content) {
-            return `export default class ${meta.className}Template {};`;
+            return this.unknownComponentTemplate(meta);
         }
         const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
         content = content ? content : (document ? document.getText() : "");
         const { nodes, comments } = getClassMeta(content);
 
-        let scriptForComponent = findComponentForTemplate(templatePath, projectRoot)
+        let scriptForComponent = findComponentForTemplate(templatePath, this.project, (registry as unknown) as LSRegistry)
         // console.log('scriptForComponent', scriptForComponent);
         let relComponentImport: string | null = null;
 
@@ -66,7 +69,8 @@ export default class VirtualDocumentProvider {
         const projectRoot = this.project.root;
         const scriptForComponent = findComponentForTemplate(
             templatePath,
-            projectRoot
+            this.project,
+            this.server.getRegistry(this.project.root)
         );
         let isTemplateOnly = false;
         let relComponentImport: any = undefined;

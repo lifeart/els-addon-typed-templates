@@ -76,19 +76,17 @@ function relativeComponentImport(templateFileName, scriptForComponent) {
     return ralativeAddonImport(templateFileName, scriptForComponent);
 }
 exports.relativeComponentImport = relativeComponentImport;
-function findComponentForTemplate(fsPath, projectRoot) {
+function findComponentForTemplate(fsPath, project, registry) {
     const extName = path.extname(fsPath);
-    const componentMeta = ts_service_1.typeForPath(projectRoot, fsPath);
+    const componentMeta = ts_service_1.matchPathToType(project, fsPath);
     if (extName !== '.hbs' || !componentMeta) {
         // @to-do figure out this strategy
         return null;
     }
-    const server = ts_service_1.serverForProject(projectRoot);
-    const registry = server.getRegistry(projectRoot);
     let possibleScripts = [];
     if (componentMeta.kind === 'template' && componentMeta.type === 'template') {
         possibleScripts = (registry.routePath[componentMeta.name.split('/').join('.')] || []).filter((el) => {
-            let meta = ts_service_1.typeForPath(projectRoot, el);
+            let meta = ts_service_1.matchPathToType(project, el);
             if (!meta) {
                 return null;
             }
@@ -98,14 +96,14 @@ function findComponentForTemplate(fsPath, projectRoot) {
     else {
         possibleScripts = (registry.component[componentMeta.name] || []).filter((el) => {
             var _a;
-            return ((_a = ts_service_1.typeForPath(projectRoot, el)) === null || _a === void 0 ? void 0 : _a.kind) === 'script';
+            return ((_a = ts_service_1.matchPathToType(project, el)) === null || _a === void 0 ? void 0 : _a.kind) === 'script';
         });
     }
     if (possibleScripts.length > 1) {
         possibleScripts = possibleScripts.filter((el) => {
             var _a;
             // to-do - add support for typed-templates in addons (we need to check is it addon or not and replace scope)
-            return ((_a = ts_service_1.typeForPath(projectRoot, el)) === null || _a === void 0 ? void 0 : _a.scope) === 'application';
+            return ((_a = ts_service_1.matchPathToType(project, el)) === null || _a === void 0 ? void 0 : _a.scope) === 'application';
         });
     }
     if (possibleScripts.length > 1) {
