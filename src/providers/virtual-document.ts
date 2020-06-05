@@ -6,12 +6,15 @@ import {
     ralativeAddonImport
 } from "./../lib/resolvers";
 import { MatchResult, typeForPath } from './../lib/ts-service';
-import { getClass } from "./../lib/hbs-converter";
+import { TypescriptTemplateBuilder } from "./../lib/hbs-converter";
 import { getClassMeta } from './../lib/ast-parser';
 import { Project, Server } from './../interfaces';
 
 export default class VirtualDocumentProvider {
-    constructor(private server: Server, private project: Project) { }
+    builder!: TypescriptTemplateBuilder;
+    constructor(private server: Server, private project: Project) { 
+        this.builder = new TypescriptTemplateBuilder(server, project)
+    }
 
     createFullVirtualTemplate(
         componentsMap,
@@ -39,9 +42,9 @@ export default class VirtualDocumentProvider {
             relComponentImport = relativeComponentImport(fileName, scriptForComponent);
         }
         // console.log('scriptForComponent', scriptForComponent);
-        componentsMap[fileName] = getClass(componentsMap,
+        componentsMap[fileName] = this.builder.getClass(componentsMap,
             fileName,
-            { nodes, comments, projectRoot, meta },
+            { nodes, comments, meta },
             relComponentImport,
             getValidRegistryItems(registry, fileName, projectRoot)
         );

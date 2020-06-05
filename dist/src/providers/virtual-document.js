@@ -10,6 +10,7 @@ class VirtualDocumentProvider {
     constructor(server, project) {
         this.server = server;
         this.project = project;
+        this.builder = new hbs_converter_1.TypescriptTemplateBuilder(server, project);
     }
     createFullVirtualTemplate(componentsMap, templatePath, fileName, uri, content = false, meta) {
         const projectRoot = this.project.root;
@@ -28,7 +29,7 @@ class VirtualDocumentProvider {
             relComponentImport = resolvers_1.relativeComponentImport(fileName, scriptForComponent);
         }
         // console.log('scriptForComponent', scriptForComponent);
-        componentsMap[fileName] = hbs_converter_1.getClass(componentsMap, fileName, { nodes, comments, projectRoot, meta }, relComponentImport, getValidRegistryItems(registry, fileName, projectRoot));
+        componentsMap[fileName] = this.builder.getClass(componentsMap, fileName, { nodes, comments, meta }, relComponentImport, getValidRegistryItems(registry, fileName, projectRoot));
         let debug = true;
         if (debug) {
             // console.log("===============");

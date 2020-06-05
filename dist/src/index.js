@@ -16,6 +16,7 @@ const completion_1 = require("./providers/completion");
 const virtual_document_1 = require("./providers/virtual-document");
 module.exports = class TypedTemplates {
     constructor() {
+        // temporary context fix for UELS
         this.onInit = this.onInit.bind(this);
         this.onComplete = this.onComplete.bind(this);
         this.onDefinition = this.onDefinition.bind(this);
