@@ -91,6 +91,15 @@ export function toFilePath(uri) {
   return path.resolve(URI.parse(uri).fsPath);
 }
 
+export function isHBS(file: string) {
+  return file.endsWith('.hbs');
+}
+export function isJS(file: string) {
+  return file.endsWith('.js');
+}
+export function isTS(file: string) {
+  return file.endsWith('.ts');
+}
 export function normalizeToAngleBracketName(name) {
   const SIMPLE_DASHERIZE_REGEXP = /[a-z]|\/|-/g;
   const ALPHA = /[A-Za-z0-9]/;

@@ -3,6 +3,8 @@ import * as fs from "fs";
 import { LSRegistry, matchPathToType } from './ts-service';
 import { Project } from '../../dist/src/interfaces';
 
+import { isHBS } from './utils';
+
 export function virtualTemplateFileName(fsPath) {
   const extName = path.extname(fsPath);
   return path
@@ -27,7 +29,7 @@ export function relativeImport(templateFile, scriptFile) {
     .replace(".js", "");
 }
 
-export function ralativeAddonImport(
+export function relativeAddonImport(
   templateFileName: string,
   addonItemFileName: string
 ): string | null {
@@ -88,14 +90,14 @@ export function relativeComponentImport(
   templateFileName: string,
   scriptForComponent: string
 ): string | null {
-  return ralativeAddonImport(templateFileName, scriptForComponent);
+  return relativeAddonImport(templateFileName, scriptForComponent);
 }
 
 export function findComponentForTemplate(fsPath, project: Project, registry: LSRegistry) { 
   const extName = path.extname(fsPath);
   const componentMeta = matchPathToType(project, fsPath);
 
-  if (extName !== '.hbs' || !componentMeta) {
+  if (!isHBS(extName) || !componentMeta) {
     // @to-do figure out this strategy
     return null;
   } 

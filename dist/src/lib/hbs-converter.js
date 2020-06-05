@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
+const logger_1 = require("./logger");
 const camelcase = require("camelcase");
 const fs = require("fs");
 const resolvers_1 = require("./resolvers");
@@ -209,14 +210,13 @@ class TypescriptTemplateBuilder {
                 console.log(e);
             }
         }
-        let debug = true;
-        if (debug) {
+        logger_1.withDebug(() => {
             console.log("--------------------------");
             console.log(virtualFileName);
             console.log("--------------------------");
             console.log(klass);
             console.log("--------------------------");
-        }
+        });
         componentsMap[virtualFileName] = klass;
     }
     emptyTemplate(meta) {

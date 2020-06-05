@@ -12,6 +12,7 @@ import * as fs from 'fs';
 import { positionForItem } from './../lib/ast-helpers';
 import { getFirstASTNode } from './../lib/ast-parser';
 import { normalizeCompletions } from './../lib/ls-utils';
+import { isHBS } from './../lib/utils';
 import VirtualDocumentProvider from './virtual-document';
 
 import {
@@ -52,7 +53,7 @@ export default class CompletionProvider {
             if (isExternalComponentArg) {
                 let possibleTemplates = server.getRegistry(projectRoot).component[originalComponentName] || [];
                 possibleTemplates.forEach((el) => {
-                    if (el.endsWith('.hbs')) {
+                    if (isHBS(el)) {
                         templatePath = el;
                     }
                 })

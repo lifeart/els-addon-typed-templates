@@ -16,6 +16,7 @@ const fs = require("fs");
 const ast_helpers_1 = require("./../lib/ast-helpers");
 const ast_parser_1 = require("./../lib/ast-parser");
 const ls_utils_1 = require("./../lib/ls-utils");
+const utils_2 = require("./../lib/utils");
 const ast_helpers_2 = require("./../lib/ast-helpers");
 class CompletionProvider {
     constructor(project, virtualDocument) {
@@ -43,7 +44,7 @@ class CompletionProvider {
                 if (isExternalComponentArg) {
                     let possibleTemplates = server.getRegistry(projectRoot).component[originalComponentName] || [];
                     possibleTemplates.forEach((el) => {
-                        if (el.endsWith('.hbs')) {
+                        if (utils_2.isHBS(el)) {
                             templatePath = el;
                         }
                     });

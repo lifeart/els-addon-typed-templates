@@ -1,4 +1,5 @@
 import * as ts from "typescript";
+import { Project } from "../interfaces";
 export declare function componentsForService(service: any, clean?: boolean): any;
 declare type ProjectFile = {
     version: number;
@@ -18,7 +19,7 @@ export interface MatchResult {
 interface RegistryItem {
     [key: string]: string[];
 }
-interface LSRegistry {
+export interface LSRegistry {
     'transform': RegistryItem;
     'helper': RegistryItem;
     'component': RegistryItem;
@@ -40,6 +41,7 @@ interface ProjectMirror {
 }
 export declare function registerProject(item: any, server: any): void;
 export declare function serverForProject(root: string): LanguageServer;
+export declare function matchPathToType(project: Project, uri: string): MatchResult | null;
 export declare function typeForPath(root: string, uri: string): MatchResult | null;
 export default class TypescriptService implements ts.LanguageServiceHost {
     ts: ts.LanguageService;

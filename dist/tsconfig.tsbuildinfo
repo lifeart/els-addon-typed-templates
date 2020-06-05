@@ -434,15 +434,19 @@
         "signature": "75aeafec518f28d9ca2042b07f34f2b796be72fa609c1ba117ca79887b4d04aa"
       },
       "../src/lib/utils.ts": {
-        "version": "a15f01d52e997745cae4aa64ccad233325411380f75af777350873197936bb60",
-        "signature": "48d88573cb8af1cf6128f1caddf1b3484a5d0c02c80592af80386cee3a3e4e75"
+        "version": "a8be1b22bf08b04c7114ad3c0fd6591b572fa171bc83c3aef72fdfc3a3d6d359",
+        "signature": "6a42ed5dbbd96f4a0fb6f6731d8ba977aa092cb631648663b8e0ea38c99c9128"
       },
       "../src/interfaces.ts": {
         "version": "1bd8a02089033c592ec527811b39063f0872887ffc689f50c4cb440e9fb7f561",
         "signature": "6601563b49fef3c55ecf082df195e4d2a08a1dba1e9a7e6cec3b07aed84f62db"
       },
+      "../src/lib/logger.ts": {
+        "version": "6a022f87ce9991dd677e30d9488983f255caad7106621a18fca93ca16a8c87cc",
+        "signature": "db9a470dd4ad5ea040bbb30b7fb01242bee7c92cf403280864b4f56cbecbdc2c"
+      },
       "../src/lib/ts-service.ts": {
-        "version": "c2cb2c2545c16c6e2da4b78542cc8b9c835fc537ac4f15fd90cec83256a74136",
+        "version": "81e70e3768945153e90e97762b086f7d46bec7c36362c820664c63d4ccf74f41",
         "signature": "0579395ff291c81348c212451abaf335c70057ebf1feaa541e8866e514272d79"
       },
       "../src/lib/ast-helpers.ts": {
@@ -454,8 +458,8 @@
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/lib/resolvers.ts": {
-        "version": "77572efeadfbb0b4dd9cb6517572ba13fcdbabd0b4985b32c27d0cf98377a2a5",
-        "signature": "473b1b20c1b77f99aca50d476f7e58f0018dfb465feeef50512fa196d71c27d9"
+        "version": "89a34d8e6859480e8d0b3eaf5a66799b8e2e45f7e085f41b12aa8aba65cf9132",
+        "signature": "f33652d8543f6d66bd7a67e26d906ab30ee1014cb53337a0df78693110f9a117"
       },
       "../node_modules/camelcase/index.d.ts": {
         "version": "b8e7261f41dd775524077306a69c01796bd5a2a742c7338e6607ff4e689bc356",
@@ -802,11 +806,11 @@
         "signature": "7cab503a549dca77d1cf3bd87db8f1c5f5c19d6446f98b3518ea99548ed6ca66"
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "13a38110f8db07651443a32b019c42839b40173d8dc3a29741a05c22f55374a4",
+        "version": "df3936cc65e474da49a2fdd6033bbec176049072c0caa6171151f755c3f26767",
         "signature": "e8997da14d0889821cf5497f737fb91c5bbfe4e6398c9314ed22e11b47bbba74"
       },
       "../src/providers/virtual-document.ts": {
-        "version": "0e5698273e5f3eec8c9b29cb958cafd68246f6a642938e9476b84986d28be7be",
+        "version": "a49acb947cc63e595dfcba30b3289b964c5edaa1e1970a482f61ad47e0f7a540",
         "signature": "c6e3997e18f45fa6bdfa2edcb7239d2a5aac5adc84c8ba6a4e38390c0fa1f41a"
       },
       "../src/providers/linter.ts": {
@@ -818,7 +822,7 @@
         "signature": "2418d141b9578cdf96b867bf21dfc7e04b108b9689c4747bf5c9a25f277e409e"
       },
       "../src/providers/completion.ts": {
-        "version": "fe95039a9f56a982d249cf4207b3fee082314535c6a51fb676eaf0af6f1bb820",
+        "version": "f2e4dd51e919f0f297361eb1bd39de1ce8777ae98b623fb9d63b96f298ebd8fd",
         "signature": "93a294bcd94afd9a9db7f4ef7da75a9a3711264979737e8ea938448378ac1781"
       },
       "../src/index.ts": {
@@ -1708,12 +1712,19 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../src/lib/logger.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../src/lib/ts-service.ts": [
         "../node_modules/typescript/lib/typescript.d.ts",
         "../node_modules/@types/node/path.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../src/lib/utils.ts",
         "../src/interfaces.ts",
+        "../src/lib/logger.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
@@ -1741,6 +1752,7 @@
         "../node_modules/@types/node/path.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../src/lib/ts-service.ts",
+        "../src/lib/utils.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
@@ -2516,6 +2528,7 @@
       ],
       "../src/lib/hbs-converter.ts": [
         "../src/lib/utils.ts",
+        "../src/lib/logger.ts",
         "../node_modules/camelcase/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../src/lib/resolvers.ts",
@@ -2532,6 +2545,7 @@
       "../src/providers/virtual-document.ts": [
         "../src/lib/utils.ts",
         "../node_modules/@types/node/fs.d.ts",
+        "../src/lib/logger.ts",
         "../src/lib/resolvers.ts",
         "../src/lib/ts-service.ts",
         "../src/lib/hbs-converter.ts",
@@ -3462,7 +3476,6 @@
         "../node_modules/typescript/lib/typescript.d.ts"
       ],
       "../src/lib/resolvers.ts": [
-        "./src/interfaces.d.ts",
         "../src/lib/ts-service.ts"
       ],
       "../node_modules/camelcase/index.d.ts": [
@@ -4368,7 +4381,7 @@
       "../node_modules/vscode-uri/lib/umd/index.d.ts",
       "../src/lib/utils.ts",
       "../src/interfaces.ts",
-      "../src/lib/ts-service.ts",
+      "../src/lib/logger.ts",
       "../src/lib/ast-helpers.ts",
       "../src/lib/ls-utils.ts",
       "../src/lib/resolvers.ts",
@@ -4459,6 +4472,7 @@
       "../src/lib/hbs-extractor.ts",
       "../src/lib/default-scopes.ts",
       "../src/lib/hbs-converter.ts",
+      "../src/providers/virtual-document.ts",
       "../src/providers/linter.ts",
       "../src/providers/definition.ts",
       "../src/providers/completion.ts",
@@ -4471,7 +4485,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/providers/virtual-document.ts"
+      "../src/lib/ts-service.ts"
     ]
   },
   "version": "3.7.3"

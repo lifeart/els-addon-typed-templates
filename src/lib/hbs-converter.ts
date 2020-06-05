@@ -1,4 +1,5 @@
 import { PLACEHOLDER } from "./utils";
+import { withDebug } from './logger';
 import * as camelcase from "camelcase";
 import * as fs from "fs";
 import { relativeImport, virtualComponentTemplateFileName } from "./resolvers";
@@ -270,14 +271,13 @@ export class TypescriptTemplateBuilder {
       }
     }
 
-    let debug = true;
-    if (debug) {
+    withDebug(() => {
       console.log("--------------------------");
       console.log(virtualFileName);
       console.log("--------------------------");
       console.log(klass);
       console.log("--------------------------");
-    }
+    });
 
     componentsMap[virtualFileName] = klass;
   }

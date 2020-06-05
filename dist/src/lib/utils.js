@@ -86,6 +86,18 @@ function toFilePath(uri) {
     return path.resolve(vscode_uri_1.URI.parse(uri).fsPath);
 }
 exports.toFilePath = toFilePath;
+function isHBS(file) {
+    return file.endsWith('.hbs');
+}
+exports.isHBS = isHBS;
+function isJS(file) {
+    return file.endsWith('.js');
+}
+exports.isJS = isJS;
+function isTS(file) {
+    return file.endsWith('.ts');
+}
+exports.isTS = isTS;
 function normalizeToAngleBracketName(name) {
     const SIMPLE_DASHERIZE_REGEXP = /[a-z]|\/|-/g;
     const ALPHA = /[A-Za-z0-9]/;

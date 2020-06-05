@@ -4,6 +4,7 @@ const ts = require("typescript");
 const path = require("path");
 const fs = require("fs");
 const utils_1 = require("./utils");
+const logger_1 = require("./logger");
 const services = {};
 const components = new WeakMap();
 function componentsForService(service, clean = false) {
@@ -39,21 +40,27 @@ const serverMock = {
 function serverForProject(root) {
     const projectMirror = PROJECTS_MAP.get(root);
     if (!projectMirror) {
-        console.log('server-mock used');
+        logger_1.withDebug(() => {
+            console.log('server-mock used');
+        });
         return serverMock;
     }
     return projectMirror.server;
 }
 exports.serverForProject = serverForProject;
-function typeForPath(root, uri) {
-    console.log('typeForPath', root, uri);
-    const projectMirror = PROJECTS_MAP.get(root);
-    let result = projectMirror.project.matchPathToType(uri);
+function matchPathToType(project, uri) {
+    let result = project.matchPathToType(uri);
     if (result === null) {
         return null;
     }
     result.className = utils_1.normalizeToAngleBracketName(result.name) + result.type.charAt(0).toUpperCase() + result.type.slice(1);
     return result;
+}
+exports.matchPathToType = matchPathToType;
+function typeForPath(root, uri) {
+    console.log('typeForPath', root, uri);
+    const projectMirror = PROJECTS_MAP.get(root);
+    return matchPathToType(projectMirror.project, uri);
 }
 exports.typeForPath = typeForPath;
 function getProjectTypeScriptConfig(root) {

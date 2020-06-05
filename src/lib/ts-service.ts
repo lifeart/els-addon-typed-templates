@@ -3,6 +3,7 @@ import * as path from "path";
 import * as fs from "fs";
 import { safeWalkSync, normalizeToAngleBracketName } from "./utils";
 import { Project } from "../interfaces";
+import { withDebug } from './logger';
 
 const services: any = {};
 const components = new WeakMap();
@@ -93,7 +94,9 @@ const serverMock: LanguageServer = {
 export function serverForProject(root: string) {
   const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
   if (!projectMirror) {
-    console.log('server-mock used');
+    withDebug(() => {
+      console.log('server-mock used');
+    });
     return serverMock as LanguageServer;
   }
   return projectMirror.server;
@@ -108,7 +111,7 @@ export function matchPathToType(project: Project, uri: string) {
   return result;
 }
 export function typeForPath(root: string, uri: string) {
-  console.log('typeForPath', root,  uri);
+  console.log('typeForPath', root, uri);
   const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
   return matchPathToType((projectMirror.project as unknown) as Project, uri);
 }

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const fs = require("fs");
 const ts_service_1 = require("./ts-service");
+const utils_1 = require("./utils");
 function virtualTemplateFileName(fsPath) {
     const extName = path.extname(fsPath);
     return path
@@ -27,7 +28,7 @@ function relativeImport(templateFile, scriptFile) {
         .replace(".js", "");
 }
 exports.relativeImport = relativeImport;
-function ralativeAddonImport(templateFileName, addonItemFileName) {
+function relativeAddonImport(templateFileName, addonItemFileName) {
     let extname = path.extname(addonItemFileName);
     let subRelative = relativeImport(templateFileName, addonItemFileName);
     // ./../../../node_modules/@ember/render-modifiers/app/modifiers/did-insert
@@ -71,15 +72,15 @@ function ralativeAddonImport(templateFileName, addonItemFileName) {
     else
         return subRelative;
 }
-exports.ralativeAddonImport = ralativeAddonImport;
+exports.relativeAddonImport = relativeAddonImport;
 function relativeComponentImport(templateFileName, scriptForComponent) {
-    return ralativeAddonImport(templateFileName, scriptForComponent);
+    return relativeAddonImport(templateFileName, scriptForComponent);
 }
 exports.relativeComponentImport = relativeComponentImport;
 function findComponentForTemplate(fsPath, project, registry) {
     const extName = path.extname(fsPath);
     const componentMeta = ts_service_1.matchPathToType(project, fsPath);
-    if (extName !== '.hbs' || !componentMeta) {
+    if (!utils_1.isHBS(extName) || !componentMeta) {
         // @to-do figure out this strategy
         return null;
     }

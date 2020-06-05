@@ -1,9 +1,10 @@
-import { PLACEHOLDER } from "./../lib/utils";
+import { PLACEHOLDER, isHBS, isJS, isTS } from "./../lib/utils";
 import * as fs from "fs";
+import { withDebug } from '../lib/logger';
 import {
     findComponentForTemplate,
     relativeComponentImport,
-    ralativeAddonImport
+    relativeAddonImport
 } from "./../lib/resolvers";
 import { MatchResult, typeForPath, LSRegistry } from './../lib/ts-service';
 import { TypescriptTemplateBuilder } from "./../lib/hbs-converter";
@@ -51,13 +52,13 @@ export default class VirtualDocumentProvider {
             relComponentImport,
             getValidRegistryItems(registry, fileName, projectRoot)
         );
-        let debug = true;
-        if (debug) {
-            // console.log("===============");
+
+        withDebug(()=>{
+            console.log("===============");
             fs.writeFileSync(fileName, componentsMap[fileName], "utf8");
-            // console.log(componentsMap[fileName]);
-            // console.log("===============");
-        }
+            console.log(fileName);
+            console.log("===============");
+        });
         return componentsMap[fileName];
     }
 
@@ -163,19 +164,21 @@ function getValidRegistryItems(registry: any, templateFile: string, projectRoot:
     if (registry === null) {
         return items;
     } else {
-        fs.writeFileSync(projectRoot + '/registry.json', JSON.stringify(registry), 'utf8');
+        withDebug(()=>{
+            fs.writeFileSync(projectRoot + '/registry.json', JSON.stringify(registry), 'utf8');
+        });
         const keys = ["helper", "modifier"];
         keys.forEach(keyName => {
             Object.keys(registry[keyName]).forEach(name => {
                 const itemPaths = registry[keyName][name].filter(
-                    p => !p.endsWith(".hbs") && !normalizePath(name).includes('/tests/') && !normalizePath(name).includes('/dist/')
+                    p => !isHBS(p) && !normalizePath(name).includes('/tests/') && !normalizePath(name).includes('/dist/')
                 );
-                let primaryPath = itemPaths.find(p => p.endsWith(".ts"));
+                let primaryPath = itemPaths.find(p => isTS(p));
                 if (primaryPath) {
-                    items[name] = ralativeAddonImport(templateFile, primaryPath);
+                    items[name] = relativeAddonImport(templateFile, primaryPath);
                 } else {
                     if (itemPaths.length) {
-                        items[name] = ralativeAddonImport(templateFile, itemPaths.sort()[0]);
+                        items[name] = relativeAddonImport(templateFile, itemPaths.sort()[0]);
                     }
                 }
                 if (items[name] === null) {
@@ -187,14 +190,14 @@ function getValidRegistryItems(registry: any, templateFile: string, projectRoot:
         componentKeys.forEach(keyName => {
             // @to-do - fix this creepy stuff
             Object.keys(registry[keyName]).forEach(name => {
-                const hasScriptHbs = registry[keyName][name].find(name => name.endsWith('.hbs'));
+                const hasScriptHbs = registry[keyName][name].find(name => isHBS(name));
                 const componentScripts = registry[keyName][name].filter(
-                    p => !p.endsWith(".hbs") && !normalizePath(p).includes('/tests/') && !normalizePath(p).includes('/dist/')
+                    p => !isHBS(p) && !normalizePath(p).includes('/tests/') && !normalizePath(p).includes('/dist/')
                 ).sort();
-                const hasScriptTs = componentScripts.find(name => name.endsWith('.ts'));
-                const hasScriptJs = componentScripts.find(name => name.endsWith('.js'));
-                const hasAddonTs = componentScripts.find(name => name.endsWith('.ts') && normalizePath(name).includes('/addon/'));
-                const hasAddonJs = componentScripts.find(name => name.endsWith('.js') && normalizePath(name).includes('/addon/'));
+                const hasScriptTs = componentScripts.find(name => isTS(name));
+                const hasScriptJs = componentScripts.find(name => isJS(name));
+                const hasAddonTs = componentScripts.find(name => isTS(name) && normalizePath(name).includes('/addon/'));
+                const hasAddonJs = componentScripts.find(name => isJS(name) && normalizePath(name).includes('/addon/'));
                 if (hasScriptHbs) {
                     items[name] = {
                         template: hasScriptHbs,
