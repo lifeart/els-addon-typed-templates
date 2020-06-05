@@ -113,14 +113,17 @@ export function findComponentForTemplate(fsPath, project: Project, registry: LSR
     });
   } else {
     possibleScripts = (registry.component[componentMeta.name] || []).filter((el)=>{
-      return matchPathToType(project, el)?.kind === 'script'
+      let meta = matchPathToType(project, el);
+      return meta && meta.kind === 'script'
     });
   }
 
   if (possibleScripts.length > 1) {
     possibleScripts = possibleScripts.filter((el)=> {
+      let meta = matchPathToType(project, el);
+
       // to-do - add support for typed-templates in addons (we need to check is it addon or not and replace scope)
-      return matchPathToType(project, el)?.scope === 'application';
+      return meta && meta.scope === 'application';
     })
   }
   if (possibleScripts.length > 1) {
