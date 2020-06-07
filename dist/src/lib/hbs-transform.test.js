@@ -11,4 +11,15 @@ describe('positionForItem', () => {
         })).toEqual('0,3:2,5');
     });
 });
+describe('keyForItem', () => {
+    it('return correct key from given node', () => {
+        expect(hbs_transform_1.keyForItem({
+            loc: {
+                start: { line: 0, column: 3 },
+                end: { line: 2, column: 5 }
+            },
+            type: 'FooBar'
+        })).toEqual('0,3:2,5 - FooBar');
+    });
+});
 //# sourceMappingURL=hbs-transform.test.js.map

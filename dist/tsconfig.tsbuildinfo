@@ -454,11 +454,11 @@
         "signature": "e748bb019c052cceb8bbf308b3ae2e6ece891a1aab9139c3d739d1e6dc449881"
       },
       "../src/lib/ls-utils.ts": {
-        "version": "e509dbd31ee2bbee5fe3bf8adf8b202dcd132bf3de4f9a893fc623f14d1650dd",
+        "version": "a9dca3fabf6a7fb4efaca4c3477ef43adb2a2da9a937a9abd5eca779ae6f223c",
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb"
       },
       "../src/lib/resolvers.ts": {
-        "version": "89a34d8e6859480e8d0b3eaf5a66799b8e2e45f7e085f41b12aa8aba65cf9132",
+        "version": "c202276c90d36c5a486139105a375cfffa491ad025e31d2418c8e7f5fe6047ef",
         "signature": "f33652d8543f6d66bd7a67e26d906ab30ee1014cb53337a0df78693110f9a117"
       },
       "../node_modules/camelcase/index.d.ts": {
@@ -850,8 +850,12 @@
         "signature": "5af2a93a31e2ff9f94348f3cf0c3ecdaded3b4dc809bd441262e1eafa5be1d34"
       },
       "../src/lib/hbs-transform.test.ts": {
-        "version": "6ee27c565e99ba5526fbf20b80b3b4f40e8532bc87dd36f2739040547cf77fca",
+        "version": "ecac8398c1ddd6fc78ec2a6c32301021b601dea2624787577fe2782f4421e1e6",
         "signature": "9b8b7b0251927a4eb484be94c70e3ba5e7d35a0e456b3922ab112a2ba69bbe51"
+      },
+      "../src/lib/resolvers.test.ts": {
+        "version": "c4a3f067c899f600cd43402b37346c72116bd15280361c58373c7e4bc711c74b",
+        "signature": "d6b9613fc6fce23c33997e4aa6cf420605b86531b762a1d7b547f9e572419276"
       },
       "../src/lib/virtual-documents.ts": {
         "version": "4ca36d684a920815b9fe4c683e0f66ec47cc06064bb15384197e0da0cc180948",
@@ -2657,6 +2661,13 @@
         "../node_modules/@types/node/util.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../src/lib/resolvers.test.ts": [
+        "../src/lib/resolvers.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../src/lib/virtual-documents.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -4406,8 +4417,6 @@
       "../src/lib/logger.ts",
       "../src/lib/ts-service.ts",
       "../src/lib/ast-helpers.ts",
-      "../src/lib/ls-utils.ts",
-      "../src/lib/resolvers.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -4509,7 +4518,10 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/hbs-transform.test.ts"
+      "../src/lib/ls-utils.ts",
+      "../src/lib/resolvers.ts",
+      "../src/lib/hbs-transform.test.ts",
+      "../src/lib/resolvers.test.ts"
     ]
   },
   "version": "3.7.3"

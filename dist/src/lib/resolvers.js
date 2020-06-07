@@ -24,6 +24,7 @@ function relativeImport(templateFile, scriptFile) {
         .split(path.sep)
         .join("/")
         .replace("..", ".")
+        .replace(".d.ts", "")
         .replace(".ts", "")
         .replace(".js", "");
 }
@@ -96,15 +97,15 @@ function findComponentForTemplate(fsPath, project, registry) {
     }
     else {
         possibleScripts = (registry.component[componentMeta.name] || []).filter((el) => {
-            var _a;
-            return ((_a = ts_service_1.matchPathToType(project, el)) === null || _a === void 0 ? void 0 : _a.kind) === 'script';
+            let meta = ts_service_1.matchPathToType(project, el);
+            return meta && meta.kind === 'script';
         });
     }
     if (possibleScripts.length > 1) {
         possibleScripts = possibleScripts.filter((el) => {
-            var _a;
+            let meta = ts_service_1.matchPathToType(project, el);
             // to-do - add support for typed-templates in addons (we need to check is it addon or not and replace scope)
-            return ((_a = ts_service_1.matchPathToType(project, el)) === null || _a === void 0 ? void 0 : _a.scope) === 'application';
+            return meta && meta.scope === 'application';
         });
     }
     if (possibleScripts.length > 1) {

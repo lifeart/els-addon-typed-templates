@@ -123,6 +123,9 @@ function toFullDiagnostic(err) {
     if (msgText.startsWith("Expected 0 arguments, but got 2.")) {
         return null;
     }
+    if (msgText.startsWith("Cannot invoke an object which is possibly")) {
+        return null;
+    }
     return {
         severity: vscode_languageserver_1.DiagnosticSeverity.Error,
         range: vscode_languageserver_1.Range.create(startCol - 1, startRow, endCol - 1, endRow),
