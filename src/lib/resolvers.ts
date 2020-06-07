@@ -25,6 +25,7 @@ export function relativeImport(templateFile, scriptFile) {
     .split(path.sep)
     .join("/")
     .replace("..", ".")
+    .replace(".d.ts", "")
     .replace(".ts", "")
     .replace(".js", "");
 }

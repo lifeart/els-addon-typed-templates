@@ -137,6 +137,9 @@ function toFullDiagnostic(err: ts.Diagnostic) {
   if (msgText.startsWith("Expected 0 arguments, but got 2.")) {
     return null;
   }
+  if (msgText.startsWith("Cannot invoke an object which is possibly")) {
+    return null;
+  }
 
   return {
     severity: DiagnosticSeverity.Error,
