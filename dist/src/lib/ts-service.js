@@ -58,7 +58,9 @@ function matchPathToType(project, uri) {
 }
 exports.matchPathToType = matchPathToType;
 function typeForPath(root, uri) {
-    console.log('typeForPath', root, uri);
+    logger_1.withDebug(() => {
+        console.log('typeForPath', root, uri);
+    });
     const projectMirror = PROJECTS_MAP.get(root);
     return matchPathToType(projectMirror.project, uri);
 }

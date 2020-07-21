@@ -111,7 +111,9 @@ export function matchPathToType(project: Project, uri: string) {
   return result;
 }
 export function typeForPath(root: string, uri: string) {
-  console.log('typeForPath', root, uri);
+  withDebug(()=>{
+    console.log('typeForPath', root, uri);
+  });
   const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
   return matchPathToType((projectMirror.project as unknown) as Project, uri);
 }

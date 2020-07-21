@@ -446,7 +446,7 @@
         "signature": "db9a470dd4ad5ea040bbb30b7fb01242bee7c92cf403280864b4f56cbecbdc2c"
       },
       "../src/lib/ts-service.ts": {
-        "version": "81e70e3768945153e90e97762b086f7d46bec7c36362c820664c63d4ccf74f41",
+        "version": "d05c99eef17ed7bf1d615a946de9863ee0de7a3c18a7f83ecc38ec2904f9c7b9",
         "signature": "0579395ff291c81348c212451abaf335c70057ebf1feaa541e8866e514272d79"
       },
       "../src/lib/ast-helpers.ts": {
@@ -4415,7 +4415,6 @@
       "../src/lib/utils.ts",
       "../src/interfaces.ts",
       "../src/lib/logger.ts",
-      "../src/lib/ts-service.ts",
       "../src/lib/ast-helpers.ts",
       "../src/lib/ls-utils.ts",
       "../src/lib/resolvers.ts",
@@ -4510,6 +4509,7 @@
       "../src/providers/linter.ts",
       "../src/providers/definition.ts",
       "../src/providers/completion.ts",
+      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/default-scopes.test.ts",
@@ -4521,7 +4521,7 @@
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/index.ts"
+      "../src/lib/ts-service.ts"
     ]
   },
   "version": "3.7.3"
