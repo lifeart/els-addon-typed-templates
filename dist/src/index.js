@@ -24,7 +24,7 @@ module.exports = class TypedTemplates {
     onInit(server, project) {
         this.server = server;
         this.project = project;
-        this.virtualDocumentProvider = new virtual_document_1.default(project, server);
+        this.virtualDocumentProvider = new virtual_document_1.default(server, project);
         this.definitionProvider = new definition_1.default(project, this.virtualDocumentProvider);
         this.completionProvider = new completion_1.default(project, this.virtualDocumentProvider);
         ts_service_1.registerProject(project, server);

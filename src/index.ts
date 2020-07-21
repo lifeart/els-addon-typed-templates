@@ -23,7 +23,7 @@ module.exports = class TypedTemplates implements AddonAPI {
   onInit(server, project) {
     this.server = server;
     this.project = project;
-    this.virtualDocumentProvider = new VirtualDocumentProvider(project, server);
+    this.virtualDocumentProvider = new VirtualDocumentProvider(server, project);
     this.definitionProvider = new DefinitionProvider(project, this.virtualDocumentProvider);
     this.completionProvider = new CompletionProvider(project, this.virtualDocumentProvider);
     registerProject(project, server);

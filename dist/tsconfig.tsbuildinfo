@@ -826,7 +826,7 @@
         "signature": "93a294bcd94afd9a9db7f4ef7da75a9a3711264979737e8ea938448378ac1781"
       },
       "../src/index.ts": {
-        "version": "b22631ea289e4a345b5da4df598410a37eedf82ad63e6dfe7a8632be21b1878f",
+        "version": "0960e3c20acfd9b2b48f2ecd419334d017030a17d218486ebe33d478659a3573",
         "signature": "00316e779bb16e52d58ebe243051bc85fe123e66577a482f57c290a6f2e1a779"
       },
       "../src/lib/ast-parser.test.ts": {
@@ -4417,6 +4417,8 @@
       "../src/lib/logger.ts",
       "../src/lib/ts-service.ts",
       "../src/lib/ast-helpers.ts",
+      "../src/lib/ls-utils.ts",
+      "../src/lib/resolvers.ts",
       "../node_modules/camelcase/index.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/core.d.ts",
       "../node_modules/@glimmer/interfaces/dist/types/lib/component-capabilities.d.ts",
@@ -4508,20 +4510,18 @@
       "../src/providers/linter.ts",
       "../src/providers/definition.ts",
       "../src/providers/completion.ts",
-      "../src/index.ts",
       "../src/lib/ast-parser.test.ts",
       "../src/lib/common-types.d.ts",
       "../src/lib/default-scopes.test.ts",
       "../src/lib/hbs-converter.test.ts",
       "../src/lib/hbs-extractor.test.ts",
+      "../src/lib/hbs-transform.test.ts",
+      "../src/lib/resolvers.test.ts",
       "../src/lib/virtual-documents.ts",
       "../node_modules/jest-diff/build/types.d.ts",
       "../node_modules/jest-diff/build/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",
-      "../src/lib/ls-utils.ts",
-      "../src/lib/resolvers.ts",
-      "../src/lib/hbs-transform.test.ts",
-      "../src/lib/resolvers.test.ts"
+      "../src/index.ts"
     ]
   },
   "version": "3.7.3"
