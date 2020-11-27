@@ -59,7 +59,7 @@ declare module "ember-typed-templates" {
   export type AbstractBlockHelper = <T>([items]: ArrayLike<T>[], hash?) => [T];
   type HashHelper = <T>(items: any[], hash: T) => T;
   type ArrayHelper = <T>(items: ArrayLike<T>, hash?) => ArrayLike<T>;
-  type AnyFn = (...args) => any;
+  type AnyFn = (fn: Function, ...args) => any;
   type OnModifer = ([event, handler]: [string, Function], hash?) => void;
   type FnHelper = AnyFn;
   type ConcatHelper = (...args: any[]) => string;
