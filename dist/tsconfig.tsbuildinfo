@@ -1727,7 +1727,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/ls-utils.ts": {
-        "version": "a9dca3fabf6a7fb4efaca4c3477ef43adb2a2da9a937a9abd5eca779ae6f223c",
+        "version": "1485e62f750f6e45fd7266c5aa5a14f6b5936a59aa88cc465f0adf109ecfc4c0",
         "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb",
         "affectsGlobalScope": false
       },
@@ -1797,8 +1797,8 @@
         "affectsGlobalScope": false
       },
       "../src/lib/common-types.d.ts": {
-        "version": "1b0beb470593681e38cedd1504065989ae5aa33c5ffba25b10f91c4d5f4b727d",
-        "signature": "1b0beb470593681e38cedd1504065989ae5aa33c5ffba25b10f91c4d5f4b727d",
+        "version": "bcb4977d632050a0e32fa0847466a38df2a55a9ca6acdbc5cfc826ee0c269de4",
+        "signature": "bcb4977d632050a0e32fa0847466a38df2a55a9ca6acdbc5cfc826ee0c269de4",
         "affectsGlobalScope": false
       },
       "../src/lib/default-scopes.test.ts": {
