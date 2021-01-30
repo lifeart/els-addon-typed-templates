@@ -47,7 +47,7 @@ class DefinitionProvider {
                 if (!definitionResults) {
                     return [];
                 }
-                const data = ls_utils_1.normalizeDefinitions(definitionResults);
+                const data = ls_utils_1.normalizeDefinitions(definitionResults, projectRoot);
                 return data;
             }
             catch (e) {

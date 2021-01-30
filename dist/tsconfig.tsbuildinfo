@@ -1727,8 +1727,8 @@
         "affectsGlobalScope": false
       },
       "../src/lib/ls-utils.ts": {
-        "version": "1485e62f750f6e45fd7266c5aa5a14f6b5936a59aa88cc465f0adf109ecfc4c0",
-        "signature": "74d146f55ca72f40528e46084a3c14c2a1479356d675d936ea08476ba5ed03bb",
+        "version": "8085139a3c2cdd299bd3fb44d05df92df127499f845d22686f09e47c26741ade",
+        "signature": "d56fe100ccaf471c2c812f0b93de3b8948a5ff8a971de6552c229d35ff15389c",
         "affectsGlobalScope": false
       },
       "../src/lib/resolvers.ts": {
@@ -1777,7 +1777,7 @@
         "affectsGlobalScope": false
       },
       "../src/providers/definition.ts": {
-        "version": "b7f03ff44755fffba97f912492843cff6d0235970ec78afb4e562e05dc1a44e7",
+        "version": "414aacdbdad3c7ddda175dc5b736fe59159186ebb52929753dbe1493ece2e3ab",
         "signature": "59892fd8b1b4c4ee06aae42ff6dea3e0239b9fa4ca9da83c324ac2fc8cb22cd3",
         "affectsGlobalScope": false
       },

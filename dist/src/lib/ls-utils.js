@@ -7,11 +7,11 @@ const fs = require("fs");
 const path = require("path");
 const utils_1 = require("./utils");
 const ast_helpers_1 = require("./ast-helpers");
-function normalizeDefinitions(results) {
+function normalizeDefinitions(results, root) {
     return (results || [])
         .map(el => {
-        return tsDefinitionToLocation(el);
-    });
+        return tsDefinitionToLocation(el, root);
+    }).filter((el) => el !== null);
 }
 exports.normalizeDefinitions = normalizeDefinitions;
 const ignoreNames = ['willDestroy', 'toString'];
@@ -58,10 +58,16 @@ function offsetToRange(start, limit, source) {
     return vscode_languageserver_1.Range.create(line, col, endLineNumber, endCol);
 }
 exports.offsetToRange = offsetToRange;
-function tsDefinitionToLocation(el) {
+function tsDefinitionToLocation(el, root) {
     let scope = el.textSpan;
     let fullPath = path.resolve(el.fileName);
-    let file = fs.readFileSync(el.fileName, "utf8");
+    if (!fs.existsSync(fullPath)) {
+        fullPath = path.resolve(path.join(root, el.fileName));
+        if (!fs.existsSync(fullPath)) {
+            return null;
+        }
+    }
+    let file = fs.readFileSync(fullPath, "utf8");
     return vscode_languageserver_1.Location.create(vscode_uri_1.URI.file(fullPath).toString(), offsetToRange(scope.start, scope.length, file));
 }
 exports.tsDefinitionToLocation = tsDefinitionToLocation;

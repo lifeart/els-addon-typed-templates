@@ -55,7 +55,7 @@ export default class DefinitionProvider {
             if (!definitionResults) {
                 return [];
             }
-            const data = normalizeDefinitions(definitionResults);
+            const data = normalizeDefinitions(definitionResults, projectRoot);
             return data;
         } catch (e) {
             console.error(e, e.ProgramFiles);

@@ -11,11 +11,11 @@ import * as path from "path";
 import { itemKind } from './utils';
 import { serializeArgumentName } from './ast-helpers';
 
-export function normalizeDefinitions(results) {
+export function normalizeDefinitions(results, root: string) {
   return (results || [])
       .map(el => {
-        return tsDefinitionToLocation(el);
-      });
+        return tsDefinitionToLocation(el, root);
+      }).filter((el) => el !== null);
 }
 
 const ignoreNames = ['willDestroy', 'toString'];
@@ -63,10 +63,16 @@ export function offsetToRange(start, limit, source) {
   return Range.create(line, col, endLineNumber, endCol);
 }
 
-export function tsDefinitionToLocation(el) {
+export function tsDefinitionToLocation(el, root) {
   let scope = el.textSpan;
   let fullPath = path.resolve(el.fileName);
-  let file = fs.readFileSync(el.fileName, "utf8");
+  if (!fs.existsSync(fullPath)) {
+    fullPath = path.resolve(path.join(root, el.fileName));
+    if (!fs.existsSync(fullPath)) {
+      return null;
+    }
+  }
+  let file = fs.readFileSync(fullPath, "utf8");
   return Location.create(
     URI.file(fullPath).toString(),
     offsetToRange(scope.start, scope.length, file)
