@@ -1,5 +1,6 @@
-import { FileChangeType, Diagnostic, TextDocument, TextDocuments, Location, TextDocumentIdentifier, Position, CompletionItem } from 'vscode-languageserver';
+import { FileChangeType, Diagnostic, TextDocuments, Location, TextDocumentIdentifier, Position, CompletionItem } from 'vscode-languageserver';
 import { LSRegistry } from './lib/ts-service';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 
 type Executor = (server: Server, command: string, args: any[]) => any;
 type Linter = (document: TextDocument) => Promise<Diagnostic[] | null>;
@@ -23,14 +24,6 @@ interface MatchResult {
     name: string;
 }
 
-export interface Project {
-    root: string; // project entry path
-    addCommandExecutor(key: string, fn: Executor): void;
-    addLinter(fn: Linter): void;
-    addWatcher(fn: Watcher): void;
-    matchPathToType(filePath: string): null | MatchResult;
-}
-
 interface Registry extends LSRegistry {
     component: {
         [componentName: string]: string[] // files, related to component
@@ -51,7 +44,7 @@ export interface Server {
     getRegistry(projectRoot: string): Registry;
     onExecute(command: Command): any;
     getUsages(normalizedName: string): string[]; // return list of files, related to token
-    documents: TextDocuments;
+    documents: TextDocuments<any>;
 }
 
 interface BaseAPIParams {

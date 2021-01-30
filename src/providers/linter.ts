@@ -1,11 +1,11 @@
 import { getFullSemanticDiagnostics } from "../lib/ls-utils";
 import { virtualComponentTemplateFileName } from "../lib/resolvers";
 import { toFilePath } from '../lib/utils';
-
-import { Project } from '../interfaces';
-import { Diagnostic, TextDocument } from 'vscode-languageserver';
+import { Project } from '@lifeart/ember-language-server';
+import { Diagnostic } from 'vscode-languageserver';
 import { serviceForRoot, componentsForService, typeForPath } from '../lib/ts-service';
 import VirtualDocumentProvider from './virtual-document';
+import { TextDocument } from 'vscode-languageserver-textdocument';
 
 
 function isTestFile(uri) {

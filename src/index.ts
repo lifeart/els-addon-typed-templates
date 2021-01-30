@@ -1,5 +1,6 @@
 import { registerProject } from './lib/ts-service';
-import { Project, Server, DefinitionFunctionParams, CompletionFunctionParams } from './interfaces';
+import { Server, DefinitionFunctionParams, CompletionFunctionParams } from './interfaces';
+import { Project } from '@lifeart/ember-language-server';
 import { setupLinter } from './providers/linter';
 import DefinitionProvider from './providers/definition';
 import CompletionProvider from './providers/completion';

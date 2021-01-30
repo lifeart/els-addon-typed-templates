@@ -1,6 +1,7 @@
 
 
-import { Project, CompletionFunctionParams } from '../interfaces';
+import { CompletionFunctionParams } from '../interfaces';
+import { Project } from '@lifeart/ember-language-server';
 import { CompletionItem } from 'vscode-languageserver';
 
 import { mergeResults, normalizeAngleTagName, toFilePath } from "./../lib/utils";

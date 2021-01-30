@@ -14,7 +14,8 @@ import {
 import { virtualTemplateFileName } from "./../lib/resolvers";
 
 import { serviceForRoot, componentsForService } from './../lib/ts-service';
-import { Project, DefinitionFunctionParams } from '../interfaces';
+import { DefinitionFunctionParams } from '../interfaces';
+import { Project } from '@lifeart/ember-language-server';
 import { toFilePath } from '../lib/utils';
 import VirtualDocumentProvider from './virtual-document';
 

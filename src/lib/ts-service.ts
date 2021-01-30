@@ -2,7 +2,7 @@ import * as ts from "typescript";
 import * as path from "path";
 import * as fs from "fs";
 import { safeWalkSync, normalizeToAngleBracketName } from "./utils";
-import { Project } from "../interfaces";
+import { Project } from '@lifeart/ember-language-server';
 import { withDebug } from './logger';
 
 const services: any = {};

@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import { LSRegistry, matchPathToType } from './ts-service';
-import { Project } from '../../dist/src/interfaces';
+import { Project } from '@lifeart/ember-language-server';
 
 import { isHBS } from './utils';
 

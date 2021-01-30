@@ -2,6 +2,7 @@ import { PLACEHOLDER } from "./utils";
 import { withDebug } from './logger';
 import * as camelcase from "camelcase";
 import * as fs from "fs";
+import { Project, Server } from '@lifeart/ember-language-server';
 import { relativeImport, virtualComponentTemplateFileName } from "./resolvers";
 import { getClassMeta } from "./ast-parser";
 import { extractRelationships } from './hbs-extractor';
@@ -11,9 +12,6 @@ import {
   transformPathExpression
 } from "./hbs-transform";
 import { defaultScopes } from './default-scopes';
-
-import { Project, Server } from './../interfaces';
-
 
 const BUILTIN_GLOBAL_SCOPE = [
   'mut', 'fn', 'action',
