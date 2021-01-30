@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.serviceForRoot = exports.typeForPath = exports.matchPathToType = exports.serverForProject = exports.registerProject = exports.componentsForService = void 0;
 const ts = require("typescript");
 const path = require("path");
 const fs = require("fs");

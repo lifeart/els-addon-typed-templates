@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.normalizeToAngleBracketName = exports.isTS = exports.isJS = exports.isHBS = exports.toFilePath = exports.itemKind = exports.mergeResults = exports.PLACEHOLDER = exports.normalizeAngleTagName = exports.safeWalkSync = void 0;
 const fs = require("fs");
 const walkSync = require("walk-sync");
 const vscode_languageserver_1 = require("vscode-languageserver");

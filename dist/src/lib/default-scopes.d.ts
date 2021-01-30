@@ -1,21 +1,21 @@
 export declare function defaultScopes(): {
     globalScope: {
-        ["each"]: string;
-        ["let"]: string;
-        ["hash"]: string;
-        ["array"]: string;
-        ["if"]: string;
-        ["on"]: string;
-        ["fn"]: string;
-        ["yield"]: string;
-        ["has-block"]: string;
-        ["outlet"]: string;
-        ["concat"]: string;
-        ["prevent-default"]: string;
-        ["stop-propagation"]: string;
-        ["lazy-mount"]: string;
-        ["v-get"]: string;
-        ["and"]: string;
+        each: string;
+        let: string;
+        hash: string;
+        array: string;
+        if: string;
+        on: string;
+        fn: string;
+        yield: string;
+        "has-block": string;
+        outlet: string;
+        concat: string;
+        "prevent-default": string;
+        "stop-propagation": string;
+        "lazy-mount": string;
+        "v-get": string;
+        and: string;
     };
     pathsForGlobalScope: {
         each: string;
@@ -41,22 +41,22 @@ export declare function defaultScopes(): {
         on: string;
     };
     definedScope: {
-        ["each"]: string;
-        ["let"]: string;
-        ["hash"]: string;
-        ["array"]: string;
-        ["if"]: string;
-        ["on"]: string;
-        ["fn"]: string;
-        ["yield"]: string;
-        ["has-block"]: string;
-        ["outlet"]: string;
-        ["concat"]: string;
-        ["prevent-default"]: string;
-        ["stop-propagation"]: string;
-        ["lazy-mount"]: string;
-        ["v-get"]: string;
-        ["and"]: string;
+        each: string;
+        let: string;
+        hash: string;
+        array: string;
+        if: string;
+        on: string;
+        fn: string;
+        yield: string;
+        "has-block": string;
+        outlet: string;
+        concat: string;
+        "prevent-default": string;
+        "stop-propagation": string;
+        "lazy-mount": string;
+        "v-get": string;
+        and: string;
     };
 };
 //# sourceMappingURL=default-scopes.d.ts.map

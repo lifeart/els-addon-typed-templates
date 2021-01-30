@@ -9,7 +9,7 @@ import {
 import { MatchResult, typeForPath, LSRegistry } from './../lib/ts-service';
 import { TypescriptTemplateBuilder } from "./../lib/hbs-converter";
 import { getClassMeta } from './../lib/ast-parser';
-import { Project, Server } from './../interfaces';
+import { Project, Server } from '@lifeart/ember-language-server';
 
 export default class VirtualDocumentProvider {
     builder!: TypescriptTemplateBuilder;

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.setupLinter = void 0;
 const ls_utils_1 = require("../lib/ls-utils");
 const resolvers_1 = require("../lib/resolvers");
 const utils_1 = require("../lib/utils");
@@ -18,7 +19,7 @@ function isTestFile(uri) {
 }
 function setupLinter(project, virtualDocument) {
     const linter = new Linter(project, virtualDocument);
-    project.addLinter((document) => __awaiter(this, void 0, void 0, function* () {
+    const lintFn = (document) => __awaiter(this, void 0, void 0, function* () {
         let results = [];
         try {
             results = yield linter.lintFile(document);
@@ -28,7 +29,8 @@ function setupLinter(project, virtualDocument) {
             console.log(e);
         }
         return null;
-    }));
+    });
+    project.addLinter(lintFn);
     return linter;
 }
 exports.setupLinter = setupLinter;

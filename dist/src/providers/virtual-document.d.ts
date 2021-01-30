@@ -1,6 +1,6 @@
 import { MatchResult } from './../lib/ts-service';
 import { TypescriptTemplateBuilder } from "./../lib/hbs-converter";
-import { Project, Server } from './../interfaces';
+import { Project, Server } from '@lifeart/ember-language-server';
 export default class VirtualDocumentProvider {
     private server;
     private project;

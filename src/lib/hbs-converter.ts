@@ -12,6 +12,7 @@ import {
   transformPathExpression
 } from "./hbs-transform";
 import { defaultScopes } from './default-scopes';
+import { ASTv1 } from "@glimmer/syntax";
 
 const BUILTIN_GLOBAL_SCOPE = [
   'mut', 'fn', 'action',
@@ -121,7 +122,7 @@ class TypescriptTemplate {
     this.getItemScopes = this.getItemScopes.bind(this);
     this.getPathScopes = this.getPathScopes.bind(this);
   }
-  getPathScopes(node, key) {
+  getPathScopes(node: ASTv1.PathExpression, key) {
     const scopeChain = node.original.replace(PLACEHOLDER, "").split(".");
     const scopeKey = scopeChain.shift();
     const itemScopes = this.getItemScopes(key);

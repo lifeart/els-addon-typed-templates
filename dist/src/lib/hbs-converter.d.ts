@@ -1,4 +1,5 @@
-import { Project, Server } from './../interfaces';
+import { Project, Server } from '@lifeart/ember-language-server';
+import { ASTv1 } from "@glimmer/syntax";
 declare class TypescriptTemplate {
     private builder;
     private project;
@@ -39,9 +40,9 @@ declare class TypescriptTemplate {
         componentsForImport: any;
         blockPaths: any;
     });
-    getPathScopes(node: any, key: any): {
-        scopeKey: any;
-        scopeChain: any;
+    getPathScopes(node: ASTv1.PathExpression, key: any): {
+        scopeKey: string | undefined;
+        scopeChain: string[];
         foundKey: string | any[];
     };
     getItemScopes(key: any, itemScopes?: any): any;

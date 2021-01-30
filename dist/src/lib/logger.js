@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.withDebug = void 0;
 const debug = false;
 function withDebug(cb) {
     if (debug) {

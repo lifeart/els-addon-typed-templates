@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.tagComponentToBlock = exports.keyForItem = exports.positionForItem = exports.isSimpleBlockComponentElement = exports.isEachArgument = exports.canHandle = exports.serializeArgumentName = exports.normalizeArgumentName = exports.isArgumentName = exports.realPathName = exports.isExternalComponentArgument = exports.relplaceFocusPathForExternalComponentArgument = exports.isParamPath = void 0;
 const utils_1 = require("./utils");
+const syntax_1 = require("@glimmer/syntax");
 function isParamPath(astPath) {
     const parentType = astPath.parent && astPath.parent.type;
     const itemsWithBlock = [
@@ -110,14 +112,7 @@ function tagComponentToBlock(node) {
     return {
         type: 'BlockStatement',
         isComponent: true,
-        path: {
-            type: 'PathExpression',
-            original: componentName,
-            this: false,
-            data: false,
-            parts: [componentName],
-            loc: node.loc
-        },
+        path: syntax_1.builders.path(componentName, node.loc),
         params: [],
         inverse: null,
         hash: {
@@ -130,12 +125,7 @@ function tagComponentToBlock(node) {
                     //@ts-ignore
                     value.isIgnored = true;
                 }
-                return {
-                    type: 'HashPair',
-                    key: attr.name.replace('@', ''),
-                    value: value,
-                    loc: attr.loc
-                };
+                return syntax_1.builders.pair(attr.name.replace('@', ''), value, attr.loc);
             })
         },
         program: {

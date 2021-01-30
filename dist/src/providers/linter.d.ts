@@ -1,4 +1,4 @@
-import { Project } from '../interfaces';
+import { Project } from '@lifeart/ember-language-server';
 import { Diagnostic } from 'vscode-languageserver';
 import VirtualDocumentProvider from './virtual-document';
 export declare function setupLinter(project: Project, virtualDocument: VirtualDocumentProvider): Linter;

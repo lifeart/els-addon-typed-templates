@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-import { Project } from "../interfaces";
+import { Project } from '@lifeart/ember-language-server';
 export declare function componentsForService(service: any, clean?: boolean): any;
 declare type ProjectFile = {
     version: number;

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.findComponentForTemplate = exports.relativeComponentImport = exports.relativeAddonImport = exports.relativeImport = exports.virtualComponentTemplateFileName = exports.virtualTemplateFileName = void 0;
 const path = require("path");
 const fs = require("fs");
 const ts_service_1 = require("./ts-service");

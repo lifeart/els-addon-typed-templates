@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.toDiagnostic = exports.getSemanticDiagnostics = exports.getFullSemanticDiagnostics = exports.tsDefinitionToLocation = exports.offsetToRange = exports.normalizeCompletions = exports.normalizeDefinitions = void 0;
 const vscode_uri_1 = require("vscode-uri");
 const vscode_languageserver_1 = require("vscode-languageserver");
 const fs = require("fs");

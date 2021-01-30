@@ -14,7 +14,7 @@ function isTestFile(uri) {
 
 export function setupLinter(project: Project, virtualDocument: VirtualDocumentProvider): Linter {
     const linter = new Linter(project, virtualDocument);
-    project.addLinter(async (document: TextDocument): Promise<Diagnostic[] | null> => {
+    const lintFn: any = async (document: TextDocument): Promise<Diagnostic[] | null> => {
         let results: Diagnostic[] | undefined = [];
         try {
             results = await linter.lintFile(document)
@@ -23,7 +23,8 @@ export function setupLinter(project: Project, virtualDocument: VirtualDocumentPr
             console.log(e);
         }
         return null;
-    });
+    };
+    project.addLinter(lintFn);
     return linter;
 }
 

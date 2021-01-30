@@ -1,5 +1,5 @@
 import { LSRegistry } from './ts-service';
-import { Project } from '../../dist/src/interfaces';
+import { Project } from '@lifeart/ember-language-server';
 export declare function virtualTemplateFileName(fsPath: any): string;
 export declare function virtualComponentTemplateFileName(fsPath: any): string;
 export declare function relativeImport(templateFile: any, scriptFile: any): string;

@@ -2,7 +2,7 @@ import { getClassMeta } from './ast-parser';
 import { extractRelationships } from './hbs-extractor';
 
 function results(source) {
-    let items = extractRelationships(getClassMeta(source).nodes, '');
+    let items: any = extractRelationships(getClassMeta(source).nodes, '');
     delete items.klass;
     return items;
 }
@@ -41,4 +41,8 @@ describe('getClassMeta - simple scope', () => {
     expect(results(`{{#each @model.tagsList as |tag|}}
     {{tag}}
   {{/each}}`)).toMatchSnapshot();
+})
+
+describe('dash in path names', () => {
+  expect(results(`{{@classNames.ui-wrapper}}`)).toMatchSnapshot();
 })

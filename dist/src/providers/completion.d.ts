@@ -1,4 +1,5 @@
-import { Project, CompletionFunctionParams } from '../interfaces';
+import { CompletionFunctionParams } from '../interfaces';
+import { Project } from '@lifeart/ember-language-server';
 import { CompletionItem } from 'vscode-languageserver';
 import VirtualDocumentProvider from './virtual-document';
 export default class CompletionProvider {
