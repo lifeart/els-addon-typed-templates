@@ -1,5 +1,7 @@
 import { PLACEHOLDER } from "./utils";
 
+import { ASTv1 } from '@glimmer/syntax';
+
 function serializeKey(key) {
   return key.split(" - ")[0];
 }
@@ -12,20 +14,32 @@ export function positionForItem(item) {
   return `${start.line},${start.column}:${end.line},${end.column}`;
 }
 
-function normalizePathOriginal(node) {
-  if (node.data === true) {
-    return `this.args.${node.original
+export function normalizePathOriginal(node: ASTv1.PathExpression) {
+  let prepared = '';
+  if (node.head.type === 'AtHead') {
+    prepared = `this.args.${node.original
       .replace(PLACEHOLDER, "")
       .replace("@", "")}`;
-  } else if (node.this === true) {
-    return `${node.original.replace(PLACEHOLDER, "")}`;
+  } else if (node.head.type === 'ThisHead') {
+    prepared = `${node.original.replace(PLACEHOLDER, "")}`;
   } else {
-    return node.original;
+    prepared = node.original;
   }
+  let result = prepared.split('.').map(el=>{
+    if (el === 'firstObject' || el === 'lastObject') {
+      return `[0].`;
+    }
+    return el.includes('-') ? `["${el}"].`: `${el}.`;
+  }).join('');
+  result = result.replace(/\.\[/gi, '[');
+  if (result.endsWith('.')) {
+    result = result.slice(0, -1);
+  }
+  return result;
 }
 
 export function transformPathExpression(
-  node,
+  node: ASTv1.PathExpression,
   key,
   {
     getItemScopes,
@@ -47,9 +61,9 @@ export function transformPathExpression(
   let result: string = "";
   let simpleResult: string = "";
   const builtinScopeImports = new Set();
-  if (node.data === true) {
+  if (node.head.type === 'AtHead') {
     result = transform.wrapToFunction(normalizePathOriginal(node), key);
-  } else if (node.this === true) {
+  } else if (node.head.type === 'ThisHead') {
     result = transform.fn(
       componentImport ? "" : "this: null",
       normalizePathOriginal(node),
@@ -154,9 +168,11 @@ export const transform = {
   support(node) {
     return node.type in this;
   },
-  transform(node: any, key: string, klass?: any) {
+  transform(node: ASTv1.BaseNode, key: string, klass?: any) {
     if (klass) {
       this.klass = klass;
+    } else {
+      this.klass = {};
     }
     const typeKey = `TypeFor${node.type}`;
     const typings = (typeKey in this) ? ': ' + this[typeKey](node) : '';
@@ -185,11 +201,11 @@ export const transform = {
     }
     return `${args} { ${body}; ${this.addMark(key)}}`;
   },
-  TextNode(node) {
+  TextNode(node: ASTv1.TextNode) {
     return `"${node.chars}"`;
   },
-  TypeForTextNode(node) {
-    return `"${node.chars}" `;
+  TypeForTextNode(node: ASTv1.TextNode) {
+    return `"${node.chars}"`;
   },
   pathCall(node) {
     let key = keyForItem(node);
@@ -202,7 +218,7 @@ export const transform = {
     }
     return `this["${keyForItem(node)}"]`;
   },
-  hashedExp(node, nodeType = 'DEFAULT') {
+  hashedExp(node: ASTv1.BlockStatement | ASTv1.MustacheStatement | ASTv1.ElementModifierStatement | ASTv1.SubExpression, nodeType = 'DEFAULT') {
     let result = "";
     const params = node.params
       .map(p => {
@@ -229,25 +245,25 @@ export const transform = {
     }
     return result;
   },
-  SubExpression(node) {
+  SubExpression(node: ASTv1.SubExpression) {
     return this.hashedExp(node);
   },
-  MustacheStatement(node) {
+  MustacheStatement(node: ASTv1.MustacheStatement) {
     return this.hashedExp(node);
   },
-  ElementModifierStatement(node) {
+  ElementModifierStatement(node: ASTv1.ElementModifierStatement) {
     return this.hashedExp(node);
   },
-  BlockStatement(node) {
+  BlockStatement(node: ASTv1.BlockStatement) {
     return this.hashedExp(node, 'BlockStatement');
   },
-  NumberLiteral(node) {
+  NumberLiteral(node: ASTv1.NumberLiteral) {
     return `${node.value}`;
   },
   TypeForNumberLiteral(node) {
     return `${node.value}`;
   },
-  StringLiteral(node) {
+  StringLiteral(node: ASTv1.StringLiteral) {
     return `"${node.value}"`;
   },
   TypeForStringLiteral(node) {
@@ -256,10 +272,16 @@ export const transform = {
   TypeForNullLiteral() {
     return `null`;
   },
+  TypeForUndefinedLiteral() {
+    return `void`;
+  },
+  TypeForBooleanLiteral() {
+    return `boolean`;
+  },
   NullLiteral() {
     return "null";
   },
-  BooleanLiteral(node) {
+  BooleanLiteral(node: ASTv1.BooleanLiteral) {
     return `${node.value === true ? "true" : "false"}`;
   },
   UndefinedLiteral() {

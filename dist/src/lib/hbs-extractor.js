@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.extractRelationships = void 0;
 const hbs_transform_1 = require("./hbs-transform");
 const ast_helpers_1 = require("./ast-helpers");
 const ts_service_1 = require("./ts-service");

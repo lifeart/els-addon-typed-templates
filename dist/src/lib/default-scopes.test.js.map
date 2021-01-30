@@ -1,0 +1,1 @@
+{"version":3,"file":"default-scopes.test.js","sourceRoot":"","sources":["../../../src/lib/default-scopes.test.ts"],"names":[],"mappings":";;AAAA,qDAAiD;AAEjD,QAAQ,CAAC,eAAe,EAAE,GAAG,EAAE;IAC3B,EAAE,CAAC,iCAAiC,EAAE,GAAE,EAAE;QACtC,MAAM,CAAC,MAAM,CAAC,IAAI,CAAC,8BAAa,EAAE,CAAC,CAAC,CAAC,eAAe,EAAE,CAAC;IAC3D,CAAC,CAAC,CAAC;AACP,CAAC,CAAC,CAAC"}

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.transform = exports.transformPathExpression = exports.normalizePathOriginal = exports.positionForItem = exports.keyForItem = void 0;
 const utils_1 = require("./utils");
 function serializeKey(key) {
     return key.split(" - ")[0];
@@ -14,26 +15,39 @@ function positionForItem(item) {
 }
 exports.positionForItem = positionForItem;
 function normalizePathOriginal(node) {
-    if (node.data === true) {
-        return `this.args.${node.original
+    let prepared = '';
+    if (node.head.type === 'AtHead') {
+        prepared = `this.args.${node.original
             .replace(utils_1.PLACEHOLDER, "")
             .replace("@", "")}`;
     }
-    else if (node.this === true) {
-        return `${node.original.replace(utils_1.PLACEHOLDER, "")}`;
+    else if (node.head.type === 'ThisHead') {
+        prepared = `${node.original.replace(utils_1.PLACEHOLDER, "")}`;
     }
     else {
-        return node.original;
+        prepared = node.original;
     }
+    let result = prepared.split('.').map(el => {
+        if (el === 'firstObject' || el === 'lastObject') {
+            return `[0].`;
+        }
+        return el.includes('-') ? `["${el}"].` : `${el}.`;
+    }).join('');
+    result = result.replace(/\.\[/gi, '[');
+    if (result.endsWith('.')) {
+        result = result.slice(0, -1);
+    }
+    return result;
 }
+exports.normalizePathOriginal = normalizePathOriginal;
 function transformPathExpression(node, key, { getItemScopes, tailForGlobalScope, pathsForGlobalScope, importNameForItem, componentImport, declaredInScope, addImport, addComponentImport, getPathScopes, yields, componentsForImport, globalScope, blockPaths, globalRegistry }) {
     let result = "";
     let simpleResult = "";
     const builtinScopeImports = new Set();
-    if (node.data === true) {
+    if (node.head.type === 'AtHead') {
         result = exports.transform.wrapToFunction(normalizePathOriginal(node), key);
     }
-    else if (node.this === true) {
+    else if (node.head.type === 'ThisHead') {
         result = exports.transform.fn(componentImport ? "" : "this: null", normalizePathOriginal(node), key);
     }
     else {
@@ -118,6 +132,9 @@ exports.transform = {
         if (klass) {
             this.klass = klass;
         }
+        else {
+            this.klass = {};
+        }
         const typeKey = `TypeFor${node.type}`;
         const typings = (typeKey in this) ? ': ' + this[typeKey](node) : '';
         return this._wrap(this[node.type](node), key, typings);
@@ -149,7 +166,7 @@ exports.transform = {
         return `"${node.chars}"`;
     },
     TypeForTextNode(node) {
-        return `"${node.chars}" `;
+        return `"${node.chars}"`;
     },
     pathCall(node) {
         let key = keyForItem(node);
@@ -219,6 +236,12 @@ exports.transform = {
     },
     TypeForNullLiteral() {
         return `null`;
+    },
+    TypeForUndefinedLiteral() {
+        return `void`;
+    },
+    TypeForBooleanLiteral() {
+        return `boolean`;
     },
     NullLiteral() {
         return "null";

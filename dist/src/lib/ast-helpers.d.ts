@@ -13,14 +13,7 @@ export declare function keyForItem(item: any): string;
 export declare function tagComponentToBlock(node: any): {
     type: string;
     isComponent: boolean;
-    path: {
-        type: string;
-        original: string;
-        this: boolean;
-        data: boolean;
-        parts: string[];
-        loc: any;
-    };
+    path: import("@glimmer/syntax/dist/types/lib/v1/nodes-v1").PathExpression;
     params: never[];
     inverse: null;
     hash: {

@@ -1,10 +1,13 @@
 
 
 <div ...attributes>
+  {{t 'foso' }} 
   {{#if (has-block)}}
+ 
 
-    {{yield this.isChatVisible this.currentChat.name this.currentChat.record}}
-
+ 
+    {{yield @isChatVisible this.currentChat.name this.currentChat.record}}
+ 
   {{else}}
 
     {{this.currentChat.name}}

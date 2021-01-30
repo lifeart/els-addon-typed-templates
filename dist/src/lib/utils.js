@@ -1,8 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.normalizeToAngleBracketName = exports.isTS = exports.isJS = exports.isHBS = exports.toFilePath = exports.itemKind = exports.mergeResults = exports.PLACEHOLDER = exports.normalizeAngleTagName = exports.safeWalkSync = void 0;
 const fs = require("fs");
 const walkSync = require("walk-sync");
 const vscode_languageserver_1 = require("vscode-languageserver");
+const vscode_uri_1 = require("vscode-uri");
+const path = require("path");
 function safeWalkSync(filePath, opts) {
     if (!filePath) {
         return [];
@@ -80,4 +83,38 @@ function itemKind(tsName) {
     return kinds[tsName] || vscode_languageserver_1.CompletionItemKind.Property;
 }
 exports.itemKind = itemKind;
+function toFilePath(uri) {
+    return path.resolve(vscode_uri_1.URI.parse(uri).fsPath);
+}
+exports.toFilePath = toFilePath;
+function isHBS(file) {
+    return file.endsWith('.hbs');
+}
+exports.isHBS = isHBS;
+function isJS(file) {
+    return file.endsWith('.js');
+}
+exports.isJS = isJS;
+function isTS(file) {
+    return file.endsWith('.ts');
+}
+exports.isTS = isTS;
+function normalizeToAngleBracketName(name) {
+    const SIMPLE_DASHERIZE_REGEXP = /[a-z]|\/|-/g;
+    const ALPHA = /[A-Za-z0-9]/;
+    if (name.includes(".")) {
+        return name;
+    }
+    return name.replace(SIMPLE_DASHERIZE_REGEXP, (char, index) => {
+        if (char === "/") {
+            return "";
+        }
+        if (index === 0 || !ALPHA.test(name[index - 1])) {
+            return char.toUpperCase();
+        }
+        // Remove all occurrences of '-'s from the name that aren't starting with `-`
+        return char === "-" ? "" : char.toLowerCase();
+    });
+}
+exports.normalizeToAngleBracketName = normalizeToAngleBracketName;
 //# sourceMappingURL=utils.js.map

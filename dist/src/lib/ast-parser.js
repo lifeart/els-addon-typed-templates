@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getClassMeta = exports.getFirstASTNode = void 0;
 const syntax_1 = require("@glimmer/syntax");
 const ast_helpers_1 = require("./ast-helpers");
 function cleanComment(text) {

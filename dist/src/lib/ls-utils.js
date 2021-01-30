@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.toDiagnostic = exports.getSemanticDiagnostics = exports.getFullSemanticDiagnostics = exports.tsDefinitionToLocation = exports.offsetToRange = exports.normalizeCompletions = exports.normalizeDefinitions = void 0;
 const vscode_uri_1 = require("vscode-uri");
 const vscode_languageserver_1 = require("vscode-languageserver");
 const fs = require("fs");
@@ -13,9 +14,10 @@ function normalizeDefinitions(results) {
     });
 }
 exports.normalizeDefinitions = normalizeDefinitions;
+const ignoreNames = ['willDestroy', 'toString'];
 function normalizeCompletions(tsResults, realPath, isArg) {
     return (tsResults ? tsResults.entries : [])
-        .filter(({ name }) => !name.startsWith("_t") && !name.includes(' - ') && name !== 'globalScope' && name !== 'defaultYield')
+        .filter(({ name }) => !ignoreNames.includes(name) && !name.startsWith("_t") && !name.includes(' - ') && name !== 'globalScope' && name !== 'defaultYield')
         .map(el => {
         return {
             label: isArg
@@ -121,6 +123,9 @@ function toFullDiagnostic(err) {
         return null;
     }
     if (msgText.startsWith("Expected 0 arguments, but got 2.")) {
+        return null;
+    }
+    if (msgText.startsWith("Cannot invoke an object which is possibly")) {
         return null;
     }
     return {

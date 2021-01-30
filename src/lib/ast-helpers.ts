@@ -1,4 +1,5 @@
 import { PLACEHOLDER, normalizeAngleTagName } from './utils';
+import { builders as b } from '@glimmer/syntax';
 
 export function isParamPath(astPath) {
   const parentType = astPath.parent && astPath.parent.type;
@@ -107,14 +108,7 @@ export function tagComponentToBlock(node) {
   return {
     type: 'BlockStatement',
     isComponent: true,
-    path: {
-      type: 'PathExpression',
-      original: componentName,
-      this: false,
-      data: false,
-      parts: [componentName],
-      loc: node.loc
-    },
+    path: b.path(componentName, node.loc),
     params: [],
     inverse: null,
     hash: {
@@ -127,12 +121,7 @@ export function tagComponentToBlock(node) {
           //@ts-ignore
           value.isIgnored = true;
         }
-        return {
-          type: 'HashPair',
-          key: attr.name.replace('@', ''),
-          value: value,
-          loc: attr.loc
-        }
+        return b.pair(attr.name.replace('@', ''), value, attr.loc);
       })
     },
     program: {

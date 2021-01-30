@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.findComponentForTemplate = exports.relativeComponentImport = exports.relativeAddonImport = exports.relativeImport = exports.virtualComponentTemplateFileName = exports.virtualTemplateFileName = void 0;
 const path = require("path");
 const fs = require("fs");
 const ts_service_1 = require("./ts-service");
+const utils_1 = require("./utils");
 function virtualTemplateFileName(fsPath) {
     const extName = path.extname(fsPath);
     return path
@@ -23,11 +25,12 @@ function relativeImport(templateFile, scriptFile) {
         .split(path.sep)
         .join("/")
         .replace("..", ".")
+        .replace(".d.ts", "")
         .replace(".ts", "")
         .replace(".js", "");
 }
 exports.relativeImport = relativeImport;
-function ralativeAddonImport(templateFileName, addonItemFileName) {
+function relativeAddonImport(templateFileName, addonItemFileName) {
     let extname = path.extname(addonItemFileName);
     let subRelative = relativeImport(templateFileName, addonItemFileName);
     // ./../../../node_modules/@ember/render-modifiers/app/modifiers/did-insert
@@ -71,24 +74,22 @@ function ralativeAddonImport(templateFileName, addonItemFileName) {
     else
         return subRelative;
 }
-exports.ralativeAddonImport = ralativeAddonImport;
+exports.relativeAddonImport = relativeAddonImport;
 function relativeComponentImport(templateFileName, scriptForComponent) {
-    return ralativeAddonImport(templateFileName, scriptForComponent);
+    return relativeAddonImport(templateFileName, scriptForComponent);
 }
 exports.relativeComponentImport = relativeComponentImport;
-function findComponentForTemplate(fsPath, projectRoot) {
+function findComponentForTemplate(fsPath, project, registry) {
     const extName = path.extname(fsPath);
-    const componentMeta = ts_service_1.typeForPath(projectRoot, fsPath);
-    if (extName !== '.hbs' || !componentMeta) {
+    const componentMeta = ts_service_1.matchPathToType(project, fsPath);
+    if (!utils_1.isHBS(extName) || !componentMeta) {
         // @to-do figure out this strategy
         return null;
     }
-    const server = ts_service_1.serverForProject(projectRoot);
-    const registry = server.getRegistry(projectRoot);
     let possibleScripts = [];
     if (componentMeta.kind === 'template' && componentMeta.type === 'template') {
         possibleScripts = (registry.routePath[componentMeta.name.split('/').join('.')] || []).filter((el) => {
-            let meta = ts_service_1.typeForPath(projectRoot, el);
+            let meta = ts_service_1.matchPathToType(project, el);
             if (!meta) {
                 return null;
             }
@@ -97,15 +98,15 @@ function findComponentForTemplate(fsPath, projectRoot) {
     }
     else {
         possibleScripts = (registry.component[componentMeta.name] || []).filter((el) => {
-            var _a;
-            return ((_a = ts_service_1.typeForPath(projectRoot, el)) === null || _a === void 0 ? void 0 : _a.kind) === 'script';
+            let meta = ts_service_1.matchPathToType(project, el);
+            return meta && meta.kind === 'script';
         });
     }
     if (possibleScripts.length > 1) {
         possibleScripts = possibleScripts.filter((el) => {
-            var _a;
+            let meta = ts_service_1.matchPathToType(project, el);
             // to-do - add support for typed-templates in addons (we need to check is it addon or not and replace scope)
-            return ((_a = ts_service_1.typeForPath(projectRoot, el)) === null || _a === void 0 ? void 0 : _a.scope) === 'application';
+            return meta && meta.scope === 'application';
         });
     }
     if (possibleScripts.length > 1) {

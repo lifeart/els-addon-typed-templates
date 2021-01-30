@@ -58,8 +58,8 @@ declare module "ember-typed-templates" {
   type AbstractHelper = <T>([items]: T[], hash?) => T;
   export type AbstractBlockHelper = <T>([items]: ArrayLike<T>[], hash?) => [T];
   type HashHelper = <T>(items: any[], hash: T) => T;
-  type ArrayHelper = <T>(items: ArrayLike<T>, hash?) => ArrayLike<T>;
-  type AnyFn = ([fn, ...args]: [Function, ...any]) => any;
+  type ArrayHelper = <T>(items?: ArrayLike<T>, hash?) => ArrayLike<T>;
+  type AnyFn = (...args) => any;
   type OnModifer = ([event, handler]: [string, Function], hash?) => void;
   type FnHelper = AnyFn;
   type ConcatHelper = (...args: any[]) => string;
@@ -74,6 +74,8 @@ declare module "ember-typed-templates" {
   function TUnlessHeper<T, U, Y>([a, b, c]: [T, U?, Y?], hash?) {
     return !TIfHeper(a,b,c, hash);
   }
+  type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
+
   export interface GlobalRegistry {
     ["each"]: EachHelper;
     ["let"]: LetHelper;
@@ -88,9 +90,26 @@ declare module "ember-typed-templates" {
     ["outlet"]: YieldHelper;
     ["concat"]: ConcatHelper;
     ["prevent-default"]: EventCatcherHelper;
+    ["toggle"]: <T>(props: [keyof T, T]) => Function;
+    ["includes"]: <T>(props: [T, T[]]) => boolean;
+    ["chunk"]: <T>(props: [T[], number]) => Array<T[]>;
+    ["sort-by"]: <T>(props: [...string, T]) => T;
+    ["filter-by"]: <T, K extends keyof T, B extends PropType<T, K>>(props: [K, B, T[]]) => T[];
+    ["drop"]: <T>(props: [number, T[]]) => T[];
+    ["take"]: <T>(props: [number, T[]]) => T[];
+    ["get"]: <T, K extends keyof T>(props: [K, T]) => T[K];
+    ["eq"]: (props: [any, any]) => boolean;
+    ["gt"]: (props: [number, number]) => boolean;
+    ["gte"]: (props: [number, number]) => boolean;
+    ["lt"]: (props: [number, number]) => boolean;
+    ["lte"]: (props: [number, number]) => boolean;
+    ["optional"]: (props: [ Function | undefined | void | false ]) => Function;
     ["stop-propagation"]: EventCatcherHelper;
     ["lazy-mount"]: (params?, hash?) => [{ isLoading: boolean; error: any }];
     ["v-get"]: ([ctx, prop, propTwo]: [any, any, any?], hash?) => any;
+    ["did-insert"]: (params: [ Function, ...any], hash?: any) => void;
+    ["did-update"]: (params: [ Function, ...any], hash?: any) => void;
+    ["will-destroy"]: (params: [ Function, ...any], hash?: any) => void;
     ["and"]: AndHelper;
   }
 }

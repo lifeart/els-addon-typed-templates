@@ -40,4 +40,7 @@ describe('getClassMeta - simple scope', () => {
     {{tag}}
   {{/each}}`)).toMatchSnapshot();
 });
+describe('dash in path names', () => {
+    expect(results(`{{@classNames.ui-wrapper}}`)).toMatchSnapshot();
+});
 //# sourceMappingURL=hbs-extractor.test.js.map

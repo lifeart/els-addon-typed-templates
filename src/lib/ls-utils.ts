@@ -18,9 +18,11 @@ export function normalizeDefinitions(results) {
       });
 }
 
+const ignoreNames = ['willDestroy', 'toString'];
+
 export function normalizeCompletions(tsResults, realPath, isArg) {
   return (tsResults ? tsResults.entries : [])
-  .filter(({ name }) => !name.startsWith("_t") && !name.includes(' - ') && name !== 'globalScope' && name !== 'defaultYield')
+  .filter(({ name }) => !ignoreNames.includes(name) && !name.startsWith("_t") && !name.includes(' - ') && name !== 'globalScope' && name !== 'defaultYield')
   .map(el => {
     return {
       label: isArg
@@ -135,6 +137,9 @@ function toFullDiagnostic(err: ts.Diagnostic) {
     return null;
   }
   if (msgText.startsWith("Expected 0 arguments, but got 2.")) {
+    return null;
+  }
+  if (msgText.startsWith("Cannot invoke an object which is possibly")) {
     return null;
   }
 

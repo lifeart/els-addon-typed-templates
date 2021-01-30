@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`defaultScopes return expected list of objects 1`] = `
+Array [
+  "globalScope",
+  "pathsForGlobalScope",
+  "tailForGlobalScope",
+  "definedScope",
+]
+`;

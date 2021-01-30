@@ -1,6 +1,9 @@
 import * as path from "path";
 import * as fs from "fs";
-import { serverForProject, typeForPath } from './ts-service';
+import { LSRegistry, matchPathToType } from './ts-service';
+import { Project } from '@lifeart/ember-language-server';
+
+import { isHBS } from './utils';
 
 export function virtualTemplateFileName(fsPath) {
   const extName = path.extname(fsPath);
@@ -22,11 +25,12 @@ export function relativeImport(templateFile, scriptFile) {
     .split(path.sep)
     .join("/")
     .replace("..", ".")
+    .replace(".d.ts", "")
     .replace(".ts", "")
     .replace(".js", "");
 }
 
-export function ralativeAddonImport(
+export function relativeAddonImport(
   templateFileName: string,
   addonItemFileName: string
 ): string | null {
@@ -87,26 +91,22 @@ export function relativeComponentImport(
   templateFileName: string,
   scriptForComponent: string
 ): string | null {
-  return ralativeAddonImport(templateFileName, scriptForComponent);
+  return relativeAddonImport(templateFileName, scriptForComponent);
 }
 
-export function findComponentForTemplate(fsPath, projectRoot) { 
+export function findComponentForTemplate(fsPath, project: Project, registry: LSRegistry) { 
   const extName = path.extname(fsPath);
-  const componentMeta = typeForPath(projectRoot, fsPath);
+  const componentMeta = matchPathToType(project, fsPath);
 
-  if (extName !== '.hbs' || !componentMeta) {
+  if (!isHBS(extName) || !componentMeta) {
     // @to-do figure out this strategy
     return null;
   } 
 
-  const server = serverForProject(projectRoot);
-
-  const registry = server.getRegistry(projectRoot);
-
   let possibleScripts: string[] = [];
   if (componentMeta.kind === 'template' && componentMeta.type === 'template') {
     possibleScripts = (registry.routePath[componentMeta.name.split('/').join('.')]||[]).filter((el)=>{
-      let meta = typeForPath(projectRoot, el);
+      let meta = matchPathToType(project, el);
       if (!meta) {
         return null;
       }
@@ -114,14 +114,17 @@ export function findComponentForTemplate(fsPath, projectRoot) {
     });
   } else {
     possibleScripts = (registry.component[componentMeta.name] || []).filter((el)=>{
-      return typeForPath(projectRoot, el)?.kind === 'script'
+      let meta = matchPathToType(project, el);
+      return meta && meta.kind === 'script'
     });
   }
 
   if (possibleScripts.length > 1) {
     possibleScripts = possibleScripts.filter((el)=> {
+      let meta = matchPathToType(project, el);
+
       // to-do - add support for typed-templates in addons (we need to check is it addon or not and replace scope)
-      return typeForPath(projectRoot, el)?.scope === 'application';
+      return meta && meta.scope === 'application';
     })
   }
   if (possibleScripts.length > 1) {
