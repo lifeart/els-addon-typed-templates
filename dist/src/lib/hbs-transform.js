@@ -28,6 +28,9 @@ function normalizePathOriginal(node) {
         prepared = node.original;
     }
     let result = prepared.split('.').map(el => {
+        if (el === 'firstObject' || el === 'lastObject') {
+            return `[0].`;
+        }
         return el.includes('-') ? `["${el}"].` : `${el}.`;
     }).join('');
     result = result.replace(/\.\[/gi, '[');

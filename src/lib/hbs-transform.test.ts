@@ -150,4 +150,13 @@ describe('normalizePathOriginal', () => {
     it('works for paths with non-js syntax nested "foo-baz" and mixed cases', () => {
         expect(p('@foo.bar-baz.boo.foo-bar')).toEqual('this.args.foo["bar-baz"].boo["foo-bar"]');
     });
+    it('works for specific paths [firstObject]', () => {
+        expect(p('this.firstObject')).toEqual('this[0]');
+    });
+    it('works for specific paths [lastObject]', () => {
+        expect(p('this.lastObject')).toEqual('this[0]');
+    });
+    it('works for specific paths with nesting [lastObject]', () => {
+        expect(p('this.lastObject.key.lastObject.boo')).toEqual('this[0].key[0].boo');
+    });
 });

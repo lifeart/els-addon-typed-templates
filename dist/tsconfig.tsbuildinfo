@@ -1747,7 +1747,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/hbs-transform.ts": {
-        "version": "ec107bd72b75e1362feb5856d53420c91a9925c5b3cab3f007bfc2f68373d86c",
+        "version": "f95b7fc5fd66f90124335a5dad262b26c90b0dca66913045198c535c186cb05a",
         "signature": "c668d58f8fd213168fd0f8a725ff781d61c4509c2b6859647d3d46499a6ce453",
         "affectsGlobalScope": false
       },
@@ -1817,7 +1817,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/hbs-transform.test.ts": {
-        "version": "c27deae72fe0f8ac3b68136c9373477d8fafbbfaee851882a4cc3c2526b6e9f0",
+        "version": "1703bef8bdcfc6bda4010676b68a98d90898df778c8ae66c99ec15663342078d",
         "signature": "9b8b7b0251927a4eb484be94c70e3ba5e7d35a0e456b3922ab112a2ba69bbe51",
         "affectsGlobalScope": false
       },
