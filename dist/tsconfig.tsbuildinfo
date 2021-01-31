@@ -1767,7 +1767,7 @@
         "affectsGlobalScope": false
       },
       "../src/providers/virtual-document.ts": {
-        "version": "beb5159dd51711f7601a58fbf70dbf33e237c40a3657fae7c214b17b34c55978",
+        "version": "36f615a12f3fb56d97bf866b75628173011491e17db45f13291daefb55154c6a",
         "signature": "8519b60b1fe5d06d17590283b0ec00cb34dd111330e9034d0d4b386be78e5563",
         "affectsGlobalScope": false
       },

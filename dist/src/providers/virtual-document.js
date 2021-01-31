@@ -21,7 +21,12 @@ class VirtualDocumentProvider {
         const server = this.server;
         const document = server.documents.get(uri);
         if (!document && !content) {
-            return this.unknownComponentTemplate(meta);
+            if (fs.existsSync(templatePath)) {
+                content = fs.readFileSync(templatePath, 'utf8');
+            }
+            else {
+                return this.unknownComponentTemplate(meta);
+            }
         }
         const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
         content = content ? content : (document ? document.getText() : "");

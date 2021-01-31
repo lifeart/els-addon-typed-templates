@@ -31,9 +31,15 @@ export default class VirtualDocumentProvider {
         const projectRoot = this.project.root;
         const server = this.server;
         const document = server.documents.get(uri);
+
         if (!document && !content) {
-            return this.unknownComponentTemplate(meta);
+            if (fs.existsSync(templatePath)) {
+                content = fs.readFileSync(templatePath, 'utf8');
+            } else {
+                return this.unknownComponentTemplate(meta);
+            }
         }
+       
         const registry = "getRegistry" in server ? server.getRegistry(projectRoot) : null;
         content = content ? content : (document ? document.getText() : "");
         const { nodes, comments } = getClassMeta(content);
