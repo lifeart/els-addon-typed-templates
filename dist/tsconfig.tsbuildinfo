@@ -1502,7 +1502,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/ts-service.ts": {
-        "version": "006b2232c0a04690505f5009bd7fe43dee0c2223c3e7fe6910d7cc04234d8651",
+        "version": "8c8571d1af9243101f58e8a07e93d568dd7454c3cfb935b2711bdc940b757f3c",
         "signature": "eacbbf853ba2496f9925b6e1908ae64afbe23c68577ce42d5d12ce599867a9f9",
         "affectsGlobalScope": false
       },
@@ -1747,7 +1747,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/hbs-transform.ts": {
-        "version": "f95b7fc5fd66f90124335a5dad262b26c90b0dca66913045198c535c186cb05a",
+        "version": "24b9884439d0fa1365c07cdd222d63ff79277ff65c5ba5d755b8b57b9be4d19e",
         "signature": "c668d58f8fd213168fd0f8a725ff781d61c4509c2b6859647d3d46499a6ce453",
         "affectsGlobalScope": false
       },
@@ -1762,8 +1762,8 @@
         "affectsGlobalScope": false
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "04a2f0316b01aef8ca518a1b3ccff0f47a1883fb45cf4f41662d0492eb91d86a",
-        "signature": "2d6708ccd81d95baa8aacf741c6319b5d48c6d373653ffac5c09e6562fb8fc8c",
+        "version": "5b5922dc01efc5914cc3154d3fb684f070c41f9c6fd3c823b1aeed58a5cfe273",
+        "signature": "1015c833cb06d0ab0e3cdbe416cb95d5f1c81f3438c840e11e6f83cffdbf70bc",
         "affectsGlobalScope": false
       },
       "../src/providers/virtual-document.ts": {

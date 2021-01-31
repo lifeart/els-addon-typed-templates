@@ -207,7 +207,23 @@ class TypescriptTemplate {
     });
   }
   addComponentImport(name, filePath) {
-    if (filePath.template) {
+    if (filePath.script && filePath.template === null) {
+      let virtualFileName = virtualComponentTemplateFileName(filePath.script);
+      this.builder.registerTemplateKlassForFile(
+        this.componentsMap,
+        this.globalRegistry,
+        virtualFileName,
+        filePath.template,
+        filePath.script,
+        this.depth - 1,
+        this.project.root
+      );
+      this.addImport(name, relativeImport(
+        this.fileName,
+        virtualFileName
+      ));
+
+    } else  if (filePath.template) {
       let virtualFileName = virtualComponentTemplateFileName(filePath.template);
       this.builder.registerTemplateKlassForFile(
         this.componentsMap,
@@ -253,8 +269,14 @@ export class TypescriptTemplateBuilder {
     };
     `;
     try {
-      let source = fs.readFileSync(templateFileName, "utf8");
-      const meta = typeForPath(projectRoot, templateFileName);
+      let source = '';
+      if (templateFileName !== null) {
+        source = fs.readFileSync(templateFileName, "utf8");
+      } else {
+        templateFileName = virtualFileName;
+        source = this.unknownTemplate();
+      }
+      const meta = typeForPath(projectRoot, templateFileName || scriptFileName);
       const { nodes, comments } = getClassMeta(source);
       klass = this.getClass(
         componentsMap,
@@ -282,6 +304,9 @@ export class TypescriptTemplateBuilder {
   }
   emptyTemplate(meta) {
     return `export default class ${meta.className}UnreachedComponent { args: any; defaultYield() { return []; } };`;
+  }
+  unknownTemplate() {
+    return `{{yield}}`;
   }
   getClass(
     componentsMap,

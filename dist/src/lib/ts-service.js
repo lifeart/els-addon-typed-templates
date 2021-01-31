@@ -55,6 +55,7 @@ function matchPathToType(project, uri) {
         return null;
     }
     result.className = utils_1.normalizeToAngleBracketName(result.name) + result.type.charAt(0).toUpperCase() + result.type.slice(1);
+    result.className = result.className.split('-').join('_');
     return result;
 }
 exports.matchPathToType = matchPathToType;

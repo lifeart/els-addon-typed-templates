@@ -108,6 +108,7 @@ export function matchPathToType(project: Project, uri: string) {
     return null;
   }
   result.className = normalizeToAngleBracketName(result.name) + result.type.charAt(0).toUpperCase() + result.type.slice(1);
+  result.className =  result.className.split('-').join('_');
   return result;
 }
 export function typeForPath(root: string, uri: string) {
