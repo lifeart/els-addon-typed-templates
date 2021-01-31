@@ -238,7 +238,7 @@ exports.transform = {
         return `null`;
     },
     TypeForUndefinedLiteral() {
-        return `void`;
+        return `undefined`;
     },
     TypeForBooleanLiteral() {
         return `boolean`;

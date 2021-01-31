@@ -173,7 +173,12 @@ class TypescriptTemplate {
         });
     }
     addComponentImport(name, filePath) {
-        if (filePath.template) {
+        if (filePath.script && filePath.template === null) {
+            let virtualFileName = resolvers_1.virtualComponentTemplateFileName(filePath.script);
+            this.builder.registerTemplateKlassForFile(this.componentsMap, this.globalRegistry, virtualFileName, filePath.template, filePath.script, this.depth - 1, this.project.root);
+            this.addImport(name, resolvers_1.relativeImport(this.fileName, virtualFileName));
+        }
+        else if (filePath.template) {
             let virtualFileName = resolvers_1.virtualComponentTemplateFileName(filePath.template);
             this.builder.registerTemplateKlassForFile(this.componentsMap, this.globalRegistry, virtualFileName, filePath.template, filePath.script, this.depth - 1, this.project.root);
             // todo - we need to resolve proper template and compile it :)
@@ -201,8 +206,15 @@ class TypescriptTemplateBuilder {
     };
     `;
         try {
-            let source = fs.readFileSync(templateFileName, "utf8");
-            const meta = ts_service_1.typeForPath(projectRoot, templateFileName);
+            let source = '';
+            if (templateFileName !== null) {
+                source = fs.readFileSync(templateFileName, "utf8");
+            }
+            else {
+                templateFileName = virtualFileName;
+                source = this.unknownTemplate();
+            }
+            const meta = ts_service_1.typeForPath(projectRoot, templateFileName || scriptFileName);
             const { nodes, comments } = ast_parser_1.getClassMeta(source);
             klass = this.getClass(componentsMap, virtualFileName, { nodes, comments, meta }, scriptFileName ? resolvers_1.relativeImport(templateFileName, scriptFileName) : null, registry, depth);
         }
@@ -222,6 +234,9 @@ class TypescriptTemplateBuilder {
     }
     emptyTemplate(meta) {
         return `export default class ${meta.className}UnreachedComponent { args: any; defaultYield() { return []; } };`;
+    }
+    unknownTemplate() {
+        return `{{yield}}`;
     }
     getClass(componentsMap, fileName, { nodes, comments, meta }, componentImport, globalRegistry, depth = 5) {
         const items = nodes;

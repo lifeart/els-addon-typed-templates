@@ -56,6 +56,7 @@ export declare class TypescriptTemplateBuilder {
     constructor(server: Server, project: Project);
     registerTemplateKlassForFile(componentsMap: any, registry: any, virtualFileName: any, templateFileName: any, scriptFileName: any, depth: number, projectRoot: string): void;
     emptyTemplate(meta: any): string;
+    unknownTemplate(): string;
     getClass(componentsMap: any, fileName: any, { nodes, comments, meta }: {
         nodes: any;
         comments: any;
