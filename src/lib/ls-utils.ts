@@ -139,6 +139,12 @@ function toFullDiagnostic(err: ts.Diagnostic) {
     it's really tricky to get typings for it at all, and I prefer to skip warnings for it in next lines
   */
 
+  if (msgText.startsWith("Object is of type 'unknown'")) {
+    return null;
+  }
+  if (msgText.startsWith("Type 'any' is not assignable to type 'never'")) {
+    return null;
+  }
   if (msgText.startsWith("Property 'args' does not exist on type")) {
     return null;
   }
