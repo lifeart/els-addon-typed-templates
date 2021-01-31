@@ -40,10 +40,22 @@ declare module "@ember/component" {
 
 declare module "@ember/component/helper" {
   export function helper<T>(Helper: T): T;
+  export default class Helper extends Function {
+
+  };
 }
 declare module "@ember/modifier" {
   export function setModifierManager<T, U>(Manager: T, Modifier: U): U;
 }
+
+declare module "ember-modifier" {
+  export function modifier<T>(Modifier: T): T;
+  export default class Modifier extends Function {
+
+  };
+}
+
+
 
 declare module "ember-typed-templates" {
   type YieldHelper = <A, B, C, D, E>(

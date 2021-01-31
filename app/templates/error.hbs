@@ -1,3 +1,9 @@
 <Modal as |foo|>
-    
+    {{foo.boo}}
+
+    {{#let (array 1 2 3) as |fo|}}
+        {{#each fo as |item|}}
+            {{foo.d}}
+        {{/each}}
+    {{/let}} 
 </Modal>
