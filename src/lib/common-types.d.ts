@@ -58,11 +58,13 @@ declare module "ember-modifier" {
 
 
 declare module "ember-typed-templates" {
+  type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
   type YieldHelper = <A, B, C, D, E>(
     items?: [A, B?, C?, D?, E?],
     hash?
   ) => [A, B, C, D, E];
   type EachHelper = <T extends any>([items]: ArrayLike<T>[], hash?) => [T, number];
+  type EachInHelper = <T extends object, A extends keyof T>([items]: [T]) => [A,PropType<T, A>];
   type LetHelper = <A, B, C, D, E>(
     items: [A, B?, C?, D?, E?],
     hash?
@@ -86,10 +88,10 @@ declare module "ember-typed-templates" {
   function TUnlessHeper<T, U, Y>([a, b, c]: [T, U?, Y?], hash?) {
     return !TIfHeper(a,b,c, hash);
   }
-  type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
 
   export interface GlobalRegistry {
     ["each"]: EachHelper;
+    ["each-in"]: EachInHelper;
     ["let"]: LetHelper;
     ["hash"]: HashHelper;
     ["array"]: ArrayHelper;

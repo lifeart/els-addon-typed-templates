@@ -1797,8 +1797,8 @@
         "affectsGlobalScope": false
       },
       "../src/lib/common-types.d.ts": {
-        "version": "3c95da4d64c8bebee427730fad3402fd8d1532d5785957fee1b519410707535d",
-        "signature": "3c95da4d64c8bebee427730fad3402fd8d1532d5785957fee1b519410707535d",
+        "version": "2a9f96310aca4f387f806c21dc2199ca6b24f16419ac0410a42e9358ce0167fd",
+        "signature": "2a9f96310aca4f387f806c21dc2199ca6b24f16419ac0410a42e9358ce0167fd",
         "affectsGlobalScope": false
       },
       "../src/lib/default-scopes.test.ts": {
