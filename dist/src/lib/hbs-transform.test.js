@@ -53,7 +53,7 @@ describe('transform', () => {
             expect(t(syntax_1.builders.string(""))).toEqual("(): \"\" { return \"\"; /*@path-mark 1,0:1,0*/}");
         });
         it('escaped string literal', () => {
-            expect(t(syntax_1.builders.string("\"asd\""))).toEqual("(): \"\" { return \"\"; /*@path-mark 1,0:1,0*/}");
+            expect(t(syntax_1.builders.string("\"asd\""))).toEqual("(): \"\\\"asd\\\"\" { return \"\\\"asd\\\"\"; /*@path-mark 1,0:1,0*/}");
         });
     });
     describe('TextLiteral', () => {
@@ -77,7 +77,7 @@ describe('transform', () => {
     });
     describe('UndefinedLiteral', () => {
         it('transform it', () => {
-            expect(t(syntax_1.builders.undefined())).toEqual("(): void { return undefined; /*@path-mark 1,0:1,0*/}");
+            expect(t(syntax_1.builders.undefined())).toEqual("(): undefined { return undefined; /*@path-mark 1,0:1,0*/}");
         });
     });
     describe('BooleanLiteral', () => {

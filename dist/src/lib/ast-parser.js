@@ -7,7 +7,12 @@ function cleanComment(text) {
     return text.replace(/<\/?script[^>]*>/g, '');
 }
 function getFirstASTNode(source) {
-    return syntax_1.preprocess(source).body[0];
+    try {
+        return syntax_1.preprocess(source).body[0];
+    }
+    catch (e) {
+        return null;
+    }
 }
 exports.getFirstASTNode = getFirstASTNode;
 function getClassMeta(source) {

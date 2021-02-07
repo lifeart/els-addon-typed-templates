@@ -81,7 +81,11 @@ class CompletionProvider {
                 let tsResults = null;
                 try {
                     if (isExternalComponentArg) {
-                        nodePosition = ast_helpers_1.positionForItem(ast_parser_1.getFirstASTNode(content).path);
+                        let node = ast_parser_1.getFirstASTNode(content);
+                        if (node === null) {
+                            return [];
+                        }
+                        nodePosition = ast_helpers_1.positionForItem(node.path);
                     }
                     let markId = `; /*@path-mark ${nodePosition}*/`;
                     let tpl = this.virtualDocument.createFullVirtualTemplate(componentsMap, templatePath, fullFileName, textDocument.uri, content, componentMeta);

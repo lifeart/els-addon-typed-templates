@@ -79,6 +79,28 @@ export function tsDefinitionToLocation(el, root) {
   );
 }
 
+
+function messageConverter(msg) {
+
+  if (msg.startsWith("The 'this' context of type 'this' is not assignable to method's 'this' of type 'null'.")) {
+    return "Unable to find context, is file created and property defined?"
+  }
+
+  console.log(msg);
+  return msg;
+}
+
+
+function getSeverity(msg: string): DiagnosticSeverity {
+  let severity: DiagnosticSeverity = DiagnosticSeverity.Error;
+  if (msg.startsWith("Object is possibly 'undefined'")) {
+    severity = DiagnosticSeverity.Warning;
+  } else if (msg.startsWith("Object is possibly 'null'")) {
+    severity = DiagnosticSeverity.Warning;
+  }
+  return severity;
+}
+
 function toFullDiagnostic(err: ts.Diagnostic) {
   if (!err.file || err.start === undefined) {
     return null;
@@ -156,9 +178,9 @@ function toFullDiagnostic(err: ts.Diagnostic) {
   }
 
   return {
-    severity: DiagnosticSeverity.Error,
+    severity: getSeverity(msgText),
     range: Range.create(startCol - 1, startRow, endCol - 1, endRow),
-    message: msgText,
+    message: messageConverter(msgText),
     source: "typed-templates"
   };
 }
@@ -220,7 +242,7 @@ export function toDiagnostic(
   ) {
     let loc = focusPath.node.loc;
     return {
-      severity: DiagnosticSeverity.Error,
+      severity: getSeverity(err.messageText),
       range: loc
         ? Range.create(
             loc.start.line - 1,
@@ -229,14 +251,14 @@ export function toDiagnostic(
             loc.end.column
           )
         : Range.create(0, 0, 0, 0),
-      message: err.messageText,
+      message: messageConverter(err.messageText),
       source: "typed-templates"
     };
   } else {
     return {
-      severity: DiagnosticSeverity.Error,
+      severity: getSeverity(err.messageText),
       range: offsetToRange(0, 0, ""),
-      message: err.messageText,
+      message: messageConverter(err.messageText),
       source: "typed-templates"
     };
   }
