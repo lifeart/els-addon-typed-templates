@@ -10,7 +10,11 @@ function cleanComment(text) {
 }
 
 export function getFirstASTNode(source) {
-  return parse(source).body[0];
+  try {
+    return parse(source).body[0];
+  } catch(e) {
+    return null;
+  }
 }
 export function getClassMeta(source) {
   const nodes: any = [];

@@ -71,6 +71,23 @@ function tsDefinitionToLocation(el, root) {
     return vscode_languageserver_1.Location.create(vscode_uri_1.URI.file(fullPath).toString(), offsetToRange(scope.start, scope.length, file));
 }
 exports.tsDefinitionToLocation = tsDefinitionToLocation;
+function messageConverter(msg) {
+    if (msg.startsWith("The 'this' context of type 'this' is not assignable to method's 'this' of type 'null'.")) {
+        return "Unable to find context, is file created and property defined?";
+    }
+    console.log(msg);
+    return msg;
+}
+function getSeverity(msg) {
+    let severity = vscode_languageserver_1.DiagnosticSeverity.Error;
+    if (msg.startsWith("Object is possibly 'undefined'")) {
+        severity = vscode_languageserver_1.DiagnosticSeverity.Warning;
+    }
+    else if (msg.startsWith("Object is possibly 'null'")) {
+        severity = vscode_languageserver_1.DiagnosticSeverity.Warning;
+    }
+    return severity;
+}
 function toFullDiagnostic(err) {
     if (!err.file || err.start === undefined) {
         return null;
@@ -141,9 +158,9 @@ function toFullDiagnostic(err) {
         return null;
     }
     return {
-        severity: vscode_languageserver_1.DiagnosticSeverity.Error,
+        severity: getSeverity(msgText),
         range: vscode_languageserver_1.Range.create(startCol - 1, startRow, endCol - 1, endRow),
-        message: msgText,
+        message: messageConverter(msgText),
         source: "typed-templates"
     };
 }
@@ -192,19 +209,19 @@ function toDiagnostic(err, [startIndex, endIndex], focusPath) {
         errText.startsWith("return ")) {
         let loc = focusPath.node.loc;
         return {
-            severity: vscode_languageserver_1.DiagnosticSeverity.Error,
+            severity: getSeverity(err.messageText),
             range: loc
                 ? vscode_languageserver_1.Range.create(loc.start.line - 1, loc.start.column, loc.end.line - 1, loc.end.column)
                 : vscode_languageserver_1.Range.create(0, 0, 0, 0),
-            message: err.messageText,
+            message: messageConverter(err.messageText),
             source: "typed-templates"
         };
     }
     else {
         return {
-            severity: vscode_languageserver_1.DiagnosticSeverity.Error,
+            severity: getSeverity(err.messageText),
             range: offsetToRange(0, 0, ""),
-            message: err.messageText,
+            message: messageConverter(err.messageText),
             source: "typed-templates"
         };
     }
