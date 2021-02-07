@@ -14,6 +14,13 @@ export function positionForItem(item) {
   return `${start.line},${start.column}:${end.line},${end.column}`;
 }
 
+
+function escapeDoubleQuotes(str) {
+  // from https://gist.github.com/getify/3667624;
+	return str.replace(/\\([\s\S])|(")/g,"\\$1$2");
+}
+
+
 export function normalizePathOriginal(node: ASTv1.PathExpression) {
   let prepared = '';
   if (node.head.type === 'AtHead') {
@@ -264,10 +271,10 @@ export const transform = {
     return `${node.value}`;
   },
   StringLiteral(node: ASTv1.StringLiteral) {
-    return `"${node.value}"`;
+    return `"${escapeDoubleQuotes(node.value)}"`;
   },
   TypeForStringLiteral(node) {
-    return `"${node.value}"`;
+    return this.StringLiteral(node);
   },
   TypeForNullLiteral() {
     return `null`;

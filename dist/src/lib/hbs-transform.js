@@ -14,6 +14,10 @@ function positionForItem(item) {
     return `${start.line},${start.column}:${end.line},${end.column}`;
 }
 exports.positionForItem = positionForItem;
+function escapeDoubleQuotes(str) {
+    // from https://gist.github.com/getify/3667624;
+    return str.replace(/\\([\s\S])|(")/g, "\\$1$2");
+}
 function normalizePathOriginal(node) {
     let prepared = '';
     if (node.head.type === 'AtHead') {
@@ -229,10 +233,10 @@ exports.transform = {
         return `${node.value}`;
     },
     StringLiteral(node) {
-        return `"${node.value}"`;
+        return `"${escapeDoubleQuotes(node.value)}"`;
     },
     TypeForStringLiteral(node) {
-        return `"${node.value}"`;
+        return this.StringLiteral(node);
     },
     TypeForNullLiteral() {
         return `null`;
