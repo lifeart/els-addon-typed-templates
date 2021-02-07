@@ -52,6 +52,9 @@ describe('transform', () => {
         it('empty: "', () => {
             expect(t(syntax_1.builders.string(""))).toEqual("(): \"\" { return \"\"; /*@path-mark 1,0:1,0*/}");
         });
+        it('escaped string literal', () => {
+            expect(t(syntax_1.builders.string("\"asd\""))).toEqual("(): \"\" { return \"\"; /*@path-mark 1,0:1,0*/}");
+        });
     });
     describe('TextLiteral', () => {
         it('"foo"', () => {

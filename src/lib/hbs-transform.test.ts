@@ -54,6 +54,9 @@ describe('transform', () => {
         it('empty: "', () => {
             expect(t(b.string(""))).toEqual("(): \"\" { return \"\"; /*@path-mark 1,0:1,0*/}");
         });
+        it('escaped string literal', () => {
+            expect(t(b.string("\"asd\""))).toEqual("(): \"\" { return \"\"; /*@path-mark 1,0:1,0*/}");
+        });
     });
     describe('TextLiteral', () => {
         it('"foo"', () => {
