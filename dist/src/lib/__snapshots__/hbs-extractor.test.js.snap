@@ -64,6 +64,21 @@ Object {
 }
 `;
 
+exports[` 3`] = `
+Object {
+  "blockPaths": Array [],
+  "componentsForImport": Array [],
+  "parents": Object {
+    "1,0:1,26 - MustacheStatement": Array [
+      "1,2:1,24 - PathExpression",
+    ],
+  },
+  "scopes": Object {
+    "1,0:1,26 - MustacheStatement": Array [],
+  },
+}
+`;
+
 exports[`getClassMeta <MyComponent as |ctx|> {{ctx.result}} </MyComponent> 1`] = `
 Object {
   "blockPaths": Array [

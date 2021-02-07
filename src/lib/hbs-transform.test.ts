@@ -55,7 +55,7 @@ describe('transform', () => {
             expect(t(b.string(""))).toEqual("(): \"\" { return \"\"; /*@path-mark 1,0:1,0*/}");
         });
         it('escaped string literal', () => {
-            expect(t(b.string("\"asd\""))).toEqual("(): \"\" { return \"\"; /*@path-mark 1,0:1,0*/}");
+            expect(t(b.string("\"asd\""))).toEqual("(): \"\\\"asd\\\"\" { return \"\\\"asd\\\"\"; /*@path-mark 1,0:1,0*/}");
         });
     });
     describe('TextLiteral', () => {
@@ -79,7 +79,7 @@ describe('transform', () => {
     });
     describe('UndefinedLiteral', () => {
         it('transform it', () => {
-            expect(t(b.undefined())).toEqual("(): void { return undefined; /*@path-mark 1,0:1,0*/}");
+            expect(t(b.undefined())).toEqual("(): undefined { return undefined; /*@path-mark 1,0:1,0*/}");
         });
     })
     describe('BooleanLiteral', () => {
