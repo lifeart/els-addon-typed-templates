@@ -119,13 +119,13 @@ describe('transform', () => {
             expect(w('foo')).toEqual('() { return foo; /*@path-mark 1,0:1,0*/}');
         });
         it('works with local', () => {
-            expect(w('this.foo')).toEqual('() { return this.foo; /*@path-mark 1,0:1,0*/}');
+            expect(w('this.foo')).toEqual('() { return this?.foo; /*@path-mark 1,0:1,0*/}');
         });
         it('works with data', () => {
-            expect(w('@foo')).toEqual('() { return this.args.foo; /*@path-mark 1,0:1,0*/}');
+            expect(w('@foo')).toEqual('() { return this.args?.foo; /*@path-mark 1,0:1,0*/}');
         });
         it('works with nested data', () => {
-            expect(w('@foo.bar')).toEqual('() { return this.args.foo.bar; /*@path-mark 1,0:1,0*/}');
+            expect(w('@foo.bar')).toEqual('() { return this.args?.foo?.bar; /*@path-mark 1,0:1,0*/}');
         });
     });
 });
@@ -135,28 +135,28 @@ describe('normalizePathOriginal', () => {
         expect(p('foo')).toEqual('foo');
     });
     it('works for data paths', () => {
-        expect(p('@foo')).toEqual('this.args.foo');
+        expect(p('@foo')).toEqual('this.args?.foo');
     });
     it('works for local paths', () => {
-        expect(p('this.foo')).toEqual('this.foo');
+        expect(p('this.foo')).toEqual('this?.foo');
     });
     it('works for paths with non-js syntax "foo-baz"', () => {
-        expect(p('@foo.bar-baz')).toEqual('this.args.foo["bar-baz"]');
+        expect(p('@foo.bar-baz')).toEqual('this.args?.foo?.["bar-baz"]');
     });
     it('works for paths with non-js syntax nested "foo-baz"', () => {
-        expect(p('@foo.bar-baz.foo-bar')).toEqual('this.args.foo["bar-baz"]["foo-bar"]');
+        expect(p('@foo.bar-baz.foo-bar')).toEqual('this.args?.foo?.["bar-baz"]?.["foo-bar"]');
     });
     it('works for paths with non-js syntax nested "foo-baz" and mixed cases', () => {
-        expect(p('@foo.bar-baz.boo.foo-bar')).toEqual('this.args.foo["bar-baz"].boo["foo-bar"]');
+        expect(p('@foo.bar-baz.boo.foo-bar')).toEqual('this.args?.foo?.["bar-baz"]?.boo?.["foo-bar"]');
     });
     it('works for specific paths [firstObject]', () => {
-        expect(p('this.firstObject')).toEqual('this[0]');
+        expect(p('this.firstObject')).toEqual('this?.[0]');
     });
     it('works for specific paths [lastObject]', () => {
-        expect(p('this.lastObject')).toEqual('this[0]');
+        expect(p('this.lastObject')).toEqual('this?.[0]');
     });
     it('works for specific paths with nesting [lastObject]', () => {
-        expect(p('this.lastObject.key.lastObject.boo')).toEqual('this[0].key[0].boo');
+        expect(p('this.lastObject.key.lastObject.boo')).toEqual('this?.[0]?.key?.[0]?.boo');
     });
 });
 //# sourceMappingURL=hbs-transform.test.js.map
