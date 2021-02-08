@@ -33,22 +33,13 @@ function normalizePathOriginal(node) {
     }
     let result = prepared.split('.').map(el => {
         if (el === 'firstObject' || el === 'lastObject') {
-            return `?.[0]?.`;
+            return `[0].`;
         }
-        return el.includes('-') ? `?.["${el}"]?.` : `?.${el}?.`;
+        return el.includes('-') ? `["${el}"].` : `${el}.`;
     }).join('');
-    result = result.replace(/\?\.\?\./gi, '?.');
+    result = result.replace(/\.\[/gi, '[');
     if (result.endsWith('.')) {
         result = result.slice(0, -1);
-    }
-    if (result.endsWith('?')) {
-        result = result.slice(0, -1);
-    }
-    if (result.startsWith('?.')) {
-        result = result.slice(2);
-    }
-    if (result.startsWith('this?.args?.')) {
-        result = result.replace('this?.args?.', 'this.args?.');
     }
     return result;
 }
