@@ -36,6 +36,8 @@ export declare const transform: {
     pathCall(node: any): any;
     hashedExp(node: ASTv1.BlockStatement | ASTv1.MustacheStatement | ASTv1.ElementModifierStatement | ASTv1.SubExpression, nodeType?: string): string;
     SubExpression(node: ASTv1.SubExpression): string;
+    ConcatStatement(node: ASTv1.ConcatStatement): string;
+    TypeForConcatStatement(): string;
     MustacheStatement(node: ASTv1.MustacheStatement): string;
     ElementModifierStatement(node: ASTv1.ElementModifierStatement): string;
     BlockStatement(node: ASTv1.BlockStatement): string;

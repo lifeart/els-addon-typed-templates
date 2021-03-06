@@ -217,6 +217,12 @@ exports.transform = {
     SubExpression(node) {
         return this.hashedExp(node);
     },
+    ConcatStatement(node) {
+        return "`${" + node.parts.map((part) => this[part.type](part)).join('}${') + "}`";
+    },
+    TypeForConcatStatement() {
+        return `string`;
+    },
     MustacheStatement(node) {
         return this.hashedExp(node);
     },

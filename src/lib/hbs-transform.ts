@@ -255,6 +255,12 @@ export const transform = {
   SubExpression(node: ASTv1.SubExpression) {
     return this.hashedExp(node);
   },
+  ConcatStatement(node: ASTv1.ConcatStatement) {
+    return "`${"+node.parts.map((part) => this[part.type](part as any)).join('}${') + "}`";
+  },
+  TypeForConcatStatement() {
+    return `string`;
+  },
   MustacheStatement(node: ASTv1.MustacheStatement) {
     return this.hashedExp(node);
   },
