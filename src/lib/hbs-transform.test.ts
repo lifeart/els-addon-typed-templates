@@ -117,6 +117,12 @@ describe('transform', () => {
             expect(t(b.block(b.path('@foo'), [b.string('foo')], b.hash([b.pair('foo', b.number(1))]), b.blockItself()))).toEqual("() { return this[\"1,0:1,0 - PathExpression\"]([this[\"1,0:1,0 - StringLiteral\"]()],{'foo':this[\"1,0:1,0 - NumberLiteral\"]()}); /*@path-mark 1,0:1,0*/}");
         });
     });
+    describe('Concat Statement', () => {
+        it('support text concat text foo=" name {{bar}}"', () => {
+            let node = b.concat([b.text('foo'), b.mustache(b.path('this.foo'))]);
+            expect(t(node)).toEqual("(): string { return `${\"foo\"}${this[\"1,0:1,0 - PathExpression\"]()}`; /*@path-mark 1,0:1,0*/}");
+        });
+    });
     describe('wrapToFunction', () => {
         it('works with paths', () => {
             expect(w('foo')).toEqual('() { return foo; /*@path-mark 1,0:1,0*/}');
