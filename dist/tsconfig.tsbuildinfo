@@ -1742,8 +1742,8 @@
         "affectsGlobalScope": false
       },
       "../src/lib/ast-parser.ts": {
-        "version": "8d5c7994b09eacaa94c5fab4877015c5db0852ab651bf5af9ec408c6372d13aa",
-        "signature": "c932b81118f312a7f5fa1574e9be62e09c27f3ca2f1bcfb848b30bf37ee7e0b7",
+        "version": "244ea00d313d017e52d572ef58ea4aff5d485b41ccf966c391d7f051f4cd96ac",
+        "signature": "53ff3131c0c4ee64b3a800dd05b903807440b69f1a5dd64aaf7e53034cdc0629",
         "affectsGlobalScope": false
       },
       "../src/lib/hbs-transform.ts": {
@@ -1792,7 +1792,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/ast-parser.test.ts": {
-        "version": "afa5a6b2fadc0bd2fca54a70f8299b4a82e365dcfa3d9eb41eebdbadb8fbe524",
+        "version": "555cbabdbe4993f058345e527ae3c9b300b48d5ce63ecc202e7c268a4e41cf81",
         "signature": "a833bb98cf5ebff4e4581d468f9dcdefb29da4c37e6e95973e8bedf0570ba0b5",
         "affectsGlobalScope": false
       },

@@ -5,8 +5,8 @@ import {
   tagComponentToBlock
 } from "./ast-helpers";
 
-function cleanComment(text) {
-  return text.replace(/<\/?script[^>]*>/g,'');
+export function cleanComment(text) {
+  return text.replace(/<\/?script[^>]*>/g,'').split(/\r?\n/).map((e)=>e.split('//')[0].trim()).join('\n').trim();
 }
 
 export function getFirstASTNode(source) {
