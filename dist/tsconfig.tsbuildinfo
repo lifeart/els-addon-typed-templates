@@ -1762,7 +1762,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/hbs-converter.ts": {
-        "version": "5b5922dc01efc5914cc3154d3fb684f070c41f9c6fd3c823b1aeed58a5cfe273",
+        "version": "7ed0b2b89c38957395f8dbb5e0a0d2c22f267d565265c42ddbb1fcf192ccfd21",
         "signature": "1015c833cb06d0ab0e3cdbe416cb95d5f1c81f3438c840e11e6f83cffdbf70bc",
         "affectsGlobalScope": false
       },
