@@ -1,4 +1,4 @@
-import { getClassMeta as classMeta } from './ast-parser';
+import { getClassMeta as classMeta, cleanComment } from './ast-parser';
 
 function getClassMeta(src) {
     return classMeta(src).nodes;
@@ -31,3 +31,19 @@ describe('getClassMeta', () => {
         expect(getClassMeta('{{#foo (bar)}}{{/foo}}')[0].length).toEqual(2);
     });
 });
+
+describe('cleanComment', () => {
+    it('able to remove script tag from comment', ()=>{
+        expect(cleanComment(`<script>foo</script>`)).toEqual('foo');
+    });
+    it('able to remove js comment from line', ()=>{
+        expect(cleanComment(` @ts-ignore // foo`)).toEqual('@ts-ignore');
+    });
+    it('able to remove js comment from multi line', ()=>{
+        expect(cleanComment(`
+        @ts-ignore // foo
+        @ts-ignore // foo
+        @ts-ignore // foo
+        `)).toEqual(new Array(3).fill('@ts-ignore').join('\n'));
+    });
+})
