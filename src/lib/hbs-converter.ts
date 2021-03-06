@@ -49,7 +49,7 @@ function commentForNode(rawPos, comments) {
   }
   if (comment) {
     let value = comment[1].trim();
-    return (value.includes('//') || value.includes('/*')) ? value : '// ' + value;
+    return (value.includes('//') || value.includes('/*')) ? value :  value.split(/\r?\n/).map((e) => '// ' + e).join('\n');
   } else {
     return '';
   }

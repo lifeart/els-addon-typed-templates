@@ -1,0 +1,27 @@
+
+
+{{!--
+  `lorem`
+--}}
+
+{{this.foo}}
+
+{{!--
+  `lorem`
+  `ipsum`
+--}}
+
+{{this.boo}}
+
+
+{{!--
+a
+the the
+--}}
+{{#each (array this.foo) as |foo|}}
+    {{foo}}
+{{/each}}
+
+
+{{!-- @ts-expect-error // error handing --}}
+{{this.foo}}
