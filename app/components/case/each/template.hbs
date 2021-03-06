@@ -1,0 +1,13 @@
+{{!--
+  interface Args {
+    items: Array<{
+      nested?: { value: number }
+    }>
+  }
+--}}
+
+{{#each @items as |item|}}
+  <p>
+    {{item.nested.d}}
+  </p>
+{{/each}}
