@@ -1,8 +1,15 @@
 import { positionForItem, keyForItem, transform, normalizePathOriginal } from './hbs-transform';
-import { builders as b } from '@glimmer/syntax';
+import { builders as b, preprocess } from '@glimmer/syntax';
 
 function t(a,b = keyForItem(a),c?) {
     return transform.transform(a, b, c);
+}
+function pt(a, b = '', c?) {
+    const el = preprocess(a).body[0];
+    if (b === '') {
+        b = keyForItem(el)
+    }
+    return transform.transform(el, b, c);
 }
 function w(a: string) {
     const p = b.path(a);
@@ -117,13 +124,30 @@ describe('transform', () => {
             expect(t(b.block(b.path('@foo'), [b.string('foo')], b.hash([b.pair('foo', b.number(1))]), b.blockItself()))).toEqual("() { return this[\"1,0:1,0 - PathExpression\"]([this[\"1,0:1,0 - StringLiteral\"]()],{'foo':this[\"1,0:1,0 - NumberLiteral\"]()}); /*@path-mark 1,0:1,0*/}");
         });
     });
+    describe('if inline case', () => {
+        it('works for inline if', () => {
+            expect(pt("{{if this.a this.b this.c}}")).toEqual("() { return this[\"1,5:1,11 - PathExpression\"]() ? this[\"1,12:1,18 - PathExpression\"]() : this[\"1,19:1,25 - PathExpression\"](); /*@path-mark 1,0:1,27*/}");
+        });
+        it('works for same inline if', () => {
+            expect(pt("{{if this.a this.a this.b}}")).toEqual("() { return this[\"1,5:1,11 - PathExpression\"]() ? this[\"1,12:1,18 - PathExpression\"]() : this[\"1,19:1,25 - PathExpression\"](); /*@path-mark 1,0:1,27*/}");
+        });
+        it('works for short inline if', () => {
+            expect(pt("{{if this.a this.b}}")).toEqual("() { return this[\"1,5:1,11 - PathExpression\"]() ? this[\"1,12:1,18 - PathExpression\"]() : undefined; /*@path-mark 1,0:1,20*/}");
+        });
+        it('works for inline unless', () => {
+            expect(pt("{{unless this.a this.b this.c}}")).toEqual("() { return !this[\"1,9:1,15 - PathExpression\"]() ? this[\"1,16:1,22 - PathExpression\"]() : this[\"1,23:1,29 - PathExpression\"](); /*@path-mark 1,0:1,31*/}");
+        });
+        it('works for short inline unless', () => {
+            expect(pt("{{unless this.a this.b}}")).toEqual("() { return !this[\"1,9:1,15 - PathExpression\"]() ? this[\"1,16:1,22 - PathExpression\"]() : undefined; /*@path-mark 1,0:1,24*/}");
+        });
+    });
     describe('Concat Statement', () => {
         it('support text concat text foo=" name {{bar}}"', () => {
             let node = b.concat([b.text('foo'), b.mustache(b.path('this.foo'))]);
             expect(t(node)).toEqual("(): string { return `${\"foo\"}${this[\"1,0:1,0 - PathExpression\"]()}`; /*@path-mark 1,0:1,0*/}");
         });
         it('support expressions in text concat', () => {
-            let node = b.concat([b.text('my-value'), b.mustache(b.path('if'), [b.path('this.otherValue'),b.path('this.otherValue'),b.string('missing')])]);
+            let node = b.concat([b.text('my-value'), b.mustache(b.path('ifs'), [b.path('this.otherValue'),b.path('this.otherValue'),b.string('missing')])]);
             expect(t(node)).toEqual("(): string { return `${\"my-value\"}${this[\"1,0:1,0 - PathExpression\"]([this[\"1,0:1,0 - PathExpression\"](),this[\"1,0:1,0 - PathExpression\"](),this[\"1,0:1,0 - StringLiteral\"]()])}`; /*@path-mark 1,0:1,0*/}");
         });
     });

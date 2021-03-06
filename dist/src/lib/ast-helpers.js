@@ -99,6 +99,9 @@ function isSimpleBlockComponentElement(node) {
 }
 exports.isSimpleBlockComponentElement = isSimpleBlockComponentElement;
 function positionForItem(item) {
+    if (!item.loc) {
+        throw new Error(`Unknown position fro ${item.type}`);
+    }
     const { start, end } = item.loc;
     return `${start.line},${start.column}:${end.line},${end.column}`;
 }
