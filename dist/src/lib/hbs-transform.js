@@ -199,6 +199,30 @@ exports.transform = {
             result = `${this.pathCall(node.path)}([${params}],{${hash}})`;
         }
         else if (!hash.length && params.length) {
+            let p = node.params
+                .map(p => {
+                return `this["${keyForItem(p)}"]()`;
+            });
+            let maybeIf = node;
+            if (maybeIf.path.type === 'PathExpression') {
+                let maybeIfPath = maybeIf.path;
+                if (maybeIfPath.original === 'if' && maybeIfPath.head.type === 'VarHead') {
+                    if (p.length === 3) {
+                        return `${p[0]} ? ${p[1]} : ${p[2]}`;
+                    }
+                    else if (p.length === 2) {
+                        return `${p[0]} ? ${p[1]} : undefined`;
+                    }
+                }
+                if (maybeIfPath.original === 'unless' && maybeIfPath.head.type === 'VarHead') {
+                    if (p.length === 3) {
+                        return `!${p[0]} ? ${p[1]} : ${p[2]}`;
+                    }
+                    else if (p.length === 2) {
+                        return `!${p[0]} ? ${p[1]} : undefined`;
+                    }
+                }
+            }
             result = `${this.pathCall(node.path)}([${params}])`;
         }
         else if (hash.length && !params.length) {

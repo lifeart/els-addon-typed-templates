@@ -1,0 +1,11 @@
+{{!-- 
+
+interface Args {
+    foo: { user: { name : string } } | 0
+}
+
+ --}}
+
+{{if @foo @foo.user.name}}
+
+{{@foo.user.name}}
