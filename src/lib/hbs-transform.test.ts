@@ -122,6 +122,10 @@ describe('transform', () => {
             let node = b.concat([b.text('foo'), b.mustache(b.path('this.foo'))]);
             expect(t(node)).toEqual("(): string { return `${\"foo\"}${this[\"1,0:1,0 - PathExpression\"]()}`; /*@path-mark 1,0:1,0*/}");
         });
+        it('support expressions in text concat', () => {
+            let node = b.concat([b.text('my-value'), b.mustache(b.path('if'), [b.path('this.otherValue'),b.path('this.otherValue'),b.string('missing')])]);
+            expect(t(node)).toEqual("(): string { return `${\"my-value\"}${this[\"1,0:1,0 - PathExpression\"]([this[\"1,0:1,0 - PathExpression\"](),this[\"1,0:1,0 - PathExpression\"](),this[\"1,0:1,0 - StringLiteral\"]()])}`; /*@path-mark 1,0:1,0*/}");
+        });
     });
     describe('wrapToFunction', () => {
         it('works with paths', () => {

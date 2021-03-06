@@ -1817,7 +1817,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/hbs-transform.test.ts": {
-        "version": "7532d317a0c8154936565040f0edd55b88c7d9dae6a919c3d4c2cd4ad54ddac6",
+        "version": "95f0dd9cd3a32707410b94529692ac0904dfee37014420d97e94ce61bc52726f",
         "signature": "9b8b7b0251927a4eb484be94c70e3ba5e7d35a0e456b3922ab112a2ba69bbe51",
         "affectsGlobalScope": false
       },

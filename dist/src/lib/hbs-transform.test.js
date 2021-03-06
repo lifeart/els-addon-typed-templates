@@ -117,7 +117,11 @@ describe('transform', () => {
     describe('Concat Statement', () => {
         it('support text concat text foo=" name {{bar}}"', () => {
             let node = syntax_1.builders.concat([syntax_1.builders.text('foo'), syntax_1.builders.mustache(syntax_1.builders.path('this.foo'))]);
-            expect(t(node)).toEqual('() { return this[\"1,0:1,0 - PathExpression\"]([], {}); /*@path-mark 1,0:1,0*/}');
+            expect(t(node)).toEqual("(): string { return `${\"foo\"}${this[\"1,0:1,0 - PathExpression\"]()}`; /*@path-mark 1,0:1,0*/}");
+        });
+        it('support expressions in text concat', () => {
+            let node = syntax_1.builders.concat([syntax_1.builders.text('my-value'), syntax_1.builders.mustache(syntax_1.builders.path('if'), [syntax_1.builders.path('this.otherValue'), syntax_1.builders.path('this.otherValue'), syntax_1.builders.string('missing')])]);
+            expect(t(node)).toEqual("(): string { return `${\"my-value\"}${this[\"1,0:1,0 - PathExpression\"]([this[\"1,0:1,0 - PathExpression\"](),this[\"1,0:1,0 - PathExpression\"](),this[\"1,0:1,0 - StringLiteral\"]()])}`; /*@path-mark 1,0:1,0*/}");
         });
     });
     describe('wrapToFunction', () => {
