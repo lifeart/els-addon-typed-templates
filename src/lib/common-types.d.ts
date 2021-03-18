@@ -28,7 +28,7 @@ declare module "@ember/component" {
     }
     static extend(args) {
       return class ExtendedComponent extends Component<typeof args> {
- 
+
       }
     }
     args: Args;
@@ -60,8 +60,8 @@ declare module "ember-modifier" {
 declare module "ember-typed-templates" {
   type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
   type YieldHelper = <A, B, C, D, E>(
-    items?: [A, B?, C?, D?, E?],
-    hash?
+    items?: [A?, B?, C?, D?, E?],
+    hash?: { to?: string }
   ) => [A, B, C, D, E];
   type EachHelper = <T extends any>([items]: ArrayLike<T>[], hash?) => [T, number];
   type EachInHelper = <T extends object, A extends keyof T>([items]: [T]) => [A,PropType<T, A>];
