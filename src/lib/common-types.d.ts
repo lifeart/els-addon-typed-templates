@@ -1,3 +1,5 @@
+import EmberArray from '@ember/array';
+
 declare module "@glimmer/component" {
   type UnknownConfig = Record<string, unknown>;
 
@@ -63,7 +65,7 @@ declare module "ember-typed-templates" {
     items?: [A, B?, C?, D?, E?],
     hash?
   ) => [A, B, C, D, E];
-  type EachHelper = <T extends any>([items]: ArrayLike<T>[], hash?) => [T, number];
+  type EachHelper = <T extends any, A extends ArrayLike<T> | EmberArray<T>>([items]: [A], hash?) => [T, number];
   type EachInHelper = <T extends object, A extends keyof T>([items]: [T]) => [A,PropType<T, A>];
   type LetHelper = <A, B, C, D, E>(
     items: [A, B?, C?, D?, E?],
