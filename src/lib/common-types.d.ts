@@ -59,6 +59,7 @@ declare module "ember-modifier" {
 
 declare module "ember-typed-templates" {
   type PropType<TObj, TProp extends keyof TObj> = TObj[TProp];
+  type Unpromisify<T> = T extends PromiseLike<infer R> ? R : T;
   type YieldHelper = <A, B, C, D, E>(
     items?: [A, B?, C?, D?, E?],
     hash?
@@ -81,6 +82,11 @@ declare module "ember-typed-templates" {
   type EventCatcherHelper = <A, B, C, D, E>(
     items?: [A?, B?, C?, D?, E?]
   ) => AnyFn;
+  // ember-async-await-helper
+  type AsyncAwaitHelper = <T>(
+    params: [T],
+    hash?: { onReject: ((reason: any) => void) | null }
+  ) => [Unpromisify<T>]
 
   function TIfHeper<T, U, Y>([a, b, c]: [T, U?, Y?], hash?) {
     return !!a ? b : c;
@@ -125,5 +131,6 @@ declare module "ember-typed-templates" {
     ["did-update"]: (params: [ Function, ...any], hash?: any) => void;
     ["will-destroy"]: (params: [ Function, ...any], hash?: any) => void;
     ["and"]: AndHelper;
+    ["async-await"]: AsyncAwaitHelper;
   }
 }
