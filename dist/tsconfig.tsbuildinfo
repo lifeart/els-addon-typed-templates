@@ -1722,13 +1722,13 @@
         "affectsGlobalScope": false
       },
       "../src/lib/ast-helpers.ts": {
-        "version": "8acbc6746e5e9dba74d19ccc8769413c181316e5dcd2cbf63cbd56b265ff338f",
+        "version": "6baf7e19fa8b55c3ec5a0ffb69efbf82ee59862467eaff3bc0b38d17b8498698",
         "signature": "9d5b0b002242536d5b83de5846e060255cf6dfc6956f1ee952688dc573e677a3",
         "affectsGlobalScope": false
       },
       "../src/lib/ls-utils.ts": {
-        "version": "28e6a04282df9af1762327da82d726038f66a511576f6e499d5ff08406b1760c",
-        "signature": "d56fe100ccaf471c2c812f0b93de3b8948a5ff8a971de6552c229d35ff15389c",
+        "version": "a58d75d45d80a8ff0e51f531711ea7449a9c637d9b088a777f84a4f6afd08a92",
+        "signature": "130da05387b5b0e2b506dc3d626ffeec3792afea9b6769885e9e31ac2f3461bf",
         "affectsGlobalScope": false
       },
       "../src/lib/resolvers.ts": {
@@ -1772,8 +1772,8 @@
         "affectsGlobalScope": false
       },
       "../src/providers/linter.ts": {
-        "version": "3ecbf3a4c82ec938ef667fe9fff9f97c3c79e1537a71162c44e8f09dbfb631bb",
-        "signature": "e6c9434c64c724e785f9c01e24608ec10de0a3240645343d6f5b023455cf3d37",
+        "version": "fea53eee04dec7a9b60c67bc1be6ca7f74b77c2fac5d547fbcf25dce50a937c5",
+        "signature": "b24993b65b65877947bca6cdb50da8a0e073578838dbffb08e0bf182fb305ae9",
         "affectsGlobalScope": false
       },
       "../src/providers/definition.ts": {
@@ -1796,9 +1796,69 @@
         "signature": "a833bb98cf5ebff4e4581d468f9dcdefb29da4c37e6e95973e8bedf0570ba0b5",
         "affectsGlobalScope": false
       },
+      "../node_modules/@types/ember__object/mixin.d.ts": {
+        "version": "9d78575b3d3486476abb91c5fb557244e279fd4d0452065f36ba5c6153802f57",
+        "signature": "9d78575b3d3486476abb91c5fb557244e279fd4d0452065f36ba5c6153802f57",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__object/-private/types.d.ts": {
+        "version": "9530fdd4807b20140eb6fb5c0086f9e4b1035a09ebbbb08d4075d03bc8cb562e",
+        "signature": "9530fdd4807b20140eb6fb5c0086f9e4b1035a09ebbbb08d4075d03bc8cb562e",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__object/core.d.ts": {
+        "version": "e2754b037d9944a8f84d7c6d0795adf1c3bad726199ef02dffa67ee8d530fe37",
+        "signature": "e2754b037d9944a8f84d7c6d0795adf1c3bad726199ef02dffa67ee8d530fe37",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__object/observable.d.ts": {
+        "version": "b5ee4c617064bb755dd71a57937f3bffac0a831f49770d67650c920d0ff3e8e7",
+        "signature": "b5ee4c617064bb755dd71a57937f3bffac0a831f49770d67650c920d0ff3e8e7",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__object/index.d.ts": {
+        "version": "3706aa52dc623e380fdc24e6c94cf23dd853f73d52dec207bdc8120013cc54bb",
+        "signature": "3706aa52dc623e380fdc24e6c94cf23dd853f73d52dec207bdc8120013cc54bb",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__object/computed.d.ts": {
+        "version": "848a46721e30193663324901c7446b49cf10068a3f0cbe1bcea6eaf007ca51eb",
+        "signature": "848a46721e30193663324901c7446b49cf10068a3f0cbe1bcea6eaf007ca51eb",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__array/-private/mutable-enumerable.d.ts": {
+        "version": "402672918f2d1324b5cc6fd022d0ffe38568f047109817fcdd197d9046c0c1d3",
+        "signature": "402672918f2d1324b5cc6fd022d0ffe38568f047109817fcdd197d9046c0c1d3",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__array/mutable.d.ts": {
+        "version": "55463b262402587ce89efd32bd927f57bb9a4163e786a69fe207001b1439fed3",
+        "signature": "55463b262402587ce89efd32bd927f57bb9a4163e786a69fe207001b1439fed3",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__object/-private/copyable.d.ts": {
+        "version": "8efd97942be10b42b4ec36aa1e00343520a7036f6058e7ef3252e4601b76ccf7",
+        "signature": "8efd97942be10b42b4ec36aa1e00343520a7036f6058e7ef3252e4601b76ccf7",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__array/-private/native-array.d.ts": {
+        "version": "86a06845d948ab9ed54ec43468d76f7d82b8fbf8acc8d165091e40eb5c2743f9",
+        "signature": "86a06845d948ab9ed54ec43468d76f7d82b8fbf8acc8d165091e40eb5c2743f9",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__array/-private/enumerable.d.ts": {
+        "version": "1918372988f3409eda28484f34d67784d101b81d3612c74a8acdf1f256f67152",
+        "signature": "1918372988f3409eda28484f34d67784d101b81d3612c74a8acdf1f256f67152",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/@types/ember__array/index.d.ts": {
+        "version": "43685e702e1af1436aa1cc365f8ebbc60e77cbdd25ca1c8762359de8dc5dc6e1",
+        "signature": "43685e702e1af1436aa1cc365f8ebbc60e77cbdd25ca1c8762359de8dc5dc6e1",
+        "affectsGlobalScope": false
+      },
       "../src/lib/common-types.d.ts": {
-        "version": "2a9f96310aca4f387f806c21dc2199ca6b24f16419ac0410a42e9358ce0167fd",
-        "signature": "2a9f96310aca4f387f806c21dc2199ca6b24f16419ac0410a42e9358ce0167fd",
+        "version": "5ad634c2f94879ba167c2b3beb8a70e1c046dfd7b23fbee0f427a02674e08291",
+        "signature": "5ad634c2f94879ba167c2b3beb8a70e1c046dfd7b23fbee0f427a02674e08291",
         "affectsGlobalScope": false
       },
       "../src/lib/default-scopes.test.ts": {
@@ -3774,6 +3834,111 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
+      "../node_modules/@types/ember__array/-private/enumerable.d.ts": [
+        "../node_modules/@types/ember__array/-private/native-array.d.ts",
+        "../node_modules/@types/ember__array/index.d.ts",
+        "../node_modules/@types/ember__object/computed.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__array/-private/mutable-enumerable.d.ts": [
+        "../node_modules/@types/ember__array/-private/enumerable.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__array/-private/native-array.d.ts": [
+        "../node_modules/@types/ember__array/mutable.d.ts",
+        "../node_modules/@types/ember__object/-private/copyable.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/ember__object/observable.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__array/index.d.ts": [
+        "../node_modules/@types/ember__array/-private/enumerable.d.ts",
+        "../node_modules/@types/ember__array/-private/native-array.d.ts",
+        "../node_modules/@types/ember__object/computed.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__array/mutable.d.ts": [
+        "../node_modules/@types/ember__array/-private/enumerable.d.ts",
+        "../node_modules/@types/ember__array/-private/mutable-enumerable.d.ts",
+        "../node_modules/@types/ember__array/index.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/-private/copyable.d.ts": [
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/-private/types.d.ts": [
+        "../node_modules/@types/ember__object/computed.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/computed.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/ember__object/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/core.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/index.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/ember__object/computed.d.ts",
+        "../node_modules/@types/ember__object/core.d.ts",
+        "../node_modules/@types/ember__object/observable.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/mixin.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/ember__object/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/observable.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/ember__object/core.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
       "../node_modules/@types/estree/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -4977,6 +5142,7 @@
         "../src/lib/ast-helpers.ts"
       ],
       "../src/lib/common-types.d.ts": [
+        "../node_modules/@types/ember__array/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
@@ -7067,6 +7233,111 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts"
       ],
+      "../node_modules/@types/ember__array/-private/enumerable.d.ts": [
+        "../node_modules/@types/ember__array/-private/native-array.d.ts",
+        "../node_modules/@types/ember__array/index.d.ts",
+        "../node_modules/@types/ember__object/computed.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__array/-private/mutable-enumerable.d.ts": [
+        "../node_modules/@types/ember__array/-private/enumerable.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__array/-private/native-array.d.ts": [
+        "../node_modules/@types/ember__array/mutable.d.ts",
+        "../node_modules/@types/ember__object/-private/copyable.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/ember__object/observable.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__array/index.d.ts": [
+        "../node_modules/@types/ember__array/-private/enumerable.d.ts",
+        "../node_modules/@types/ember__array/-private/native-array.d.ts",
+        "../node_modules/@types/ember__object/computed.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__array/mutable.d.ts": [
+        "../node_modules/@types/ember__array/-private/enumerable.d.ts",
+        "../node_modules/@types/ember__array/-private/mutable-enumerable.d.ts",
+        "../node_modules/@types/ember__array/index.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/-private/copyable.d.ts": [
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/-private/types.d.ts": [
+        "../node_modules/@types/ember__object/computed.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/computed.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/ember__object/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/core.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/index.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/ember__object/computed.d.ts",
+        "../node_modules/@types/ember__object/core.d.ts",
+        "../node_modules/@types/ember__object/observable.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/mixin.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/ember__object/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "../node_modules/@types/ember__object/observable.d.ts": [
+        "../node_modules/@types/ember__object/-private/types.d.ts",
+        "../node_modules/@types/ember__object/core.d.ts",
+        "../node_modules/@types/ember__object/mixin.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
       "../node_modules/@types/estree/index.d.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
@@ -8236,6 +8507,7 @@
         "../node_modules/@glimmer/syntax/dist/types/lib/v1/nodes-v1.d.ts"
       ],
       "../src/lib/common-types.d.ts": [
+        "../node_modules/@types/ember__array/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
@@ -8273,6 +8545,7 @@
       ],
       "../src/providers/linter.ts": [
         "../node_modules/@lifeart/ember-language-server/lib/index.d.ts",
+        "../node_modules/vscode-languageserver-textdocument/lib/umd/main.d.ts",
         "../node_modules/vscode-languageserver/lib/common/api.d.ts",
         "../src/providers/virtual-document.ts"
       ],
@@ -8478,6 +8751,18 @@
       "../node_modules/@lifeart/ember-language-server/node_modules/@glimmer/syntax/dist/types/lib/v2-a/objects/refs.d.ts",
       "../node_modules/@lifeart/ember-language-server/node_modules/@glimmer/syntax/dist/types/lib/v2-a/objects/resolution.d.ts",
       "../node_modules/@simple-dom/interface/index.d.ts",
+      "../node_modules/@types/ember__array/-private/enumerable.d.ts",
+      "../node_modules/@types/ember__array/-private/mutable-enumerable.d.ts",
+      "../node_modules/@types/ember__array/-private/native-array.d.ts",
+      "../node_modules/@types/ember__array/index.d.ts",
+      "../node_modules/@types/ember__array/mutable.d.ts",
+      "../node_modules/@types/ember__object/-private/copyable.d.ts",
+      "../node_modules/@types/ember__object/-private/types.d.ts",
+      "../node_modules/@types/ember__object/computed.d.ts",
+      "../node_modules/@types/ember__object/core.d.ts",
+      "../node_modules/@types/ember__object/index.d.ts",
+      "../node_modules/@types/ember__object/mixin.d.ts",
+      "../node_modules/@types/ember__object/observable.d.ts",
       "../node_modules/@types/estree/index.d.ts",
       "../node_modules/@types/events/index.d.ts",
       "../node_modules/@types/jest/index.d.ts",

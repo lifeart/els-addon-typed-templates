@@ -43,7 +43,7 @@ export default class Linter {
         }
         return true;
     }
-    async lintFile(textDocument) {
+    async lintFile(textDocument: TextDocument) {
         const templatePath = toFilePath(textDocument.uri);
         if (!this.canLint(templatePath)) {
             return [];

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toDiagnostic = exports.getSemanticDiagnostics = exports.getFullSemanticDiagnostics = exports.tsDefinitionToLocation = exports.offsetToRange = exports.normalizeCompletions = exports.normalizeDefinitions = void 0;
+exports.getFullSemanticDiagnostics = exports.tsDefinitionToLocation = exports.offsetToRange = exports.normalizeCompletions = exports.normalizeDefinitions = void 0;
 const vscode_uri_1 = require("vscode-uri");
 const vscode_languageserver_1 = require("vscode-languageserver");
 const fs = require("fs");
@@ -184,47 +184,4 @@ function getFullSemanticDiagnostics(service, fileName) {
     return diagnostics;
 }
 exports.getFullSemanticDiagnostics = getFullSemanticDiagnostics;
-function getSemanticDiagnostics(server, service, templateRange, fileName, focusPath, uri) {
-    //  console.log(service.getSyntacticDiagnostics(fileName).map((el)=>{
-    //     console.log('getSyntacticDiagnostics', el.messageText, el.start, el.length);
-    // }));
-    // console.log('getSemanticDiagnostics', fileName);
-    const tsDiagnostics = service.getSemanticDiagnostics(fileName);
-    const diagnostics = tsDiagnostics.map((error) => toDiagnostic(error, templateRange, focusPath));
-    server.connection.sendDiagnostics({ uri, diagnostics });
-    // console.log(service.getSemanticDiagnostics(fileName).map((el)=>{
-    // const diagnostics: Diagnostic[] = errors.map((error: any) => toDiagnostic(el));
-    // server.connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
-    // console.log('getSemanticDiagnostics', el.messageText, el.start, el.length);
-    // }));
-    // console.log(service.getSuggestionDiagnostics(fileName).map((el)=>{
-    //     console.log('getSuggestionDiagnostics', el.messageText, el.start, el.length);
-    // }));
-    // console.log('getCompilerOptionsDiagnostics', service.getCompilerOptionsDiagnostics());
-}
-exports.getSemanticDiagnostics = getSemanticDiagnostics;
-function toDiagnostic(err, [startIndex, endIndex], focusPath) {
-    let errText = err.file.text.slice(err.start, err.start + err.length);
-    if ((err.start >= startIndex && err.length + err.start <= endIndex) ||
-        errText.startsWith("return ")) {
-        let loc = focusPath.node.loc;
-        return {
-            severity: getSeverity(err.messageText),
-            range: loc
-                ? vscode_languageserver_1.Range.create(loc.start.line - 1, loc.start.column, loc.end.line - 1, loc.end.column)
-                : vscode_languageserver_1.Range.create(0, 0, 0, 0),
-            message: messageConverter(err.messageText),
-            source: "typed-templates"
-        };
-    }
-    else {
-        return {
-            severity: getSeverity(err.messageText),
-            range: offsetToRange(0, 0, ""),
-            message: messageConverter(err.messageText),
-            source: "typed-templates"
-        };
-    }
-}
-exports.toDiagnostic = toDiagnostic;
 //# sourceMappingURL=ls-utils.js.map
