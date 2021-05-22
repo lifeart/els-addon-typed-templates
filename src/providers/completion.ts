@@ -49,7 +49,7 @@ export default class CompletionProvider {
             const projectRoot = this.project.root;
             const service = serviceForRoot(projectRoot);
             const server = serverForProject(projectRoot);
-            const componentsMap = componentsForService(service, true);
+            const componentsMap = componentsForService(service);
             let templatePath = toFilePath(textDocument.uri);
             if (isExternalComponentArg) {
                 let possibleTemplates = server.getRegistry(projectRoot).component[originalComponentName] || [];

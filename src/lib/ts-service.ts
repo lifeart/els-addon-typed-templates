@@ -2,16 +2,13 @@ import * as ts from "typescript";
 import * as path from "path";
 import * as fs from "fs";
 import { safeWalkSync, normalizeToAngleBracketName } from "./utils";
-import { Project } from '@lifeart/ember-language-server';
+import { Project, Server } from '@lifeart/ember-language-server';
 import { withDebug } from './logger';
 
 const services: any = {};
 const components = new WeakMap();
 
-export function componentsForService(service, clean = false) {
-  if (clean) {
-    components.set(service, {});
-  }
+export function componentsForService(service) {
   return components.get(service);
 }
 
@@ -52,22 +49,16 @@ export interface LSRegistry {
   'service': RegistryItem;
   'modifier': RegistryItem;
 }
-export interface LanguageServer {
-  getRegistry(root: string): LSRegistry
-}
 interface ProjectMirror {
-  project: {
-    files: Map<string, ProjectFile>;
-    matchPathToType(filePath: string): null | MatchResult
-  };
-  server: LanguageServer,
+  project: Project;
+  server: Server,
   files: WeakMap<ProjectFile, TSMeta>;
 }
 
 const STABLE_FILES: Map<string, TSMeta> = new Map();
 const PROJECTS_MAP: Map<string, ProjectMirror> = new Map();
 
-export function registerProject(item, server) {
+export function registerProject(item: Project, server: Server) {
   PROJECTS_MAP.set(item.root, {
     project: item,
     server: server,
@@ -77,7 +68,7 @@ export function registerProject(item, server) {
 
 
 
-const serverMock: LanguageServer = {
+const serverMock: Server = {
   getRegistry(_: string): LSRegistry {
     return {
       'transform': {},
@@ -89,15 +80,15 @@ const serverMock: LanguageServer = {
       'modifier': {}
     }
   }
-}
+} as Server;
 
-export function serverForProject(root: string) {
+export function serverForProject(root: string): Server {
   const projectMirror = PROJECTS_MAP.get(root) as ProjectMirror;
   if (!projectMirror) {
     withDebug(() => {
       console.log('server-mock used');
     });
-    return serverMock as LanguageServer;
+    return serverMock;
   }
   return projectMirror.server;
 }
@@ -211,6 +202,11 @@ export default class TypescriptService implements ts.LanguageServiceHost {
     if (projectFiles.has(_fileName)) {
       // return Date.now().toString();
       return projectFiles.get(_fileName)!.version.toString();
+    } else {
+      withDebug(() => {
+        console.log(this.project.project.files);
+        console.log(projectFiles);
+      })
     }
     if (STABLE_FILES.has(_fileName)) {
       // return Date.now().toString();
