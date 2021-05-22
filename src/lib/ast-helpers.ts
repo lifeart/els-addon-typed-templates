@@ -92,6 +92,9 @@ export function isEachArgument(focusPath) {
 }
 
 export function isSimpleBlockComponentElement(node) {
+  if (node.tag.startsWith('this.')) {
+    return true;
+  }
   return !node.tag.startsWith('.') && node.tag.charAt(0) !== '@' && node.tag.charAt(0) === node.tag.charAt(0).toUpperCase() && node.tag.indexOf('.') === -1;
 }
 
@@ -107,7 +110,7 @@ export function keyForItem(item) {
 }
 
 export function tagComponentToBlock(node) {
-  const componentName = normalizeAngleTagName(node.tag);
+  const componentName = node.tag.startsWith('this.') ? node.tag : normalizeAngleTagName(node.tag);
   return {
     type: 'BlockStatement',
     isComponent: true,
