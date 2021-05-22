@@ -10,6 +10,11 @@ How typed template looks under the hood?
 
 * route templates not supported (yet);
 
+
+### Template-lint integration (CI)
+
+install [ember-template-lint-typed-templates](https://github.com/lifeart/ember-template-lint-typed-templates) plugin to get if working
+
 ### Autocomplete
 
 ![autocomplete preview](previews/autocomplete.png)
